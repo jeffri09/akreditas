@@ -436,7 +436,7 @@ const App = {
         <div class="card-header">
           <div class="card-title">
             <div class="icon">✨</div>
-            <h3>Pengaturan AI (Gemini 3.1 Flash Lite)</h3>
+            <h3>Pengaturan AI & Parameter Karakteristik (Gemini 3.1)</h3>
           </div>
         </div>
         
@@ -449,6 +449,46 @@ const App = {
         <div class="checkbox-item checked" style="margin-bottom: 12px; justify-content: start;">
            <input type="checkbox" id="useAiToggle" style="accent-color:var(--accent-primary);transform:scale(1.2);margin-right:8px;" ${localStorage.getItem('use_ai') === 'true' ? 'checked' : ''} onchange="localStorage.setItem('use_ai', this.checked)">
            <label for="useAiToggle" style="font-weight:bold;color:var(--primary);cursor:pointer;">✨ Gunakan Gemini AI untuk Melengkapi RPP & Soal</label>
+        </div>
+
+        <!-- CUSTOM AI PARAMETERS -->
+        <h4 style="font-size:0.9rem;margin-bottom:8px;margin-top:16px;border-bottom:1px solid #ddd;padding-bottom:4px;">⚙️ Parameter Output AI (Opsional)</h4>
+        
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
+          <div class="form-group" style="flex:1;min-width:180px;">
+            <label style="font-size:0.8rem;">Model Pembelajaran (RPP)</label>
+            <select id="aiModelBelajar" class="form-input" style="font-size:0.85rem;padding:6px;" onchange="localStorage.setItem('ai_model_belajar', this.value)">
+              <option value="Problem Based Learning (PBL)" ${localStorage.getItem('ai_model_belajar') === 'Problem Based Learning (PBL)' ? 'selected' : ''}>Problem Based Learning (PBL)</option>
+              <option value="Project Based Learning (PjBL)" ${localStorage.getItem('ai_model_belajar') === 'Project Based Learning (PjBL)' ? 'selected' : ''}>Project Based Learning (PjBL)</option>
+              <option value="Pendekatan Andragogi (Orang Dewasa)" ${localStorage.getItem('ai_model_belajar') === 'Pendekatan Andragogi (Orang Dewasa)' ? 'selected' : ''}>Andragogi (Khas Dewasa Pendidikan Kesetaraan)</option>
+              <option value="Discovery / Inquiry Learning" ${localStorage.getItem('ai_model_belajar') === 'Discovery / Inquiry Learning' ? 'selected' : ''}>Discovery / Inquiry Learning</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex:1;min-width:180px;">
+            <label style="font-size:0.8rem;">Format Soal Formatif/Sumatif</label>
+            <select id="aiFormatSoal" class="form-input" style="font-size:0.85rem;padding:6px;" onchange="localStorage.setItem('ai_format_soal', this.value)">
+              <option value="Soal Analitis Uraian Panjang (Esai)" ${localStorage.getItem('ai_format_soal') === 'Soal Analitis Uraian Panjang (Esai)' ? 'selected' : ''}>Esai / Uraian Panjang (HOTS)</option>
+              <option value="Pilihan Ganda A, B, C, D dengan Kunci" ${localStorage.getItem('ai_format_soal') === 'Pilihan Ganda A, B, C, D dengan Kunci' ? 'selected' : ''}>Pilihan Ganda dengan Kunci</option>
+              <option value="Soal Isian Singkat & Studi Kasus" ${localStorage.getItem('ai_format_soal') === 'Soal Isian Singkat & Studi Kasus' ? 'selected' : ''}>Studi Kasus Ringkas</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
+          <div class="form-group" style="flex:1;min-width:180px;">
+            <label style="font-size:0.8rem;">Tema Projek Karakter P5</label>
+            <select id="aiTemaP5" class="form-input" style="font-size:0.85rem;padding:6px;" onchange="localStorage.setItem('ai_tema_p5', this.value)">
+              <option value="Kewirausahaan / Keterampilan Mandiri" ${localStorage.getItem('ai_tema_p5') === 'Kewirausahaan / Keterampilan Mandiri' ? 'selected' : ''}>Kewirausahaan / Keterampilan PKBM</option>
+              <option value="Gaya Hidup Berkelanjutan" ${localStorage.getItem('ai_tema_p5') === 'Gaya Hidup Berkelanjutan' ? 'selected' : ''}>Gaya Hidup Berkelanjutan / Lingkungan</option>
+              <option value="Kearifan Lokal Daerah" ${localStorage.getItem('ai_tema_p5') === 'Kearifan Lokal Daerah' ? 'selected' : ''}>Kearifan Lokal Budaya Daerah</option>
+              <option value="Bhinneka Tunggal Ika / Suara Demokrasi" ${localStorage.getItem('ai_tema_p5') === 'Bhinneka Tunggal Ika / Suara Demokrasi' ? 'selected' : ''}>Bhinneka Tunggal Ika</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:12px;">
+          <label style="font-size:0.8rem;">Instruksi Khusus / Konteks (Opsional Bebas)</label>
+          <textarea id="aiKonteks" class="form-input" rows="2" style="font-size:0.85rem;padding:6px;" placeholder="Cth: Siswa mayoritas pekerja paruh waktu. Beri soal logika akuntansi warung." onchange="localStorage.setItem('ai_konteks', this.value)" oninput="localStorage.setItem('ai_konteks', this.value)">${localStorage.getItem('ai_konteks') || ''}</textarea>
         </div>
         
         <div style="display:flex;gap:8px;margin-top:8px;">
@@ -539,7 +579,11 @@ const App = {
     const key = document.getElementById('geminiApiKey').value.trim();
     if (key) {
       AIClient.setApiKey(key);
-      Utils.showToast('Gemini API Key tersimpan', 'success');
+      localStorage.setItem('ai_model_belajar', document.getElementById('aiModelBelajar')?.value || '');
+      localStorage.setItem('ai_format_soal', document.getElementById('aiFormatSoal')?.value || '');
+      localStorage.setItem('ai_tema_p5', document.getElementById('aiTemaP5')?.value || '');
+      localStorage.setItem('ai_konteks', document.getElementById('aiKonteks')?.value || '');
+      Utils.showToast('Pengaturan AI & Parameter tersimpan', 'success');
     } else {
       Utils.showToast('API Key kosong', 'error');
     }
@@ -547,8 +591,12 @@ const App = {
 
   clearGeminiKey() {
     AIClient.setApiKey('');
+    localStorage.removeItem('ai_model_belajar');
+    localStorage.removeItem('ai_format_soal');
+    localStorage.removeItem('ai_tema_p5');
+    localStorage.removeItem('ai_konteks');
     document.getElementById('geminiApiKey').value = '';
-    Utils.showToast('Gemini API Key terhapus', 'success');
+    Utils.showToast('Pengaturan AI terhapus', 'success');
   }
 };
 

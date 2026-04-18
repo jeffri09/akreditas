@@ -90,26 +90,36 @@ const AIClient = {
    * Menghasilkan Paket Data per Mata Pelajaran untuk digunakan oleh docx.js Templates
    */
   async generateMapelPayload(paket, mapel, fase) {
+    const modelBelajar = localStorage.getItem('ai_model_belajar') || 'Problem Based Learning (PBL)';
+    const formatSoal = localStorage.getItem('ai_format_soal') || 'Soal Analitis Uraian Panjang (Esai)';
+    const temaP5 = localStorage.getItem('ai_tema_p5') || 'Kewirausahaan / Keterampilan Mandiri';
+    const konteks = localStorage.getItem('ai_konteks') || '';
+    
+    let konteksPrompt = konteks ? `\nKONTEKS KHUSUS DARI TUTOR:\n"${konteks}"\n(Wajib sesuaikan seluruh konten materi dengan konteks ini)\n` : "";
+
     const prompt = `Anda adalah asisten Guru PKBM (Pendidikan Kesetaraan) professional.
 Buatkan skenario materi ajar untuk mata pelajaran "${mapel}" pada jenjang ${paket} (Fase ${fase}).
 Gunakan bahasa yang instruksional, interaktif, dan tidak kaku (pendekatan orang dewasa).
 
+ATURAN KUSTOMISASI DARI TUTOR:
+- Model Pembelajaran RPP: ${modelBelajar}
+- Format Soal Formatif/Sumatif: ${formatSoal}
+- Tema Projek Karakter P5: ${temaP5}
+${konteksPrompt}
+
 Keluarkan hasil WAJIB DALAM BENTUK JSON murni tanpa markdown, dengan struktur berikut:
 {
   "kegiatanPendahuluan": "Paragraf deskripsi kegiatan awal (menyapa, berdoa, memotivasi).",
-  "kegiatanInti": ["Point 1 kegiatan eksplorasi...", "Point 2 kegiatan diskusi...", "Point 3..."],
+  "kegiatanInti": ["Point 1: Berikan sintaks kegiatan inti sesuai model pembelajaran ${modelBelajar}...", "Point 2..."],
   "kegiatanPenutup": "Paragraf kesimpulan dan refleksi.",
   "soalFormatif": [
-    {"soal": "Pertanyaan Formatif 1...", "jawaban": "Jawaban 1..."},
-    {"soal": "Pertanyaan Formatif 2...", "jawaban": "Jawaban 2..."},
-    {"soal": "Pertanyaan Formatif 3...", "jawaban": "Jawaban 3..."}
+    {"soal": "Pertanyaan Formatif 1...", "jawaban": "Jawaban 1..."}
   ],
   "soalSumatif": [
-    {"soal": "Pertanyaan Sumatif 1 (Level Kritis)...", "kunciJawaban": "Jawaban Detail 1..."},
-    {"soal": "Pertanyaan Sumatif 2 (Level Analisis)...", "kunciJawaban": "Jawaban Detail 2..."}
+    {"soal": "Pertanyaan Sumatif 1 (Sesuai format: ${formatSoal})...", "kunciJawaban": "Jawaban/Penjelasan rinci..."}
   ],
   "ideProyekKarakter": {
-    "judul": "Judul Proyek Karakter",
+    "judul": "Judul Proyek Karakter (Berkaitan erat dengan tema: ${temaP5})",
     "deskripsi": "Deskripsi aktivitas wirausaha/sosial dari proyek ini."
   }
 }`;
