@@ -95,6 +95,20 @@ const CONFIG = {
   },
 
   // =========================================
+  // PIC (PENANGGUNG JAWAB) MAPPING
+  // =========================================
+  mapelPics: {
+    'A': { 'Bahasa Indonesia': 'Abdul Hadi (S.Pd)', 'Matematika': 'Naela', 'Pendidikan Agama Islam dan Budi Pekerti': 'Anita', 'Pendidikan Pancasila': 'Abdul Hadi', 'Ilmu Pengetahuan Alam dan Sosial (IPAS)': 'Naela' },
+    'B': { 'Bahasa Indonesia': 'Handry', 'Matematika': 'Siska', 'Pendidikan Agama Islam dan Budi Pekerti': 'Husen', 'Pendidikan Pancasila': 'Salim', 'Ilmu Pengetahuan Alam': 'Romadi', 'IPA': 'Romadi', 'PAI': 'Husen' },
+    'C': { 'Bahasa Indonesia': 'Riki', 'Matematika': 'Ulfa', 'Bahasa Inggris': 'Nadia', 'Pendidikan Agama Islam dan Budi Pekerti': 'Ronald', 'Pendidikan Pancasila': 'Dia', 'Geografi': 'Dea', 'PAI': 'Ronald' }
+  },
+  instPics: {
+    'A': { '1': 'Asandri', '2': 'Nafis', '4': 'Rika' },
+    'B': { '1': 'Lilik & Gati', '2': 'Zalfa & Adi', '4': 'Apriyanto & Eva' },
+    'C': { '1': 'Jufri', '2': 'Leo', '4': 'Imam & Laila' }
+  },
+
+  // =========================================
   // MATA PELAJARAN PER PAKET
   // =========================================
   subjects: {

@@ -18,6 +18,22 @@ const DocGenerator = {
   async generateDocument(docId, paket, mapel = null, aiData = null) {
     const profile = ProfileManager.getProfile();
     const pkg = CONFIG.packages[paket];
+    
+    // Resolve Tutor Dynamically to enforce Document Correlation
+    let resolvedTutorName = ProfileManager.getProfile().kepala.nama; 
+    const docInfo = CONFIG.getDocInfo(docId);
+    if (docInfo && mapel) { // It's a mapel specific document
+      const pic = CONFIG.mapelPics[paket]?.[mapel];
+      if (pic) {
+         // Optionally append (Tutor Mapel XYZ)
+         resolvedTutorName = `${pic}\nTutor ${mapel.substring(0, 15)}...`;
+      }
+    } else { // It's an institutional document, use the Butir PIC
+      const butir = docId.split('-')[0].replace('B', '');
+      const pic = CONFIG.instPics[paket]?.[butir];
+      if (pic) resolvedTutorName = `${pic}\nTim Penyusun Butir ${butir}`;
+    }
+    
     const context = {
       profile,
       lembaga: profile.lembaga,
@@ -29,7 +45,7 @@ const DocGenerator = {
       tanggalLengkap: Utils.formatTanggalLengkap(new Date()),
       regulasiCP: Utils.getReferensiCP(paket),
       fase: Utils.getFase(paket),
-      tutor: App?.selectedTutor || profile.kepala,
+      tutor: App?.selectedTutor || resolvedTutorName || profile.kepala, // Manual override via UI takes precedence
       aiData: aiData
     };
 
