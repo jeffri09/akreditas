@@ -71,16 +71,15 @@ const Butir3Templates = {
       h.table(
         ['Kegiatan', 'Alokasi Waktu'],
         [
-          ['Salam, doa, dan presensi kehadiran', '5 menit'],
-          ['Apersepsi: menghubungkan materi sebelumnya / pengalaman peserta didik', '5 menit'],
+          [(ctx.aiData && ctx.aiData.kegiatanPendahuluan) ? ctx.aiData.kegiatanPendahuluan : 'Salam, doa, dan apersepsi (menghubungkan materi)', '10 menit'],
           ['Menyampaikan tujuan pembelajaran dan pertanyaan pemantik', '5 menit']
         ]
       ),
       h.empty(),
       h.heading('Kegiatan Inti', 3),
       h.table(
-        ['Fase/Langkah', 'Kegiatan', 'Alokasi Waktu'],
-        [
+        ['Fase / Langkah', 'Kegiatan Pembelajaran', 'Alokasi Waktu'],
+        (ctx.aiData && Array.isArray(ctx.aiData.kegiatanInti) && ctx.aiData.kegiatanInti.length > 0) ? ctx.aiData.kegiatanInti.map((txt, i) => [`Tahap ${i+1}`, txt, '']) : [
           ['Stimulus / Orientasi', 'Tutor menyajikan materi stimulus (teks, gambar, video, masalah)', ''],
           ['Eksplorasi', 'Peserta didik mengeksplorasi materi secara individu/kelompok', ''],
           ['Diskusi / Elaborasi', 'Peserta didik berdiskusi, menganalisis, merumuskan jawaban', ''],
@@ -93,8 +92,7 @@ const Butir3Templates = {
       h.table(
         ['Kegiatan', 'Alokasi Waktu'],
         [
-          ['Refleksi bersama: apa yang dipelajari hari ini', '5 menit'],
-          ['Asesmen formatif singkat (exit ticket / pertanyaan refleksi)', '5 menit'],
+          [(ctx.aiData && ctx.aiData.kegiatanPenutup) ? ctx.aiData.kegiatanPenutup : 'Refleksi bersama: apa yang dipelajari hari ini', '10 menit'],
           ['Informasi pertemuan berikutnya, penugasan, doa penutup', '5 menit']
         ]
       ),
@@ -393,8 +391,8 @@ const Butir3Templates = {
       h.para('Diberikan di akhir pembelajaran sebagai umpan balik cepat:', { italic: true }),
       h.empty(),
       h.table(
-        ['No', 'Pertanyaan', 'Tujuan'],
-        [
+        ['No', 'Pertanyaan (AI Formatif)', 'Jawaban Singkat'],
+        (ctx.aiData && Array.isArray(ctx.aiData.soalFormatif) && ctx.aiData.soalFormatif.length > 0) ? ctx.aiData.soalFormatif.map((q, i) => [String(i+1), q.soal || '...', q.jawaban || '...']) : [
           ['1', 'Apa satu hal terpenting yang kamu pelajari hari ini?', 'Mengukur pemahaman materi'],
           ['2', 'Bagian mana yang masih terasa sulit?', 'Identifikasi kesulitan'],
           ['3', 'Jika kamu harus menjelaskan materi ini ke teman, apa yang akan kamu katakan?', 'Mengukur kedalaman pemahaman'],
@@ -515,14 +513,17 @@ const Butir3Templates = {
       ]).flat(),
       h.para('... (lanjutkan hingga soal ke-10)', { italic: true }),
       h.empty(),
-      h.heading('II. Uraian Singkat (5 soal × 6 poin = 30 poin)'),
-      ...Array.from({length: 3}, (_, i) => [
-        h.para(`${i+1}. _______________________________________________________________`, { indent: false }),
+      h.heading('II. Uraian Singkat (Bagian AI)', 2),
+      ...((ctx.aiData && Array.isArray(ctx.aiData.soalSumatif) && ctx.aiData.soalSumatif.length > 0) ? ctx.aiData.soalSumatif.map((q, i) => [
+        h.para(`${i+1}. ${q.soal || '...'}`, { indent: false }),
+        h.empty()
+      ]).flat() : [
+        h.para(`1. _______________________________________________________________`, { indent: false }),
         h.para('Jawab: ____________________________________________________________', { indent: false }),
         h.empty()
-      ]).flat(),
+      ]),
       h.empty(),
-      h.heading('III. Uraian (2 soal × 25 poin = 50 poin)'),
+      h.heading('III. Uraian (Bagian Standar)', 2),
       h.para('1. ________________________________________________________________', { indent: false }),
       h.para('   ________________________________________________________________', { indent: false }),
       h.para('Jawab:', { indent: false }),

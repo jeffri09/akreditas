@@ -15,7 +15,7 @@ const DocGenerator = {
   // =========================================
   // CORE: Generate a single document
   // =========================================
-  async generateDocument(docId, paket, mapel = null) {
+  async generateDocument(docId, paket, mapel = null, aiData = null) {
     const profile = ProfileManager.getProfile();
     const pkg = CONFIG.packages[paket];
     const context = {
@@ -28,7 +28,9 @@ const DocGenerator = {
       tanggal: Utils.formatTanggal(new Date()),
       tanggalLengkap: Utils.formatTanggalLengkap(new Date()),
       regulasiCP: Utils.getReferensiCP(paket),
-      fase: Utils.getFase(paket)
+      fase: Utils.getFase(paket),
+      tutor: App?.selectedTutor || profile.kepala,
+      aiData: aiData
     };
 
     // Find the template function
@@ -78,7 +80,7 @@ const DocGenerator = {
   // =========================================
   // CORE: Batch generate as ZIP
   // =========================================
-  async generateBatchZip(docIds, paket, mapel = null, progressCallback = null) {
+  async generateBatchZip(docIds, paket, mapel = null, progressCallback = null, useAi = false) {
     const zip = new JSZip();
     const pkg = CONFIG.packages[paket];
     const mapelWajib = pkg?.mapelWajib || [CONFIG.subjects[paket].umum[0]];
@@ -104,7 +106,21 @@ const DocGenerator = {
         // Generate one file per mapel wajib
         for (const mpl of mapelWajib) {
           try {
-            const doc = await this.generateDocument(docId, paket, mpl);
+            let aiData = null;
+            if (useAi) {
+               try {
+                 const aiCacheKey = `ai_${paket}_${mpl}`;
+                 if (!window[aiCacheKey]) {
+                   window[aiCacheKey] = await AIClient.generateMapelPayload(paket, mpl, Utils.getFase(paket));
+                 }
+                 aiData = window[aiCacheKey];
+               } catch (aiErr) {
+                 console.warn(`[AI Fallback] Gagal mengambil data AI untuk ${mpl}:`, aiErr);
+                 aiData = null;
+               }
+            }
+
+            const doc = await this.generateDocument(docId, paket, mpl, aiData);
             const blob = await docx.Packer.toBlob(doc);
             const fileName = this._getFileName(docId, paket, mpl);
             // Organize: Butir X / Mapel / filename.docx
@@ -122,7 +138,21 @@ const DocGenerator = {
       } else {
         // Generate one file (per jenjang)
         try {
-          const doc = await this.generateDocument(docId, paket, mapel);
+          let aiData = null;
+          if (useAi) {
+             try {
+               const aiCacheKey = `ai_${paket}_umum`;
+               if (!window[aiCacheKey]) {
+                 window[aiCacheKey] = await AIClient.generateMapelPayload(paket, "Pendidikan Kesetaraan Umum", Utils.getFase(paket));
+               }
+               aiData = window[aiCacheKey];
+             } catch (aiErr) {
+               console.warn(`[AI Fallback] Gagal mengambil data AI untuk Umum:`, aiErr);
+               aiData = null;
+             }
+          }
+
+          const doc = await this.generateDocument(docId, paket, mapel, aiData);
           const blob = await docx.Packer.toBlob(doc);
           const fileName = this._getFileName(docId, paket, null);
           zip.folder(folderButir).file(fileName, blob);

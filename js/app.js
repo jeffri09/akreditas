@@ -281,7 +281,7 @@ const App = {
       } else {
         await DocGenerator.generateBatchZip(selectedDocs, this.currentPackage, null, (done, total) => {
           Utils.showToast(`Progress: ${done}/${total} file`, 'info', 1000);
-        });
+        }, localStorage.getItem('use_ai') === 'true');
         selectedDocs.forEach(id => this._markGenerated(id, this.currentPackage));
       }
       this.renderKomponen1();
@@ -311,7 +311,7 @@ const App = {
       await DocGenerator.generateBatchZip(docIds, this.currentPackage, null, (done, total) => {
         const pct = Math.round((done / total) * 100);
         if (progressEl) progressEl.style.width = `${pct}%`;
-      });
+      }, localStorage.getItem('use_ai') === 'true');
       docIds.forEach(id => this._markGenerated(id, this.currentPackage));
       this.renderKomponen1();
     } catch (err) {
@@ -430,6 +430,32 @@ const App = {
           </button>
         </div>
       </div>
+
+      <!-- AI SETTINGS CARD -->
+      <div class="glass-card" style="margin-top:16px;">
+        <div class="card-header">
+          <div class="card-title">
+            <div class="icon">✨</div>
+            <h3>Pengaturan AI (Gemini 3.1 Flash Lite)</h3>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Google Gemini API Key</label>
+          <input type="password" id="geminiApiKey" class="input-modern" placeholder="AIzaSy..." value="${localStorage.getItem('gemini_api_key') || ''}">
+          <small style="color:var(--text-secondary);display:block;margin-top:4px;">Disimpan secara lokal di browser Anda. Tidak ke server mana pun.</small>
+        </div>
+
+        <div class="checkbox-item checked" style="margin-bottom: 12px; justify-content: start;">
+           <input type="checkbox" id="useAiToggle" style="accent-color:var(--accent-primary);transform:scale(1.2);margin-right:8px;" ${localStorage.getItem('use_ai') === 'true' ? 'checked' : ''} onchange="localStorage.setItem('use_ai', this.checked)">
+           <label for="useAiToggle" style="font-weight:bold;color:var(--primary);cursor:pointer;">✨ Gunakan Gemini AI untuk Melengkapi RPP & Soal</label>
+        </div>
+        
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <button class="btn btn-primary" onclick="App.saveGeminiKey()">💾 Simpan API Key</button>
+          <button class="btn btn-outline" onclick="App.clearGeminiKey()">🗑️ Hapus</button>
+        </div>
+      </div>
     `;
   },
 
@@ -479,12 +505,14 @@ const App = {
 
     const progressEl = document.getElementById('batchProgress');
 
+    const useAi = localStorage.getItem('use_ai') === 'true';
+
     for (const p of selectedPkgs) {
       try {
         await DocGenerator.generateBatchZip(docIds, p, null, (done, total) => {
           const pct = Math.round((done / total) * 100);
           if (progressEl) progressEl.style.width = `${pct}%`;
-        });
+        }, useAi);
         // Mark all as generated for this package
         docIds.forEach(id => this._markGenerated(id, p));
       } catch (err) {
@@ -505,6 +533,22 @@ const App = {
     const totalDocs = CONFIG.getTotalDocuments();
     const el = document.getElementById('totalDocsCount');
     if (el) el.textContent = CONFIG.getTotalFiles(this.currentPackage);
+  },
+
+  saveGeminiKey() {
+    const key = document.getElementById('geminiApiKey').value.trim();
+    if (key) {
+      AIClient.setApiKey(key);
+      Utils.showToast('Gemini API Key tersimpan', 'success');
+    } else {
+      Utils.showToast('API Key kosong', 'error');
+    }
+  },
+
+  clearGeminiKey() {
+    AIClient.setApiKey('');
+    document.getElementById('geminiApiKey').value = '';
+    Utils.showToast('Gemini API Key terhapus', 'success');
   }
 };
 

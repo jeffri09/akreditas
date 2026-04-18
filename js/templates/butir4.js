@@ -419,9 +419,9 @@ const Butir4Templates = {
       h.heading('D. Rancangan Proyek'),
       h.heading('Proyek Semester Ganjil', 3),
       h.table(['Komponen', 'Keterangan'], [
-        ['Tema', '___________________________'],
+        ['Tema', (ctx.aiData && ctx.aiData.ideProyekKarakter && ctx.aiData.ideProyekKarakter.judul) ? ctx.aiData.ideProyekKarakter.judul : '___________________________'],
         ['Dimensi Kompetensi / Karakter', '___________________________'],
-        ['Deskripsi Proyek', ''],
+        ['Deskripsi Proyek', (ctx.aiData && ctx.aiData.ideProyekKarakter && ctx.aiData.ideProyekKarakter.deskripsi) ? ctx.aiData.ideProyekKarakter.deskripsi : ''],
         ['Target / Produk Akhir', ''],
         ['Tahapan Pelaksanaan', '1. Pengenalan tema (1 minggu)\n2. Eksplorasi & perencanaan (1-2 minggu)\n3. Aksi/Pelaksanaan (2-3 minggu)\n4. Refleksi & presentasi (1 minggu)'],
         ['Asesmen', 'Portofolio, presentasi, refleksi'],
