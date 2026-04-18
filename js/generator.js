@@ -80,10 +80,16 @@ const DocGenerator = {
   // =========================================
   // CORE: Batch generate as ZIP
   // =========================================
-  async generateBatchZip(docIds, paket, mapel = null, progressCallback = null, useAi = false) {
+  async generateBatchZip(docIds, paket, selectedMapels = null, progressCallback = null, useAi = false) {
     const zip = new JSZip();
     const pkg = CONFIG.packages[paket];
-    const mapelWajib = pkg?.mapelWajib || [CONFIG.subjects[paket].umum[0]];
+    let mapelWajib = pkg?.mapelWajib || [CONFIG.subjects[paket].umum[0]];
+    
+    // Filter by selected mapels if provided
+    if (selectedMapels && selectedMapels.length > 0) {
+      mapelWajib = selectedMapels;
+    }
+    
     let completed = 0;
 
     // Calculate total: perMapel docs × mapelWajib, others × 1
@@ -152,7 +158,7 @@ const DocGenerator = {
              }
           }
 
-          const doc = await this.generateDocument(docId, paket, mapel, aiData);
+          const doc = await this.generateDocument(docId, paket, null, aiData);
           const blob = await docx.Packer.toBlob(doc);
           const fileName = this._getFileName(docId, paket, null);
           zip.folder(folderButir).file(fileName, blob);

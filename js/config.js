@@ -62,7 +62,7 @@ const CONFIG = {
       remedialFokus: 'Diagnostik dasar kemampuan baca-tulis-hitung',
       kesepakatan: 'Visual (gambar & simbol sederhana)',
       usia: '7-12 tahun atau lebih',
-      mapelWajib: ['Bahasa Indonesia', 'Matematika', 'Pendidikan Agama Islam dan Budi Pekerti']
+      mapelWajib: ['Bahasa Indonesia', 'Matematika', 'Pendidikan Agama Islam dan Budi Pekerti', 'Pendidikan Pancasila', 'Ilmu Pengetahuan Alam dan Sosial (IPAS)']
     },
     B: {
       nama: 'Paket B',
@@ -76,7 +76,7 @@ const CONFIG = {
       remedialFokus: 'Penguatan konsep & keterampilan dasar',
       kesepakatan: 'Normatif (kesepakatan tertulis bersama)',
       usia: '13-15 tahun atau lebih',
-      mapelWajib: ['Bahasa Indonesia', 'Matematika', 'Pendidikan Agama Islam dan Budi Pekerti']
+      mapelWajib: ['Bahasa Indonesia', 'Matematika', 'Pendidikan Agama Islam dan Budi Pekerti', 'Pendidikan Pancasila', 'Ilmu Pengetahuan Alam']
     },
     C: {
       nama: 'Paket C',
@@ -90,7 +90,7 @@ const CONFIG = {
       remedialFokus: 'Persiapan kompetensi kelulusan & vokasi',
       kesepakatan: 'Profesional (kontrak belajar fleksibel)',
       usia: '16-18 tahun atau lebih',
-      mapelWajib: ['Bahasa Indonesia', 'Matematika', 'Bahasa Inggris', 'Pendidikan Agama Islam dan Budi Pekerti']
+      mapelWajib: ['Bahasa Indonesia', 'Matematika', 'Bahasa Inggris', 'Pendidikan Agama Islam dan Budi Pekerti', 'Pendidikan Pancasila', 'Geografi']
     }
   },
 

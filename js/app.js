@@ -389,21 +389,22 @@ const App = {
           </div>
         </div>
 
-        <h4 style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:8px;">PILIH PAKET</h4>
+        <div style="background: rgba(46,134,193,0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(46,134,193,0.2); margin-bottom: 16px;">
+          <h4 style="color:var(--text-primary);font-size:0.85rem;margin:0 0 4px 0;">📦 Target Generasi: <span style="color:var(--accent-primary)">Paket ${this.currentPackage || 'A'}</span></h4>
+          <p style="font-size:0.75rem;color:var(--text-muted);margin:0;">Dokumen akan dicetak berdasarkan Paket jenjang yang sedang Anda pilih di navigasi atas.</p>
+        </div>
+
+        <h4 style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:8px;">PILIH MATA PELAJARAN (Khusus dokumen 📚 Per-Mapel)</h4>
         <div class="batch-options">
-          ${selectedPkgs.map(p => {
-            const pkg = CONFIG.packages[p];
-            return `
-              <div class="batch-option selected" onclick="this.classList.toggle('selected')" data-batch-pkg="${p}">
-                <span class="opt-icon">📦</span>
-                <div class="opt-info">
-                  <div class="opt-title">Paket ${p}</div>
-                  <div class="opt-desc">Setara ${pkg.setara} | ${CONFIG.getTotalFiles(p)} file</div>
-                </div>
-                <input type="checkbox" checked style="accent-color:var(--accent-primary)">
+          ${CONFIG.packages[this.currentPackage || 'A'].mapelWajib.map(m => `
+            <div class="batch-option selected" onclick="this.classList.toggle('selected')" data-batch-mapel="${m}">
+              <span class="opt-icon">📘</span>
+              <div class="opt-info">
+                <div class="opt-title">${m}</div>
               </div>
-            `;
-          }).join('')}
+              <input type="checkbox" checked style="accent-color:var(--accent-primary)">
+            </div>
+          `).join('')}
         </div>
 
         <h4 style="color:var(--text-secondary);font-size:0.8rem;margin:16px 0 8px;">PILIH BUTIR</h4>
@@ -508,9 +509,11 @@ const App = {
   // BATCH GENERATE
   // =========================================
   async batchGenerate() {
-    const selectedPkgs = [];
-    document.querySelectorAll('.batch-option.selected[data-batch-pkg]').forEach(el => {
-      selectedPkgs.push(el.dataset.batchPkg);
+    const p = this.currentPackage || 'A';
+    
+    const selectedMapels = [];
+    document.querySelectorAll('.batch-option.selected[data-batch-mapel]').forEach(el => {
+      selectedMapels.push(el.dataset.batchMapel);
     });
 
     const selectedButirs = [];
@@ -518,8 +521,8 @@ const App = {
       selectedButirs.push(parseInt(el.dataset.batchButir));
     });
 
-    if (selectedPkgs.length === 0) {
-      Utils.showToast('Pilih minimal satu paket!', 'warning');
+    if (selectedMapels.length === 0) {
+      Utils.showToast('Pilih minimal satu mata pelajaran!', 'warning');
       return;
     }
     if (selectedButirs.length === 0) {
@@ -537,32 +540,27 @@ const App = {
 
     // Calculate real file count for toast
     let totalFilesAll = 0;
-    for (const p of selectedPkgs) {
-      const pkgInfo = CONFIG.packages[p];
-      const mc = pkgInfo?.mapelWajib?.length || 1;
-      docIds.forEach(id => {
-        const info = CONFIG.getDocInfo(id);
-        totalFilesAll += info?.perMapel ? mc : 1;
-      });
-    }
+    const mc = selectedMapels.length;
+    docIds.forEach(id => {
+      const info = CONFIG.getDocInfo(id);
+      totalFilesAll += info?.perMapel ? mc : 1;
+    });
 
-    Utils.showToast(`Memproses ${totalFilesAll} file (${docIds.length} template × ${selectedPkgs.length} paket × mapel)...`, 'info');
+    Utils.showToast(`Memproses ${totalFilesAll} file (${docIds.length} template × ${selectedMapels.length} mapel)...`, 'info');
 
     const progressEl = document.getElementById('batchProgress');
 
     const useAi = localStorage.getItem('use_ai') === 'true';
 
-    for (const p of selectedPkgs) {
-      try {
-        await DocGenerator.generateBatchZip(docIds, p, null, (done, total) => {
-          const pct = Math.round((done / total) * 100);
-          if (progressEl) progressEl.style.width = `${pct}%`;
-        }, useAi);
-        // Mark all as generated for this package
-        docIds.forEach(id => this._markGenerated(id, p));
-      } catch (err) {
-        Utils.showToast(`Error (Paket ${p}): ${err.message}`, 'error');
-      }
+    try {
+      await DocGenerator.generateBatchZip(docIds, p, selectedMapels, (done, total) => {
+        const pct = Math.round((done / total) * 100);
+        if (progressEl) progressEl.style.width = `${pct}%`;
+      }, useAi);
+      // Mark all as generated for this package
+      docIds.forEach(id => this._markGenerated(id, p));
+    } catch (err) {
+      Utils.showToast(`Error (Paket ${p}): ${err.message}`, 'error');
     }
 
     if (progressEl) progressEl.style.width = '100%';
