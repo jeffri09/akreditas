@@ -9,17 +9,17 @@ const ProfileManager = {
   defaultProfile: {
     lembaga: {
       nama: 'PKBM Miftahul Khoir',
-      npsn: '',
-      alamat: '',
-      kelurahan: '',
-      kecamatan: '',
-      kabupaten: '',
-      provinsi: '',
+      npsn: 'P9970204',
+      alamat: 'Jalan Tuanku Imam Bonjol',
+      kelurahan: 'Kota Baru Selatan',
+      kecamatan: 'Martapura',
+      kabupaten: 'Ogan Komering Ulu Timur',
+      provinsi: 'Sumatera Selatan',
       telepon: '',
       email: '',
       website: '',
       kepala: {
-        nama: '',
+        nama: 'Hatta Yandika Putra, S.Pd',
         nip: '',
         pangkat: ''
       },
@@ -27,7 +27,22 @@ const ProfileManager = {
       misi: '',
       tujuan: ''
     },
-    tutors: [],
+    tutors: [
+      { id: 't1', nama: 'Naela', mapel: 'Matematika & IPAS', paket: ['A'] },
+      { id: 't2', nama: 'Abdul Hadi', mapel: 'Bahasa Indonesia & Pendidikan Pancasila', paket: ['A'] },
+      { id: 't3', nama: 'Anita', mapel: 'PAI & Budi Pekerti', paket: ['A'] },
+      { id: 't4', nama: 'Siska', mapel: 'Matematika', paket: ['B'] },
+      { id: 't5', nama: 'Handry', mapel: 'Bahasa Indonesia', paket: ['B'] },
+      { id: 't6', nama: 'Husen', mapel: 'PAI', paket: ['B'] },
+      { id: 't7', nama: 'Romadi', mapel: 'Ilmu Pengetahuan Alam (IPA)', paket: ['B'] },
+      { id: 't8', nama: 'Salim', mapel: 'Pendidikan Pancasila', paket: ['B'] },
+      { id: 't9', nama: 'Dea', mapel: 'Geografi', paket: ['C'] },
+      { id: 't10', nama: 'Ulfa', mapel: 'Matematika', paket: ['C'] },
+      { id: 't11', nama: 'Riki', mapel: 'Bahasa Indonesia', paket: ['C'] },
+      { id: 't12', nama: 'Nadia', mapel: 'Bahasa Inggris', paket: ['C'] },
+      { id: 't13', nama: 'Dia', mapel: 'Pendidikan Pancasila', paket: ['C'] },
+      { id: 't14', nama: 'Ronald', mapel: 'PAI', paket: ['C'] }
+    ],
     pesertaDidik: {
       A: { jumlah: 0, rombel: 1, kelas: [] },
       B: { jumlah: 0, rombel: 1, kelas: [] },
@@ -49,10 +64,24 @@ const ProfileManager = {
 
   load() {
     const saved = Utils.loadData(this.STORAGE_KEY);
+    const def = Utils.deepClone(this.defaultProfile);
     if (saved) {
-      return { ...Utils.deepClone(this.defaultProfile), ...saved };
+      if (!saved.lembaga) saved.lembaga = {};
+      if (!saved.lembaga.kepala) saved.lembaga.kepala = {};
+      
+      const mergedRes = { ...def, ...saved, lembaga: { ...def.lembaga, ...saved.lembaga, kepala: { ...def.lembaga.kepala, ...saved.lembaga.kepala } } };
+      if (!saved.lembaga.npsn) mergedRes.lembaga.npsn = def.lembaga.npsn;
+      if (!saved.lembaga.alamat) mergedRes.lembaga.alamat = def.lembaga.alamat;
+      if (!saved.lembaga.kelurahan) mergedRes.lembaga.kelurahan = def.lembaga.kelurahan;
+      if (!saved.lembaga.kecamatan) mergedRes.lembaga.kecamatan = def.lembaga.kecamatan;
+      if (!saved.lembaga.kabupaten) mergedRes.lembaga.kabupaten = def.lembaga.kabupaten;
+      if (!saved.lembaga.provinsi) mergedRes.lembaga.provinsi = def.lembaga.provinsi;
+      if (!saved.lembaga.kepala.nama) mergedRes.lembaga.kepala.nama = def.lembaga.kepala.nama;
+      if (!saved.tutors || saved.tutors.length === 0) mergedRes.tutors = def.tutors;
+      
+      return mergedRes;
     }
-    return Utils.deepClone(this.defaultProfile);
+    return def;
   },
 
   save() {
