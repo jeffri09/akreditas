@@ -247,12 +247,12 @@ function buildContent() {
     new Paragraph({
       alignment: AlignmentType.CENTER,
       spacing: { after: 20 },
-      children: [new TextRun({ text: "Paket A & B: Bahasa Indonesia, Matematika + PAI", size: 21, font: FONT, color: COLOR_TEXT })]
+      children: [new TextRun({ text: "Paket A & B: B.Indo, Matematika, PAI, Pancasila, IPA/IPAS", size: 21, font: FONT, color: COLOR_TEXT })]
     }),
     new Paragraph({
       alignment: AlignmentType.CENTER,
       spacing: { after: 100 },
-      children: [new TextRun({ text: "Paket C: Bahasa Indonesia, Matematika, Bahasa Inggris + PAI", size: 21, font: FONT, color: COLOR_TEXT })]
+      children: [new TextRun({ text: "Paket C: B.Indo, Mat, B.Ing, PAI, Pancasila, Geografi", size: 21, font: FONT, color: COLOR_TEXT })]
     }),
     empty(200),
     new Paragraph({
@@ -297,9 +297,9 @@ function buildContent() {
     makeTable(
       ["Jenjang", "Mapel TKA", "Mapel Tambahan", "Total Mapel Sampel"],
       [
-        ["Paket A (SD/MI)", "Bahasa Indonesia, Matematika", "PAI dan Budi Pekerti", "3 mapel"],
-        ["Paket B (SMP/MTs)", "Bahasa Indonesia, Matematika", "PAI dan Budi Pekerti", "3 mapel"],
-        ["Paket C (SMA/MA)", "Bahasa Indonesia, Matematika, B. Inggris", "PAI dan Budi Pekerti", "4 mapel"],
+        ["Paket A (SD)", "B.Indo, Mat", "PAI, Pancasila, IPAS", "5 mapel"],
+        ["Paket B (SMP)", "B.Indo, Mat", "PAI, Pancasila, IPA", "5 mapel"],
+        ["Paket C (SMA)", "B.Indo, Mat, B.Ing", "PAI, Pancasila, Geografi", "6 mapel"],
       ],
       { colWidths: [20, 30, 25, 25] }
     ),
@@ -315,7 +315,7 @@ function buildContent() {
         ["Fase Kurikulum", "Fase C", "Fase D", "Fase E"],
         ["Level HOTS", "Menganalisis (C4)", "Mengevaluasi (C5)", "Mencipta (C6)"],
         ["Fokus Keterampilan", "Literasi & Numerasi", "Eksplorasi & Wirausaha", "Vokasional & Kerja"],
-        ["Mapel TKA", "B.Indo + Mat", "B.Indo + Mat", "B.Indo + Mat + B.Ing"],
+        ["Total Mapel Wajib", "5 Mapel (IPAS)", "5 Mapel (IPA)", "6 Mapel (Geografi)"],
       ],
       { colWidths: [22, 26, 26, 26] }
     ),
@@ -353,44 +353,55 @@ function buildContent() {
     heading2("Ketua Tim — Jeffri P. & Marisa"),
     para("Peran: Quality Control, Follow-up, Checklist — BUKAN membuat dokumen dari nol.", { bold: true }),
     empty(),
-    heading2("Paket A — 3 Orang (Fase C | 35 mnt | TKA: B.Indo + Mat + PAI)"),
+    heading2("Paket A — 6 Orang (Fase C | 35 mnt | 5 Mapel Wajib)"),
     makeTable(
       ["Anggota", "PJ Butir", "Jumlah Dok", "Fokus Utama"],
       [
-        ["Abdul Hadi", "Butir 1 (Sosial Emosional)", "13 dok", "Angket peserta didik, jurnal karakter, daftar remedial"],
-        ["Asandri", "Butir 3 (Pembelajaran Efektif)", "16 dok", "Review RPP buatan AI, Soal Evaluasi, Rubrik — PER MAPEL"],
-        ["Nafis", "Butir 2 + Butir 4", "19 dok", "Tata tertib, SOP keamanan, kebijakan agama, logistik Projek"],
+        ["Naela", "Butir 3 (3.1 & 3.5)", "9 dok", "RPP/Modul Ajar & Turunannya"],
+        ["Abdul Hadi", "Butir 3 (3.2 - 3.4)", "11 dok", "Soal Evaluasi AI & Penilaian"],
+        ["Anita", "Butir 1 (1.1 & 1.2)", "6 dok", "Diskusi Kelas & Laporan Ortu"],
+        ["Asandri", "Butir 1 (1.3 & 1.4)", "7 dok", "Asesmen Diagnostik & Pendampingan"],
+        ["Nafis", "Butir 2 (Semua)", "9 dok", "Tata Tertib & Rasa Aman Siswa"],
+        ["Rika", "Butir 4 (Semua)", "13 dok", "Visi-Misi & Kegiatan Keagamaan"],
       ],
       { colWidths: [18, 28, 14, 40] }
     ),
     empty(),
-    heading2("Paket B — 7 Orang (Fase D | 40 mnt | TKA: B.Indo + Mat + PAI)"),
+    heading2("Paket B — 11 Orang (Fase D | 40 mnt | 5 Mapel Wajib)"),
     makeTable(
       ["Anggota", "PJ Butir", "Jumlah Dok", "Fokus Utama"],
       [
-        ["Salim", "Butir 1 (Ind 1.1 + 1.2)", "6 dok", "Kuesioner evaluasi tutor & rekap laporan hasil belajar ortu"],
-        ["Romadi", "Butir 1 (Ind 1.3 + 1.4)", "7 dok", "Penyusunan logistik surat & buku penghubung siswa-ortu"],
-        ["Gati", "Butir 2 (Semua)", "9 dok", "SOP Tata Tertib SMP, penanganan insiden, regulasi anti-bullying"],
-        ["Handry", "Butir 3 (Ind 3.1 + 3.5)", "9 dok", "Asesmen desain Modul Ajar (RPP), Prota, Prosem buatan AI"],
-        ["Husen", "Butir 3 (Ind 3.2-3.4)", "11 dok", "Quality Control naskah Soal HOTS AI, Rubrik Penilaian, Kisi-kisi"],
-        ["Adi", "Butir 4 (Ind 4.1 + 4.2)", "6 dok", "Dokumen Visi-Misi instansi, kebijakan keagamaan/budaya"],
-        ["Apriyanto", "Butir 4 (Ind 4.3 + 4.4)", "7 dok", "Standar operasional esktrakurikuler, logistik kegiatan Projek P5"],
+        ["Siska", "Butir 3 (3.1 & 3.5)", "9 dok", "RPP Tingkat SMP & Turunannya"],
+        ["Handry", "Butir 3 (3.2 & 3.3)", "6 dok", "Kisi-kisi & Soal HOTS (C5)"],
+        ["Husen", "Butir 3 (3.4)", "5 dok", "Rubrik Penilaian & Remedial"],
+        ["Salim", "Butir 1 (1.1)", "3 dok", "Angket Kepuasan Siswa"],
+        ["Romadi", "Butir 1 (1.2)", "3 dok", "Lembar Refleksi"],
+        ["Eva", "Butir 1 (1.3 & 1.4)", "7 dok", "Buku Penghubung Ortu"],
+        ["Gati", "Butir 2 (2.1)", "3 dok", "Kesepakatan Kelas"],
+        ["Zalfa", "Butir 2 (2.2 & 2.3)", "6 dok", "Supervisi Kelas & LKPD"],
+        ["Adi", "Butir 4 (4.1)", "3 dok", "Jadwal Agama & Jurnal Keimanan"],
+        ["Apriyanto", "Butir 4 (4.2)", "3 dok", "Program Hari Besar Nasional"],
+        ["Nadia", "Butir 4 (4.3 & 4.4)", "7 dok", "Portofolio Siswa & Kegiatan P5"],
       ],
       { colWidths: [16, 25, 14, 45] }
     ),
     empty(),
-    heading2("Paket C — 6 Orang Berpasangan (Fase E | 45 mnt | TKA: B.Indo + Mat + B.Ing + PAI)"),
+    heading2("Paket C — 10 Orang (Fase E | 45 mnt | 6 Mapel Wajib)"),
     makeTable(
-      ["Tim", "Anggota", "PJ Butir", "Jumlah Dok", "Fokus Utama"],
+      ["Anggota", "PJ Butir", "Jumlah Dok", "Fokus Utama"],
       [
-        ["Suasana", "Riki", "Butir 1 (Semua)", "13 dok", "Logika Asesmen Diagnostik Emosional (Paling Pro), Pemetaan Karakter"],
-        ["Suasana", "Ronald", "Butir 2 (Semua)", "9 dok", "Kontrak belajar tingkat dewasa, pakta integritas disiplin siswa"],
-        ["Evaluasi", "Lilik", "Butir 3 (3.1+3.5)", "9 dok", "Kurasi hasil AI untuk Modul RPP berbasis Kewirausahaan Vokasi"],
-        ["Evaluasi", "Jufri", "Butir 3 (3.2-3.4)", "11 dok", "Kurasi Butir Soal level Penalaran Tinggi (C6) hasil tembakan AI"],
-        ["Karakter", "Leo", "Butir 4 (4.1+4.2)", "6 dok", "Administrasi perayaan budaya & hari besar keagamaan"],
-        ["Karakter", "Imam", "Butir 4 (4.3+4.4)", "7 dok", "Pengarsipan/foto logistik portfolio Keterampilan Pra-Kerja"],
+        ["Dea", "Butir 3 (3.1 & 3.5)", "9 dok", "RPP Tingkat SMA/Vokasi"],
+        ["Jufri", "Butir 3 (3.2 & 3.3)", "6 dok", "Kisi-kisi & Soal Analitis (C6)"],
+        ["Lilik", "Butir 3 (3.4)", "5 dok", "Evaluasi & Daftar Nilai"],
+        ["Riki", "Butir 1 (1.1 & 1.2)", "6 dok", "Asesmen Kognitif Awal"],
+        ["Dia", "Butir 1 (1.3 & 1.4)", "7 dok", "Pengawasan Laporan & Jurnal"],
+        ["Ronald", "Butir 2 (2.1 & 2.2)", "6 dok", "Kontrak Belajar Dewasa & Tata Tertib"],
+        ["Ulfa", "Butir 2 (2.3)", "3 dok", "Dokumentasi Belajar & LKPD"],
+        ["Leo", "Butir 4 (4.1)", "3 dok", "RPP Integrasi Keimanan"],
+        ["Imam", "Butir 4 (4.2 & 4.3)", "6 dok", "Karya Budaya & LKPD HOTS"],
+        ["Laila", "Butir 4 (4.4)", "4 dok", "Karya Vokasional & Portofolio"],
       ],
-      { colWidths: [12, 14, 22, 12, 40] }
+      { colWidths: [16, 25, 14, 45] }
     ),
   );
 
@@ -408,488 +419,166 @@ function buildContent() {
     makeTable(
       ["No", "Tugas", "Deadline", "Cara Eksekusi"],
       [
-        ["1", "Setup Profil PKBM di Sistem", "19 April", "Buka sistem → Tab \"Profil PKBM\" → Isi: Nama PKBM, NPSN, Alamat, Kepala, Visi-Misi-Tujuan → Klik \"Simpan\""],
-        ["2", "Input Data Semua Tutor", "19 April", "Tab \"Profil PKBM\" → Klik \"Tambah Tutor\" → Isi nama, mapel, paket. Ulangi untuk semua tutor (18 orang)"],
-        ["3", "Briefing & Distribusi Tugas", "20 April", "Share dokumen ini + link sistem ke WA Group per paket"],
-        ["4", "QC: Cek Kop Surat", "Rolling", "Buka setiap file .docx → Pastikan kop = PKBM MIFTAHUL KHOIR + NPSN + Alamat lengkap"],
-        ["5", "QC: Cek Alokasi Jam", "Rolling", "Cek kolom JP: Paket A=35 mnt, B=40 mnt, C=45 mnt — sudah otomatis, tapi verifikasi"],
-        ["6", "QC: Cek Mapel TKA + PAI", "Rolling", "Pastikan RPP/Soal tersedia untuk: B.Indo, Mat, PAI (semua paket) + B.Ing (Paket C)"],
-        ["7", "Follow-up Progress Harian", "Setiap hari", "Tanya via WA: \"Sudah generate berapa dokumen? Ada kendala?\""],
-        ["8", "Konsolidasi Final", "28-29 April", "Kumpulkan semua file → Organisir folder: Paket A/B/C → Butir 1/2/3/4 → Print"],
+        ["1", "Setup Profil PKBM di Sistem", "19 April", "Buka sistem → Tab Profile → Isi Data"],
+        ["2", "Input Data Tutor", "19 April", "Tab Profile → Tambah Tutor"],
+        ["3", "Briefing Tugas", "20 April", "Share dokumen ini ke WA Group"],
+        ["4", "QC Kop Surat", "Rolling", "Pastikan kop ada tulisan PKBM MIFTAHUL KHOIR"],
+        ["5", "QC Alokasi Jam", "Rolling", "Cek kolom JP sesuai aturan"],
+        ["6", "Follow-up", "Setiap hari", "WA PJ: 'Ada kendala?'"],
+        ["7", "Konsolidasi", "29 April", "Organisir Folder Paket A/B/C dan siap print"],
       ],
       { colWidths: [5, 25, 12, 58] }
     ),
     empty(),
-    infoBox("BUKAN TUGAS KETUA", "Membuat dokumen dari nol. Ketua hanya mengecek dan memastikan semua dokumen lengkap + format benar."),
+    infoBox("PENTING", "Beritahu semua anggota untuk MEMAKAI FILTER 'PILIH MATA PELAJARAN' di tab Generate agar pemrosesan lancar dan cepat.")
   );
 
-  // ========== PAKET A — NAFIS ==========
-  children.push(
-    pageBreak(),
-    heading1("📦 PAKET A — NAFIS"),
-    para("PJ Butir 1: Dukungan Sosial Emosional bagi Peserta Didik", { bold: true, color: COLOR_PRIMARY }),
-    para("Paket A (SD/MI) | Fase C | 35 mnt/JP | Mapel: B.Indo, Matematika, PAI", { italic: true, color: COLOR_MUTED }),
-    empty(),
-    heading3("Langkah di Sistem"),
-    numbered("Buka https://akreditas.vercel.app", 1),
-    numbered("Klik \"Paket A\" di header atas", 2),
-    numbered("Klik tab \"Komponen 1\" → sub-tab \"Butir 1\"", 3),
-    numbered("Klik tombol \"📦 Generate Semua Butir 1\" di bagian bawah", 4),
-    numbered("Download file ZIP → Ekstrak → Dapat 13 file .docx", 5),
-    numbered("Buka setiap file → Isi kolom kosong dengan data PKBM", 6),
-    empty(),
-    heading3("Daftar 13 Dokumen yang Harus Diselesaikan"),
-    makeTable(
-      ["No", "Kode", "Nama Dokumen", "Prioritas", "Yang Harus Diisi Manual"],
-      [
-        ["1", "B1-1.1-01", "Format Dokumentasi Diskusi Kelas", "TINGGI", "Nama mapel, tanggal, topik, centang indikator, tempel foto"],
-        ["2", "B1-1.1-02", "Angket Kepuasan Siswa", "SEDANG", "Print → bagi ke 10 siswa → kumpulkan"],
-        ["3", "B1-1.1-03", "Catatan Supervisi Pembelajaran", "TINGGI", "Minta Kepala PKBM isi skor 1-4 saat observasi"],
-        ["4", "B1-1.2-01", "RPP Growth Mindset", "TINGGI", "Buat untuk tiap mapel TKA+PAI: isi CP, tujuan, kegiatan"],
-        ["5", "B1-1.2-02", "Portofolio Refleksi Siswa", "SEDANG", "Bagi ke siswa, minta isi per bulan (Jul-Des)"],
-        ["6", "B1-1.2-03", "Lembar Umpan Balik Tutor", "SEDANG", "Tutor isi: nama siswa, usaha terlihat, umpan balik"],
-        ["7", "B1-1.3-01", "Program Remedial & Pengayaan", "TINGGI", "Isi nama siswa yg remedial + bentuk remedialnya"],
-        ["8", "B1-1.3-02", "Jurnal Pendampingan Khusus", "SEDANG", "Isi 4-8 pertemuan pendampingan"],
-        ["9", "B1-1.3-03", "Asesmen Diagnostik Awal", "TINGGI", "Isi: gaya belajar siswa, skor kognitif awal, rekomendasi"],
-        ["10", "B1-1.3-04", "Buku Penghubung Orang Tua", "SEDANG", "Isi 3-6 catatan komunikasi dengan ortu"],
-        ["11", "B1-1.4-01", "RPP Kolaboratif (Role Play)", "TINGGI", "Buat per mapel: sesuaikan tema, tutor, kelas"],
-        ["12", "B1-1.4-02", "LKPD Kerja Sama & Empati", "SEDANG", "Siap pakai — fotokopi untuk siswa"],
-        ["13", "B1-1.4-03", "Angket Keterampilan Sosial", "SEDANG", "Print → bagi ke siswa untuk diisi"],
-      ],
-      { colWidths: [5, 10, 25, 10, 50] }
-    ),
-    empty(),
-    tipBox("Untuk RPP (no. 4, 11): generate 3 kali — sekali untuk B.Indo, sekali untuk Matematika, sekali untuk PAI. Download file-nya, ganti nama mapel di dalam dokumen."),
-    infoBox("PRIORITAS", "Kerjakan dokumen bertanda TINGGI lebih dulu (7 dokumen). Estimasi total: 3-4 hari kerja."),
-  );
+  // ========== PAKET A MEMBERS ==========
+  const aDocs = {
+    "Naela": [
+      ["1", "B3-3.1-01 s.d 06", "RPP, Prota, Prosem, ATP, Kalender, LKPD", "TINGGI", "Generate per mapel. Isi TP/CP"],
+      ["2", "B3-3.5-01 s.d 03", "RPP HOTS, LKPD Kritis, Template Proyek", "TINGGI", "Generate per mapel. Lanjutkan rumusan AI"]
+    ],
+    "Abdul Hadi": [
+      ["1", "B3-3.2-01 s.d 04", "Soal Formatif, Jurnal, Umpan Balik", "TINGGI", "Generate & review 5-10 soal PG/Essay dari AI"],
+      ["2", "B3-3.3-01 s.d 04", "Soal Sumatif, Kisi-kisi, Rubrik", "TINGGI", "Review 20 PG + 5 Uraian Sumatif dari AI"],
+      ["3", "B3-3.4-02", "Rekapitulasi", "SEDANG", "Evaluasi"]
+    ],
+    "Anita": [
+      ["1", "B1-1.1-01 s.d 03", "Dok diskusi, Angket Kepuasan, Catatan Supervisi", "TINGGI", "Minta kepsek isi catatan observasi"],
+      ["2", "B1-1.2-01 s.d 03", "RPP Growth Mindset, Portofolio, Umpan Balik Tutor", "TINGGI", "Generate per mapel & kumpulkan jurnal siswa"]
+    ],
+    "Asandri": [
+      ["1", "B1-1.3-01 s.d 04", "Proker Remedial, Jurnal Pendampingan, Asesmen Diagnostik, Buku Ortu", "TINGGI", "Gali data siswa remedial dan gaya belajar"],
+      ["2", "B1-1.4-01 s.d 03", "RPP PBL, LKPD Empati, Angket", "TINGGI", "Buat RPP yg berfokus pada kolaborasi antar kelompok"]
+    ],
+    "Nafis": [
+      ["1", "B2-2.1-01 s.d 03", "Kesepakatan, Poster Aturan, Jurnal Kelas", "TINGGI", "Buat poster menarik bergambar untuk siswa SD"],
+      ["2", "B2-2.2-01 s.d 03", "Tata Tertib, Supervisi Kelas, Angket Aman", "TINGGI", "Cetak tata tertib bahasa positif tanpa hukuman fisik"],
+      ["3", "B2-2.3-01 s.d 03", "RPP Belajar Aktif, LKPD, Dok Belajar", "TINGGI", "Lampirkan banyak foto siswa SD belajar"]
+    ],
+    "Rika": [
+      ["1", "B4-4.1-01 s.d 03", "Jadwal Agama, RPP Iman, Jurnal Akhlak", "TINGGI", "Data pembiasaan agama/shalat Dhuha di PKBM"],
+      ["2", "B4-4.2-01 s.d 03", "RPP Budaya, Peringatan Hari Besar, Karya Budaya", "TINGGI", "Data lomba 17 Agustus atau Maulid Nabi"],
+      ["3", "B4-4.3-01 s.d 03", "LKPD HOTS, Penilaian Kritis, Template Proyek", "TINGGI", "LKPD spesifik berbasis penalaran SD"],
+      ["4", "B4-4.4-01 s.d 04", "Visi Misi, Ekskul, Projek Karakter, Portofolio", "TINGGI", "Deskripsikan cita-cita karakter SD Miftahul Khoir"]
+    ]
+  };
 
-  // ========== PAKET A — ASANDRI ==========
-  children.push(
-    pageBreak(),
-    heading1("📦 PAKET A — ASANDRI"),
-    para("PJ Butir 3: Pengelolaan Proses Pembelajaran Efektif & Bermakna", { bold: true, color: COLOR_PRIMARY }),
-    para("Paket A (SD/MI) | Fase C | 35 mnt/JP | Mapel: B.Indo, Matematika, PAI", { italic: true, color: COLOR_MUTED }),
-    empty(),
-    heading3("Langkah di Sistem"),
-    numbered("Buka sistem → Klik \"Paket A\" di header", 1),
-    numbered("Tab \"Komponen 1\" → sub-tab \"Butir 3\"", 2),
-    numbered("Klik \"📦 Generate Semua Butir 3\" → Download ZIP (16 file)", 3),
-    numbered("Buka setiap file → Isi kolom kosong", 4),
-    empty(),
-    infoBox("BEBAN TERBERAT", "Butir 3 punya 16 dokumen, TAPI 2 dokumen bisa di-SKIP karena sudah dihandle Nafis. Jadi efektif 14 dokumen."),
-    empty(),
-    heading3("Daftar Dokumen"),
-    makeTable(
-      ["No", "Kode", "Nama Dokumen", "Prioritas", "Yang Harus Diisi"],
-      [
-        ["1", "B3-3.1-01", "RPP/Modul Ajar Lengkap", "TINGGI", "Buat PER MAPEL (B.Indo, Mat, PAI). Isi CP, tujuan, kegiatan"],
-        ["2", "B3-3.1-02", "Kalender Akademik", "TINGGI", "Isi tanggal libur, UTS, UAS, kegiatan PKBM"],
-        ["3", "B3-3.1-03", "Program Tahunan (Prota)", "TINGGI", "Buat PER MAPEL: alokasi JP per bab selama 1 tahun"],
-        ["4", "B3-3.1-04", "Program Semester (Prosem)", "TINGGI", "Buat PER MAPEL: distribusi minggu per topik"],
-        ["5", "B3-3.1-05", "Silabus / ATP", "TINGGI", "Buat PER MAPEL: elemen CP → TP → kegiatan → asesmen"],
-        ["6", "B3-3.1-06", "LKPD Kontekstual", "SEDANG", "Siap pakai — fotokopi untuk siswa"],
-        ["7", "B3-3.2-01", "Soal Formatif", "TINGGI", "Buat 5-10 soal PER MAPEL (PG + isian singkat)"],
-        ["8", "B3-3.2-02", "Catatan Hasil Formatif", "SEDANG", "Isi nama siswa + skor per pertemuan"],
-        ["9", "B3-3.2-03", "Jurnal Perkembangan Siswa", "SEDANG", "Isi catatan per bulan"],
-        ["10", "B3-3.2-04", "Template Umpan Balik", "SEDANG", "Tutor isi feedback per siswa"],
-        ["11", "B3-3.3-01", "Soal Ujian Sumatif (PG+Uraian)", "TINGGI", "Buat PER MAPEL: min 20 PG + 5 uraian"],
-        ["12", "B3-3.3-02", "Kisi-Kisi Soal", "TINGGI", "Buat PER MAPEL: Indikator|Level Kognitif|No Soal"],
-        ["13", "B3-3.3-03", "Rubrik Penilaian", "SEDANG", "Isi kriteria per aspek penilaian"],
-        ["14", "B3-3.3-04", "Daftar Nilai Siswa", "SEDANG", "Isi nama + nilai per tugas/ujian"],
-        ["15", "B3-3.4-01", "Template Rapor", "DIBATALKAN", "SKIP — Gunakan format rapor milik operator PKBM"],
-        ["16", "B3-3.4-02", "Rekapitulasi & Analisis", "SEDANG", "Isi setelah nilai terkumpul lengkap"],
-        ["—", "B3-3.4-03", "Program Remedial", "SKIP", "Sudah dihandle NAFIS di B1-1.3-01"],
-        ["—", "B3-3.4-04", "Komunikasi Orang Tua", "SKIP", "Sudah dihandle NAFIS di B1-1.3-04"],
-        ["17", "B3-3.5-01", "RPP Berbasis HOTS", "TINGGI", "Isi kegiatan level C4 (Menganalisis)"],
-        ["18", "B3-3.5-02", "LKPD Berpikir Kritis", "SEDANG", "Siap pakai untuk siswa"],
-        ["19", "B3-3.5-03", "Template Proyek PBL", "SEDANG", "Isi tema proyek + langkah-langkah"],
-      ],
-      { colWidths: [5, 10, 24, 10, 51] }
-    ),
-    empty(),
-    tipBox("Strategi Otomatisasi: Update terbaru memungkinkan sistem membuat seluruh file MATA PELAJARAN secara massal. Anda tidak perlu repot Copy-Paste file RPP satu persatu!"),
-  );
-
-  // ========== PAKET A — ABDUL HADI ==========
-  children.push(
-    pageBreak(),
-    heading1("📦 PAKET A — ABDUL HADI"),
-    para("PJ Butir 2 (Pengelolaan Kelas) + Butir 4 (Iman, Bangsa, Nalar, Karakter)", { bold: true, color: COLOR_PRIMARY }),
-    para("Paket A (SD/MI) | Fase C | 35 mnt/JP | Mapel: B.Indo, Matematika, PAI", { italic: true, color: COLOR_MUTED }),
-    empty(),
-    heading3("Langkah di Sistem"),
-    numbered("Buka sistem → Klik \"Paket A\"", 1),
-    numbered("Tab \"Komponen 1\" → sub-tab \"Butir 2\" → \"📦 Generate Semua Butir 2\" → 9 file", 2),
-    numbered("Sub-tab \"Butir 4\" → \"📦 Generate Semua Butir 4\" → 10 file", 3),
-    numbered("Total: 19 file .docx dalam 2 ZIP terpisah", 4),
-    empty(),
-    heading3("Butir 2 — 9 Dokumen"),
-    makeTable(
-      ["No", "Kode", "Nama Dokumen", "Prioritas", "Yang Harus Diisi"],
-      [
-        ["1", "B2-2.1-01", "Kesepakatan Kelas", "TINGGI", "Buat versi VISUAL (gambar + simbol) untuk usia SD"],
-        ["2", "B2-2.1-02", "Poster Aturan Kelas", "SEDANG", "Desain sederhana → print & tempel di kelas"],
-        ["3", "B2-2.1-03", "Jurnal Penerapan Kesepakatan", "SEDANG", "Isi catatan penerapan per minggu"],
-        ["4", "B2-2.2-01", "Tata Tertib (Disiplin Positif)", "TINGGI", "Isi aturan tanpa hukuman fisik, bahasa positif"],
-        ["5", "B2-2.2-02", "Catatan Supervisi Kelas", "SEDANG", "Minta Kepala PKBM isi saat observasi"],
-        ["6", "B2-2.2-03", "Angket Rasa Aman Siswa", "SEDANG", "Print → bagi ke 10 siswa → kumpulkan"],
-        ["7", "B2-2.3-01", "RPP Pembelajaran Aktif", "TINGGI", "Buat per mapel TKA+PAI (gallery walk, jigsaw)"],
-        ["8", "B2-2.3-02", "LKPD Belajar Aktif", "SEDANG", "Fotokopi untuk siswa"],
-        ["9", "B2-2.3-03", "Dokumentasi Belajar Siswa", "SEDANG", "Kumpulkan 5+ foto kegiatan belajar"],
-      ],
-      { colWidths: [5, 10, 24, 10, 51] }
-    ),
-    empty(),
-    heading3("Butir 4 — 10 Dokumen"),
-    makeTable(
-      ["No", "Kode", "Nama Dokumen", "Prioritas", "Yang Harus Diisi"],
-      [
-        ["1", "B4-4.1-01", "Jadwal Kegiatan Keagamaan", "TINGGI", "Isi jadwal sholat berjamaah, mengaji, kultum"],
-        ["2", "B4-4.1-02", "RPP Integrasi Keimanan", "TINGGI", "Integrasikan nilai iman di mapel TKA+PAI"],
-        ["3", "B4-4.1-03", "Jurnal Pembiasaan Akhlak", "SEDANG", "Isi catatan harian akhlak siswa"],
-        ["4", "B4-4.2-01", "RPP Muatan Lokal/Budaya", "SEDANG", "Isi tema budaya lokal daerah"],
-        ["5", "B4-4.2-02", "Program Hari Besar Nasional", "SEDANG", "Isi jadwal + kegiatan peringatan (17 Agustus, Kartini, dll)"],
-        ["6", "B4-4.2-03", "Karya Siswa Budaya", "SEDANG", "Kumpulkan gambar/poster hasil karya siswa"],
-        ["7", "B4-4.3-01", "LKPD Berbasis HOTS", "TINGGI", "Isi soal level C4 (Menganalisis) sesuai mapel"],
-        ["8", "B4-4.3-02", "Format Penilaian Berpikir Kritis", "SEDANG", "Isi rubrik penilaian"],
-        ["9", "B4-4.3-03", "Template Proyek PBL", "SEDANG", "Isi tema proyek sederhana untuk anak SD"],
-        ["10", "B4-4.4-01", "Visi Misi Tujuan PKBM", "TINGGI", "Salin visi-misi-tujuan resmi PKBM Miftahul Khoir"],
-        ["11", "B4-4.4-02", "Program Projek Karakter", "TINGGI", "Isi tema projek karakter, timeline, output karya siswa"],
-        ["12", "B4-4.4-03", "Program Ekstrakurikuler", "SEDANG", "Isi daftar ekskul + jadwal"],
-        ["13", "B4-4.4-04", "Portofolio Pencapaian Siswa", "SEDANG", "Kumpulkan sampel karya/prestasi siswa"],
-      ],
-      { colWidths: [5, 10, 24, 10, 51] }
-    ),
-  );
-
-  // ========== PAKET B MEMBERS ==========
-  const paketBMembers = [
-    {
-      name: "HANDRY",
-      butir: "PJ Butir 1 — Indikator 1.1 + 1.2 (Interaksi & Growth Mindset)",
-      steps: [
-        "Buka sistem → Klik \"Paket B\" di header",
-        "Tab \"Komponen 1\" → sub-tab \"Butir 1\"",
-        "Expand Indikator 1.1 → centang 3 dokumen → Klik \"Generate Indikator 1.1\"",
-        "Expand Indikator 1.2 → centang 3 dokumen → Klik \"Generate Indikator 1.2\"",
-        "Total: 6 file .docx ter-download",
-      ],
-      docs: [
-        ["1", "B1-1.1-01", "Dokumentasi Diskusi Kelas", "TINGGI", "Isi mapel, tanggal, topik, centang indikator, TEMPEL FOTO"],
-        ["2", "B1-1.1-02", "Angket Kepuasan Siswa", "SEDANG", "Print → bagi ke 10 siswa → kumpulkan isian"],
-        ["3", "B1-1.1-03", "Catatan Supervisi Pembelajaran", "TINGGI", "Minta Kepsek isi skor 1-4"],
-        ["4", "B1-1.2-01", "RPP Growth Mindset", "TINGGI", "Buat PER MAPEL (B.Indo, Mat, PAI). Isi CP + kegiatan inti"],
-        ["5", "B1-1.2-02", "Portofolio Refleksi Siswa", "SEDANG", "Bagi ke siswa, minta isi refleksi per bulan"],
-        ["6", "B1-1.2-03", "Lembar Umpan Balik Tutor", "SEDANG", "Tutor isi per pertemuan"],
-      ]
-    },
-    {
-      name: "APRIYANTO",
-      butir: "PJ Butir 1 — Indikator 1.3 + 1.4 (Pendampingan & Kolaborasi)",
-      steps: [
-        "Buka sistem → Klik \"Paket B\"",
-        "Tab \"Komponen 1\" → \"Butir 1\"",
-        "Expand Indikator 1.3 → centang 4 dokumen → Generate",
-        "Expand Indikator 1.4 → centang 3 dokumen → Generate",
-        "Total: 7 file .docx",
-      ],
-      docs: [
-        ["1", "B1-1.3-01", "Program Remedial & Pengayaan", "TINGGI", "Isi nama siswa remedial + bentuk kegiatan remedial"],
-        ["2", "B1-1.3-02", "Jurnal Pendampingan Khusus", "SEDANG", "Isi 4-8 catatan pertemuan pendampingan"],
-        ["3", "B1-1.3-03", "Asesmen Diagnostik Awal", "TINGGI", "Isi gaya belajar + skor kognitif awal siswa"],
-        ["4", "B1-1.3-04", "Buku Penghubung Orang Tua", "SEDANG", "Isi 3-6 catatan komunikasi"],
-        ["5", "B1-1.4-01", "RPP Kolaboratif (PBL)", "TINGGI", "Buat per mapel TKA+PAI: tema Lingkungan Belajar Inklusif"],
-        ["6", "B1-1.4-02", "LKPD Kerja Sama & Empati", "SEDANG", "Siap pakai — fotokopi untuk siswa"],
-        ["7", "B1-1.4-03", "Angket Keterampilan Sosial", "SEDANG", "Print → bagi ke siswa"],
-      ]
-    },
-    {
-      name: "SALIM",
-      butir: "PJ Butir 2 — Semua Indikator (2.1, 2.2, 2.3 — Pengelolaan Kelas)",
-      steps: [
-        "Buka sistem → Klik \"Paket B\"",
-        "Tab \"Komponen 1\" → sub-tab \"Butir 2\"",
-        "Klik \"📦 Generate Semua Butir 2\"",
-        "Download ZIP → Ekstrak → 9 file .docx",
-      ],
-      docs: [
-        ["1", "B2-2.1-01", "Kesepakatan Kelas", "TINGGI", "Format NORMATIF (tertulis bersama) sesuai usia SMP"],
-        ["2", "B2-2.1-02", "Poster Aturan Kelas", "SEDANG", "Desain poster → print → tempel di kelas"],
-        ["3", "B2-2.1-03", "Jurnal Penerapan Kesepakatan", "SEDANG", "Isi catatan mingguan"],
-        ["4", "B2-2.2-01", "Tata Tertib (Disiplin Positif)", "TINGGI", "Bahasa positif, tanpa hukuman fisik"],
-        ["5", "B2-2.2-02", "Catatan Supervisi Kelas", "SEDANG", "Minta Kepsek isi saat observasi"],
-        ["6", "B2-2.2-03", "Angket Rasa Aman Siswa", "SEDANG", "Print → bagi ke 10-15 siswa"],
-        ["7", "B2-2.3-01", "RPP Pembelajaran Aktif", "TINGGI", "Buat per mapel TKA+PAI (diskusi, jigsaw)"],
-        ["8", "B2-2.3-02", "LKPD Belajar Aktif", "SEDANG", "Fotokopi untuk siswa"],
-        ["9", "B2-2.3-03", "Dokumentasi Belajar Siswa", "SEDANG", "Kumpulkan 5+ foto kegiatan belajar"],
-      ]
-    },
-    {
-      name: "ROMADI",
-      butir: "PJ Butir 3 — Indikator 3.1 + 3.5 (Perencanaan & HOTS)",
-      steps: [
-        "Buka sistem → Klik \"Paket B\"",
-        "Tab \"Komponen 1\" → \"Butir 3\"",
-        "Expand Indikator 3.1 → centang 6 dokumen → Generate",
-        "Expand Indikator 3.5 → centang 3 dokumen → Generate",
-        "Total: 9 file .docx",
-      ],
-      docs: [
-        ["1", "B3-3.1-01", "RPP/Modul Ajar Lengkap", "TINGGI", "Buat PER MAPEL (B.Indo, Mat, PAI). Isi CP + kegiatan"],
-        ["2", "B3-3.1-02", "Kalender Akademik", "TINGGI", "Isi jadwal TA 2025/2026: libur, UTS, UAS"],
-        ["3", "B3-3.1-03", "Program Tahunan (Prota)", "TINGGI", "Buat PER MAPEL: alokasi JP per bab 1 tahun"],
-        ["4", "B3-3.1-04", "Program Semester (Prosem)", "TINGGI", "Buat PER MAPEL: distribusi minggu per topik"],
-        ["5", "B3-3.1-05", "Silabus / ATP", "TINGGI", "Buat PER MAPEL: elemen CP → TP → kegiatan"],
-        ["6", "B3-3.1-06", "LKPD Kontekstual", "SEDANG", "Fotokopi untuk siswa"],
-        ["7", "B3-3.5-01", "RPP Berbasis HOTS", "TINGGI", "Isi kegiatan level C5 (Mengevaluasi)"],
-        ["8", "B3-3.5-02", "LKPD Berpikir Kritis", "SEDANG", "Siap pakai untuk siswa"],
-        ["9", "B3-3.5-03", "Template Proyek PBL", "SEDANG", "Isi tema: wirausaha dasar"],
-      ]
-    },
-    {
-      name: "GATI",
-      butir: "PJ Butir 3 — Indikator 3.2, 3.3, 3.4 (Evaluasi & Penilaian)",
-      steps: [
-        "Buka sistem → \"Paket B\"",
-        "Tab \"Komponen 1\" → \"Butir 3\"",
-        "Expand Indikator 3.2 → centang 4 dok → Generate",
-        "Expand Indikator 3.3 → centang 4 dok → Generate",
-        "Expand Indikator 3.4 → centang 4 dok → Generate (skip yg overlap)",
-        "Total: ~11 file .docx",
-      ],
-      docs: [
-        ["1", "B3-3.2-01", "Soal Formatif", "TINGGI", "Buat 5-10 soal PER MAPEL (PG + isian)"],
-        ["2", "B3-3.2-02", "Catatan Hasil Formatif", "SEDANG", "Isi nama siswa + skor"],
-        ["3", "B3-3.2-03", "Jurnal Perkembangan Siswa", "SEDANG", "Isi catatan per bulan"],
-        ["4", "B3-3.2-04", "Template Umpan Balik", "SEDANG", "Tutor isi per pertemuan"],
-        ["5", "B3-3.3-01", "Soal Sumatif (PG+Uraian)", "TINGGI", "Buat PER MAPEL: min 20 PG + 5 uraian"],
-        ["6", "B3-3.3-02", "Kisi-Kisi Soal", "TINGGI", "Buat PER MAPEL: Indikator|Level Bloom|No Soal"],
-        ["7", "B3-3.3-03", "Rubrik Penilaian", "SEDANG", "Isi kriteria per aspek"],
-        ["8", "B3-3.3-04", "Daftar Nilai Siswa", "SEDANG", "Isi nama + nilai per tugas/ujian"],
-        ["9", "B3-3.4-01", "Template Rapor", "TINGGI", "Isi deskripsi naratif per mapel"],
-        ["10", "B3-3.4-02", "Rekapitulasi & Analisis", "SEDANG", "Isi setelah nilai lengkap"],
-        ["11", "B3-3.4-03", "Program Remedial", "RENDAH", "Koordinasi dgn Apriyanto (overlap B1-1.3-01)"],
-        ["12", "B3-3.4-04", "Komunikasi Orang Tua", "RENDAH", "Koordinasi dgn Apriyanto (overlap B1-1.3-04)"],
-      ]
-    },
-    {
-      name: "LEO",
-      butir: "PJ Butir 4 — Indikator 4.1 + 4.2 (Keimanan & Kebangsaan)",
-      steps: [
-        "Buka sistem → \"Paket B\"",
-        "Tab \"Komponen 1\" → sub-tab \"Butir 4\"",
-        "Expand Indikator 4.1 → centang 3 dok → Generate",
-        "Expand Indikator 4.2 → centang 3 dok → Generate",
-        "Total: 6 file .docx",
-      ],
-      docs: [
-        ["1", "B4-4.1-01", "Jadwal Kegiatan Keagamaan", "TINGGI", "Isi jadwal sholat dhuha, kultur, mengaji"],
-        ["2", "B4-4.1-02", "RPP Integrasi Keimanan", "TINGGI", "Integrasikan nilai iman di mapel TKA+PAI"],
-        ["3", "B4-4.1-03", "Jurnal Pembiasaan Akhlak", "SEDANG", "Isi catatan harian siswa"],
-        ["4", "B4-4.2-01", "RPP Muatan Lokal/Budaya", "SEDANG", "Isi tema sejarah/budaya lokal daerah"],
-        ["5", "B4-4.2-02", "Program Hari Besar Nasional", "SEDANG", "Isi jadwal peringatan + kegiatan"],
-        ["6", "B4-4.2-03", "Karya Siswa Budaya", "SEDANG", "Kumpulkan poster/gambar karya siswa"],
-      ]
-    },
-    {
-      name: "ADI",
-      butir: "PJ Butir 4 — Indikator 4.3 + 4.4 (Nalar, Karakter, P5)",
-      steps: [
-        "Buka sistem → \"Paket B\"",
-        "Tab \"Komponen 1\" → sub-tab \"Butir 4\"",
-        "Expand Indikator 4.3 → centang 3 dok → Generate",
-        "Expand Indikator 4.4 → centang 4 dok → Generate",
-        "Total: 7 file .docx",
-      ],
-      docs: [
-        ["1", "B4-4.3-01", "LKPD Berbasis HOTS", "TINGGI", "Isi soal level C5 (Mengevaluasi) sesuai mapel"],
-        ["2", "B4-4.3-02", "Penilaian Berpikir Kritis", "SEDANG", "Isi rubrik penilaian"],
-        ["3", "B4-4.3-03", "Template Proyek PBL", "SEDANG", "Isi tema proyek tingkat SMP"],
-        ["4", "B4-4.4-01", "Visi Misi Tujuan PKBM", "TINGGI", "Salin visi-misi-tujuan resmi PKBM"],
-        ["5", "B4-4.4-02", "Program Projek Karakter", "TINGGI", "Pilih tema Kewirausahaan → isi timeline + output"],
-        ["6", "B4-4.4-03", "Program Ekskul", "SEDANG", "Isi daftar ekskul + jadwal"],
-        ["7", "B4-4.4-04", "Portofolio Siswa", "SEDANG", "Kumpulkan karya/prestasi siswa"],
-      ]
-    },
-  ];
-
-  paketBMembers.forEach(member => {
+  Object.keys(aDocs).forEach(name => {
     children.push(
       pageBreak(),
-      heading1(`📦 PAKET B — ${member.name}`),
-      para(member.butir, { bold: true, color: COLOR_PRIMARY }),
-      para("Paket B (SMP/MTs) | Fase D | 40 mnt/JP | Mapel: B.Indo, Matematika, PAI", { italic: true, color: COLOR_MUTED }),
+      heading1("📦 PAKET A — " + name.toUpperCase()),
+      para("Fase C | 35 mnt/JP | B.Indo, Mat, PAI, Pancasila, IPAS", { italic: true, color: COLOR_MUTED }),
       empty(),
-      heading3("Langkah di Sistem"),
+      heading3("Daftar Dokumen (" + aDocs[name].length + " Indikator/Fokus)"),
+      makeTable(["No", "Target Generasi", "Berisi Dokumen", "Prioritas", "Aksi"], aDocs[name], { colWidths: [5, 20, 25, 10, 40] })
     );
-    member.steps.forEach((s, i) => children.push(numbered(s, i + 1)));
+  });
+
+  // ========== PAKET B MEMBERS ==========
+  const bDocs = {
+    "Siska": [
+      ["1", "B3-3.1-01 s.d 06", "RPP, Prota, Prosem, ATP, Kalender, LKPD", "TINGGI", "Cetak RPP level SMP/Sederajat per mata pelajaran"],
+      ["2", "B3-3.5-01 s.d 03", "RPP HOTS, LKPD Kritis, Template Proyek", "TINGGI", "Rancang Modul Ajar level C5 (Mengevaluasi)"]
+    ],
+    "Handry": [
+      ["1", "B3-3.2-01 s.d 04", "Soal Formatif, Jurnal, Umpan Balik", "TINGGI", "Rumuskan formatif C5 yg ditembak AI"],
+      ["2", "B3-3.3-01 & 02", "Soal Sumatif, Kisi-kisi", "TINGGI", "Uji kualitas Kisi-kisi dan Butir Soal"]
+    ],
+    "Husen": [
+      ["1", "B3-3.3-03 & 04", "Rubrik Penilaian, Daftar Nilai", "SEDANG", "Susun perhitungan Kriteria Ketercapaian Tujuan Pembelajaran"],
+      ["2", "B3-3.4-01 s.d 04", "Rapor, Rekapitulasi, Program Remedial, Ortu", "TINGGI", "Rekap daftar nilai dan cetak Rapor"]
+    ],
+    "Salim": [
+      ["1", "B1-1.1-01 s.d 03", "Dok diskusi, Angket Kepuasan, Catatan Supervisi", "TINGGI", "Print angket kepuasan siswa SMP, minta mereka isi"]
+    ],
+    "Romadi": [
+      ["1", "B1-1.2-01 s.d 03", "RPP Growth Mindset, Portofolio, Umpan Balik Tutor", "TINGGI", "Buat portofolio jurnal pendirian mental diri siswa SMP"]
+    ],
+    "Eva": [
+      ["1", "B1-1.3-01 s.d 04", "Proker Remedial, Jurnal Pendampingan, Asesmen Diagnostik, Buku Ortu", "TINGGI", "Deteksi siswa yg tak lulus CP dan tulis di jurnal pendampingan"],
+      ["2", "B1-1.4-01 s.d 03", "RPP PBL, LKPD Empati, Angket", "TINGGI", "Cetak angket keterampilan sosial SMP"]
+    ],
+    "Gati": [
+      ["1", "B2-2.1-01 s.d 03", "Kesepakatan, Poster Aturan, Jurnal Kelas", "TINGGI", "Susun draf kesepakatan tertulis bagi ABG SMP"]
+    ],
+    "Zalfa": [
+      ["1", "B2-2.2-01 s.d 03", "Tata Tertib, Supervisi Kelas, Angket Aman", "TINGGI", "Fokus aturan pencegahan perundungan (Anti-Bullying)"],
+      ["2", "B2-2.3-01 s.d 03", "RPP Belajar Aktif, LKPD, Dok Belajar", "TINGGI", "Kegiatan Diskusi Kelompok dan presentasi ABG"]
+    ],
+    "Adi": [
+      ["1", "B4-4.1-01 s.d 03", "Jadwal Agama, RPP Iman, Jurnal Akhlak", "TINGGI", "Cetak jadwal dan tata tertib tadarus/sholat berjamaah"]
+    ],
+    "Apriyanto": [
+      ["1", "B4-4.2-01 s.d 03", "RPP Budaya, Peringatan Hari Besar, Karya Budaya", "TINGGI", "Catat partisipasi siswa PKBM dalam Pentas Seni"]
+    ],
+    "Nadia": [
+      ["1", "B4-4.3-01 s.d 03", "LKPD HOTS, Penilaian Kritis, Template Proyek", "TINGGI", "Rubrik P5 tahap 1"],
+      ["2", "B4-4.4-01 s.d 04", "Visi Misi, Ekskul, Projek Karakter, Portofolio", "TINGGI", "Tema pengenalan Wirausaha di usia SMP"]
+    ]
+  };
+
+  Object.keys(bDocs).forEach(name => {
     children.push(
+      pageBreak(),
+      heading1("📦 PAKET B — " + name.toUpperCase()),
+      para("Fase D | 40 mnt/JP | B.Indo, Mat, PAI, Pancasila, IPA", { italic: true, color: COLOR_MUTED }),
       empty(),
-      heading3("Daftar Dokumen"),
-      makeTable(
-        ["No", "Kode", "Nama Dokumen", "Prioritas", "Yang Harus Diisi"],
-        member.docs,
-        { colWidths: [5, 10, 22, 10, 53] }
-      ),
-      empty(),
-      tipBox("Untuk dokumen Spesifik Mapel: Semua file sudah tercetak otomatis menjadi file terpisah di dalam ZIP hasil download.")
+      heading3("Daftar Dokumen (" + bDocs[name].length + " Indikator/Fokus)"),
+      makeTable(["No", "Target Generasi", "Berisi Dokumen", "Prioritas", "Aksi"], bDocs[name], { colWidths: [5, 20, 25, 10, 40] })
     );
   });
 
   // ========== PAKET C MEMBERS ==========
-  const paketCMembers = [
-    {
-      name: "HUSEN",
-      tim: "Tim Suasana & Karakter",
-      butir: "PJ Butir 1 — Semua Indikator (Dukungan Sosial Emosional)",
-      steps: [
-        "Buka sistem → Klik \"Paket C\" di header",
-        "Tab \"Komponen 1\" → sub-tab \"Butir 1\"",
-        "Klik \"📦 Generate Semua Butir 1\" → Download ZIP",
-        "Ekstrak → 13 file .docx → Isi semua kolom kosong",
-      ],
-      docs: [
-        ["1", "B1-1.1-01", "Dokumentasi Diskusi Kelas", "TINGGI", "Isi topik diskusi/presentasi level SMA"],
-        ["2", "B1-1.1-02", "Angket Kepuasan Siswa", "SEDANG", "Print → bagi ke 10 siswa → kumpulkan"],
-        ["3", "B1-1.1-03", "Catatan Supervisi", "TINGGI", "Minta Kepsek isi skor observasi"],
-        ["4", "B1-1.2-01", "RPP Growth Mindset", "TINGGI", "Buat PER MAPEL (B.Indo, Mat, B.Ing, PAI)"],
-        ["5", "B1-1.2-02", "Portofolio Refleksi Siswa", "SEDANG", "Siswa isi refleksi bulanan"],
-        ["6", "B1-1.2-03", "Umpan Balik Tutor", "SEDANG", "Tutor isi per pertemuan"],
-        ["7", "B1-1.3-01", "Program Remedial", "TINGGI", "Fokus: kesiapan kompetensi kelulusan & vokasi"],
-        ["8", "B1-1.3-02", "Jurnal Pendampingan", "SEDANG", "Isi 4-8 pertemuan"],
-        ["9", "B1-1.3-03", "Asesmen Diagnostik", "TINGGI", "Isi gaya belajar + skor awal (usia 16+)"],
-        ["10", "B1-1.3-04", "Buku Penghubung Ortu", "SEDANG", "Isi 3-6 komunikasi"],
-        ["11", "B1-1.4-01", "RPP Kolaboratif (PBL)", "TINGGI", "Buat per mapel: Wirausaha Sosial Pemberdayaan"],
-        ["12", "B1-1.4-02", "LKPD Kerja Sama", "SEDANG", "Siap pakai"],
-        ["13", "B1-1.4-03", "Angket Sosial Emosional", "SEDANG", "Bagi ke siswa"],
-      ]
-    },
-    {
-      name: "IMAM",
-      tim: "Tim Suasana & Karakter",
-      butir: "PJ Butir 2 — Semua Indikator (Pengelolaan Kelas)",
-      steps: [
-        "Buka sistem → \"Paket C\"",
-        "Tab \"Komponen 1\" → \"Butir 2\"",
-        "\"📦 Generate Semua Butir 2\" → 9 file",
-      ],
-      docs: [
-        ["1", "B2-2.1-01", "Kesepakatan Kelas", "TINGGI", "Format KONTRAK BELAJAR FLEKSIBEL (usia dewasa/pekerja)"],
-        ["2", "B2-2.1-02", "Poster Aturan Kelas", "SEDANG", "Desain profesional → print & tempel"],
-        ["3", "B2-2.1-03", "Jurnal Penerapan", "SEDANG", "Isi catatan mingguan"],
-        ["4", "B2-2.2-01", "Tata Tertib", "TINGGI", "Bahasa profesional cocok usia dewasa/pekerja"],
-        ["5", "B2-2.2-02", "Catatan Supervisi", "SEDANG", "Minta Kepsek isi"],
-        ["6", "B2-2.2-03", "Angket Rasa Aman", "SEDANG", "Print → bagi ke siswa"],
-        ["7", "B2-2.3-01", "RPP Pembelajaran Aktif", "TINGGI", "Buat per mapel: debat, presentasi, panel diskusi"],
-        ["8", "B2-2.3-02", "LKPD Belajar Aktif", "SEDANG", "Fotokopi untuk siswa"],
-        ["9", "B2-2.3-03", "Dokumentasi Belajar", "SEDANG", "Kumpulkan 5+ foto kegiatan"],
-      ]
-    },
-    {
-      name: "LILIK",
-      tim: "Tim Pembelajaran & Evaluasi",
-      butir: "PJ Butir 3 — Indikator 3.1 + 3.5 (Perencanaan & HOTS)",
-      steps: [
-        "Buka sistem → \"Paket C\"",
-        "\"Butir 3\" → Expand 3.1 (6 dok) + 3.5 (3 dok) → Generate",
-        "Total: 9 file",
-      ],
-      docs: [
-        ["1", "B3-3.1-01", "RPP/Modul Ajar", "TINGGI", "Buat PER MAPEL (B.Indo, Mat, B.Ing, PAI). Vokasional/kesiapan kerja"],
-        ["2", "B3-3.1-02", "Kalender Akademik", "TINGGI", "Isi jadwal TA 2025/2026"],
-        ["3", "B3-3.1-03", "Prota", "TINGGI", "Buat PER MAPEL: alokasi JP 1 tahun"],
-        ["4", "B3-3.1-04", "Prosem", "TINGGI", "Buat PER MAPEL: distribusi minggu per topik"],
-        ["5", "B3-3.1-05", "Silabus / ATP", "TINGGI", "Buat PER MAPEL"],
-        ["6", "B3-3.1-06", "LKPD Kontekstual", "SEDANG", "Fotokopi untuk siswa"],
-        ["7", "B3-3.5-01", "RPP HOTS", "TINGGI", "Level C6 (MENCIPTA): proposal usaha, produk karya"],
-        ["8", "B3-3.5-02", "LKPD Berpikir Kritis", "SEDANG", "Siap pakai"],
-        ["9", "B3-3.5-03", "Template PBL", "SEDANG", "Tema: studi kelayakan usaha sederhana"],
-      ]
-    },
-    {
-      name: "RIKI",
-      tim: "Tim Pembelajaran & Evaluasi",
-      butir: "PJ Butir 3 — Indikator 3.2, 3.3, 3.4 (Evaluasi & Penilaian)",
-      steps: [
-        "Buka sistem → \"Paket C\"",
-        "\"Butir 3\" → Centang 3.2 + 3.3 + 3.4 → Generate",
-        "Total: ~11 file (skip overlap)",
-      ],
-      docs: [
-        ["1", "B3-3.2-01", "Soal Formatif", "TINGGI", "Buat PER MAPEL (B.Indo, Mat, B.Ing, PAI)"],
-        ["2", "B3-3.2-02", "Catatan Hasil Formatif", "SEDANG", "Isi nama + skor"],
-        ["3", "B3-3.2-03", "Jurnal Perkembangan", "SEDANG", "Isi per bulan"],
-        ["4", "B3-3.2-04", "Umpan Balik", "SEDANG", "Tutor isi per pertemuan"],
-        ["5", "B3-3.3-01", "Soal Sumatif", "TINGGI", "Buat PER MAPEL: analisis, evaluasi, kreasi level SMA"],
-        ["6", "B3-3.3-02", "Kisi-Kisi", "TINGGI", "Buat PER MAPEL"],
-        ["7", "B3-3.3-03", "Rubrik Penilaian", "SEDANG", "Termasuk rubrik penilaian PROYEK"],
-        ["8", "B3-3.3-04", "Daftar Nilai", "SEDANG", "Isi per tugas/ujian"],
-        ["9", "B3-3.4-01", "Template Rapor", "TINGGI", "Deskripsi naratif per mapel"],
-        ["10", "B3-3.4-02", "Rekapitulasi", "SEDANG", "Isi setelah nilai lengkap"],
-        ["11", "B3-3.4-03", "Program Remedial", "RENDAH", "Koordinasi dgn Husen"],
-        ["12", "B3-3.4-04", "Komunikasi Ortu", "RENDAH", "Koordinasi dgn Husen"],
-      ]
-    },
-    {
-      name: "RONALD",
-      tim: "Tim Visi, Nilai & HOTS",
-      butir: "PJ Butir 4 — Indikator 4.1 + 4.2 (Keimanan & Kebangsaan)",
-      steps: [
-        "Buka sistem → \"Paket C\"",
-        "\"Butir 4\" → Expand 4.1 + 4.2 → Generate",
-        "Total: 6 file",
-      ],
-      docs: [
-        ["1", "B4-4.1-01", "Jadwal Keagamaan", "TINGGI", "Isi kegiatan rutin + insidental"],
-        ["2", "B4-4.1-02", "RPP Integrasi Keimanan", "TINGGI", "Integrasikan di mapel TKA+PAI"],
-        ["3", "B4-4.1-03", "Jurnal Pembiasaan Akhlak", "SEDANG", "Isi catatan harian"],
-        ["4", "B4-4.2-01", "RPP Muatan Lokal", "SEDANG", "Tema sejarah/budaya lokal"],
-        ["5", "B4-4.2-02", "Program Hari Besar", "SEDANG", "Isi jadwal + kegiatan peringatan"],
-        ["6", "B4-4.2-03", "Karya Siswa Budaya", "SEDANG", "Kumpulkan esai/pameran budaya karya siswa"],
-      ]
-    },
-    {
-      name: "JUFRI",
-      tim: "Tim Visi, Nilai & HOTS",
-      butir: "PJ Butir 4 — Indikator 4.3 + 4.4 (Nalar, Karakter, P5)",
-      steps: [
-        "Buka sistem → \"Paket C\"",
-        "\"Butir 4\" → Expand 4.3 + 4.4 → Generate",
-        "Total: 7 file",
-      ],
-      docs: [
-        ["1", "B4-4.3-01", "LKPD HOTS", "TINGGI", "Level C6 (Mencipta): desain produk, buat proposal"],
-        ["2", "B4-4.3-02", "Penilaian Berpikir Kritis", "SEDANG", "Isi rubrik evaluasi"],
-        ["3", "B4-4.3-03", "Template PBL", "SEDANG", "Tema proyek tingkat SMA"],
-        ["4", "B4-4.4-01", "Visi Misi PKBM", "TINGGI", "Salin visi-misi-tujuan resmi PKBM"],
-        ["5", "B4-4.4-02", "Program Projek Karakter", "TINGGI", "Tema: Kewirausahaan / Berekayasa & Berteknologi"],
-        ["6", "B4-4.4-03", "Program Ekskul", "SEDANG", "Isi daftar kegiatan + jadwal"],
-        ["7", "B4-4.4-04", "Portofolio Siswa", "SEDANG", "Kumpulkan karya: proposal usaha, esai, rancangan"],
-      ]
-    },
-  ];
+  const cDocs = {
+    "Dea": [
+      ["1", "B3-3.1-01 s.d 06", "RPP, Prota, Prosem, ATP, Kalender, LKPD", "TINGGI", "Pengayaan RPP level Tinggi (SMA/Sederajat) arah Vokasi/Karier"],
+      ["2", "B3-3.5-01 s.d 03", "RPP HOTS, LKPD Kritis, Template Proyek", "TINGGI", "Modul C6 (Mencipta/Mendesain/Merancang) via AI"]
+    ],
+    "Jufri": [
+      ["1", "B3-3.2-01 s.d 04", "Soal Formatif, Jurnal, Umpan Balik", "TINGGI", "Review kualitas soal evaluasi yang diciptakan Gemini AI"],
+      ["2", "B3-3.3-01 & 02", "Soal Sumatif, Kisi-kisi", "TINGGI", "Soal harus ada Analisis SWOT atau Problem Solving"]
+    ],
+    "Lilik": [
+      ["1", "B3-3.3-03 & 04", "Rubrik Penilaian, Daftar Nilai", "SEDANG", "Rubrik Penilaian Presentasi / Praktek Bisnis"],
+      ["2", "B3-3.4-01 s.d 04", "Rapor, Rekapitulasi, Program Remedial, Ortu", "TINGGI", "Cetak transkrip evaluasi Rapor SMA/Sederajat"]
+    ],
+    "Riki": [
+      ["1", "B1-1.1-01 s.d 03", "Dok diskusi, Angket Kepuasan, Catatan Supervisi", "TINGGI", "Lampirkan bukti foto siswa pekerja dan fleksibilitas jadwal"],
+      ["2", "B1-1.2-01 s.d 03", "RPP Growth Mindset, Portofolio, Umpan Balik Tutor", "TINGGI", "Catat portfolio mental kedewasaan belajar Paket C"]
+    ],
+    "Dia": [
+      ["1", "B1-1.3-01 s.d 04", "Proker Remedial, Jurnal Pendampingan, Asesmen Diagnostik, Buku Ortu", "TINGGI", "Evaluasi bagi pemuda putus sekolah lama"],
+      ["2", "B1-1.4-01 s.d 03", "RPP PBL, LKPD Empati, Angket", "TINGGI", "Membantu motivasi anak didik usia dewasa"]
+    ],
+    "Ronald": [
+      ["1", "B2-2.1-01 s.d 03", "Kesepakatan, Poster Aturan, Jurnal Kelas", "TINGGI", "Disiplin Andragogi (Orang Dewasa) lewat Kontrak Belajar"],
+      ["2", "B2-2.2-01 s.d 03", "Tata Tertib, Supervisi Kelas, Angket Aman", "TINGGI", "Regulasi profesional PKBM tingkat atas"]
+    ],
+    "Ulfa": [
+      ["1", "B2-2.3-01 s.d 03", "RPP Belajar Aktif, LKPD, Dok Belajar", "TINGGI", "Cetak bukti belajar proyek nyata Paket C"]
+    ],
+    "Leo": [
+      ["1", "B4-4.1-01 s.d 03", "Jadwal Agama, RPP Iman, Jurnal Akhlak", "TINGGI", "Integrasi kajian Islam dan Toleransi Dewasa"]
+    ],
+    "Imam": [
+      ["1", "B4-4.2-01 s.d 03", "RPP Budaya, Peringatan Hari Besar, Karya Budaya", "TINGGI", "Partisipasi Panggung Seni Pemuda PKBM"],
+      ["2", "B4-4.3-01 s.d 03", "LKPD HOTS, Penilaian Kritis, Template Proyek", "TINGGI", "Rubrik Proposal Karya Siswa Paket C"]
+    ],
+    "Laila": [
+      ["1", "B4-4.4-01 s.d 04", "Visi Misi, Ekskul, Projek Karakter, Portofolio", "TINGGI", "Fokus Dokumentasi Produk Wirausaha Nyata Siap Kurikulum P5"]
+    ]
+  };
 
-  paketCMembers.forEach(member => {
+  Object.keys(cDocs).forEach(name => {
     children.push(
       pageBreak(),
-      heading1(`📦 PAKET C — ${member.name}`),
-      para(`${member.tim}`, { bold: true, size: 20, color: COLOR_ACCENT }),
-      para(member.butir, { bold: true, color: COLOR_PRIMARY }),
-      para("Paket C (SMA/MA) | Fase E | 45 mnt/JP | Mapel: B.Indo, Matematika, B.Inggris, PAI", { italic: true, color: COLOR_MUTED }),
+      heading1("📦 PAKET C — " + name.toUpperCase()),
+      para("Fase E | 45 mnt/JP | B.Indo, Mat, B.Ing, PAI, Pancasila, Geografi", { italic: true, color: COLOR_MUTED }),
       empty(),
-      heading3("Langkah di Sistem"),
-    );
-    member.steps.forEach((s, i) => children.push(numbered(s, i + 1)));
-    children.push(
-      empty(),
-      heading3("Daftar Dokumen"),
-      makeTable(
-        ["No", "Kode", "Nama Dokumen", "Prioritas", "Yang Harus Diisi"],
-        member.docs,
-        { colWidths: [5, 10, 20, 10, 55] }
-      ),
-      empty(),
-      tipBox("Paket C punya 4 mapel wajib (B.Indo, Mat, B.Ing, PAI). Untuk RPP/Soal: generate 1× lalu duplikasi file .docx untuk setiap mapel.")
+      heading3("Daftar Dokumen (" + cDocs[name].length + " Indikator/Fokus)"),
+      makeTable(["No", "Target Generasi", "Berisi Dokumen", "Prioritas", "Aksi"], cDocs[name], { colWidths: [5, 20, 25, 10, 40] })
     );
   });
 
