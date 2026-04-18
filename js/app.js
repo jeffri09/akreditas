@@ -424,6 +424,11 @@ const App = {
           <div class="progress-fill" id="batchProgress" style="width:0%"></div>
         </div>
 
+        <div class="checkbox-item checked" style="margin-top:16px; margin-bottom:12px; justify-content: center; background: rgba(46,134,193,0.1); padding: 12px; border-radius: 8px;">
+           <input type="checkbox" id="useAiToggleGenerate" style="accent-color:var(--accent-primary);transform:scale(1.2);margin-right:8px;" ${localStorage.getItem('use_ai') === 'true' ? 'checked' : ''} onchange="localStorage.setItem('use_ai', this.checked); document.getElementById('useAiToggle').checked = this.checked;">
+           <label for="useAiToggleGenerate" style="font-weight:bold;color:var(--primary);cursor:pointer;font-size:0.95rem;">✨ Gunakan Gemini AI (Auto-Pilot)</label>
+        </div>
+
         <div style="display:flex;gap:8px;margin-top:16px;">
           <button class="btn btn-primary btn-lg btn-block" onclick="App.batchGenerate()">
             ⬇️ Generate & Download ZIP
