@@ -406,6 +406,40 @@ function buildContent() {
   );
 
   // ================================================================
+  // PANDUAN PENGOPERASIAN SISTEM & ALUR KERJA (SOP)
+  // ================================================================
+  children.push(
+    pageBreak(),
+    heading1("🚀 SOP PENGGUNAAN SISTEM GENERATOR AKREDITASI"),
+    para("Panduan ini wajib dibaca oleh seluruh anggota tim sebelum mengoperasikan sistem Vercel PKBM Miftahul Khoir. Sistem ini dirancang untuk memangkas waktu kerja dari berminggu-minggu menjadi hanya beberapa jam melalui bantuan Gemini AI.", { color: COLOR_MUTED, italic: true }),
+    empty(),
+    
+    heading2("A. Alur Kerja Utama (Workflow)"),
+    numbered("BUKA APLIKASI: Akses tautan Vercel yang telah dibagikan oleh Ketua Tim di browser komputer Anda.", 1),
+    numbered("CEK PROFIL: Pastikan nama Kepala PKBM, NPSN, dan Alamat sudah terisi di tab 'Profil PKBM'. Modul Generator secara otomatis akan mengambil data dari sini.", 2),
+    numbered("PILIH PAKET: Di bagian navigasi atas, pastikan Anda berada di Paket yang sesuai dengan tugas Anda (Paket A, B, atau C).", 3),
+    numbered("TAB GENERATE MATA PELAJARAN (KHUSUS POKJA MAPEL): Jika Anda tergabung di Divisi Pokja Mapel (pembuat RPP, Soal, Rubrik), buka tab 'Generate Dokumen'. Pada bagian 'Target Generasi', CENTANG HANYA NAMA MAPEL ANDA (misal: Bahasa Indonesia). Nama Anda akan langsung terlihat di sana.", 4),
+    numbered("TAB GENERATE INSTITUSIONAL (KHUSUS POKJA MANAJEMEN): Jika Anda tergabung di Divisi Institusi, pastikan Anda mencentang Butir 1/2/4 yang menjadi tanggung jawab Anda, sesuai nama yang tertera di layar.", 5),
+    numbered("TUNGGU PROSES AI: Klik tombol 'Generate & Download ZIP'. Biarkan tab tetap terbuka. AI Gemini sedang menyusun dokumen Anda sesuai model pembelajaran dan karakteristik siswa. ZIP akan terunduh otomatis.", 6),
+    
+    empty(),
+    heading2("B. Panduan Merapikan Dokumen (Finishing)"),
+    para("Dokumen yang dihasilkan oleh sistem (format .docx) sudah memiliki Kop Surat yang rapi, tabel yang terformat, dan konten pedagogi standar BAN-PDM. Namun, Anda WAJIB melakukan finishing berikut:", { bold: true }),
+    bullet("Cek Format Kop Surat: Pastikan kop surat tercetak dengan rapi dan logo (jika ada) berada di tempat yang benar."),
+    bullet("Baca Ulang (Proof-reading) Hasil AI: Sistem AI merancang RPP dan Soal evaluasi dengan teknik penalaran tinggi (HOTS). Anda wajib membaca ulang untuk memastikan gaya bahasanya sesuai dengan kenyataan di lapangan."),
+    bullet("Hapus Teks Prediksi: Hilangkan tanda kurung [ ... ] atau garis bawah ___ yang mungkin sengaja ditinggalkan sistem untuk Anda isi secara spesifik (misalnya, nama industri lokal untuk kunjungan lapangan)."),
+    bullet("Pastikan Tanda Tangan: Scroll ke halaman paling akhir setiap dokumen. Pastikan nama lengkap Anda (sebagai Tutor Mapel / PIC) sudah tercetak di atas garis tanda tangan (Otomatis ditambahkan sistem)."),
+    
+    empty(),
+    heading2("C. Ketercapaian Kerja (Target & Checklist)"),
+    bullet("SINKRONISASI MATERI: Ingat, karena Anda mengeksekusi 1 Mapel secara utuh (Dari RPP hingga Rubrik Penilaian), maka seluruh indikator Soal yang Anda hasilkan harus 100% selaras dengan RPP-nya. File yang berbeda alur akan ditolak oleh sistem audit kami."),
+    bullet("PENYERAHAN FINAL: Setelah dokumen dirapikan (di-bold jika perlukan, margin disesuaikan jika halamannya terpotong patah), satukan kembali ke dalam Folder Google Drive komunal pada tenggat waktu 29 April."),
+    
+    empty(120),
+    infoBox("TIPS JAWABAN SAAT PRESENTASI KE ASESOR", "Sistem ini menjamin Traceability (Keterlacakan). Saat Anda ditanya Asesor, 'Dari mana asal instrumen evaluasi ini?', Anda bisa langsung menujukkan Modul Ajar (RPP) Anda, karena seluruh dokomen ini adalah turunan yang berurutan. Hindari jawaban 'Kami buat karena mencari di Google/Guru lain', jawablah: 'Sistem RPP kami terintegrasi'.")
+  );
+
+  // ================================================================
   // DETAIL PER ANGGOTA MULAI DI SINI
   // ================================================================
 
