@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sistem Generator Dokumen Akreditasi PKBM Miftahul Khoir - BAN-PDM Paket A, B, C">
+  <title>Akreditasi Doc Generator — PKBM Miftahul Khoir</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+</head>
+<body>
+  <div class="app-container">
+    <!-- ========== HEADER ========== -->
+    <header class="app-header">
+      <h1>📄 Akreditasi Doc Generator</h1>
+      <p class="subtitle">PKBM Miftahul Khoir — Sistem Generasi Dokumen Akreditasi BAN-PDM</p>
+      <span class="badge">Komponen 1 • Paket A, B, C • T.A. 2025/2026</span>
+
+      <!-- Package Quick Selector -->
+      <div style="margin-top:16px;">
+        <div class="package-toggle" style="max-width:420px;margin:0 auto;">
+          <button class="pkg-select-btn pkg-btn active" data-pkg="A">
+            Paket A
+            <span class="pkg-sub">SD/MI • 35 mnt</span>
+          </button>
+          <button class="pkg-select-btn pkg-btn" data-pkg="B">
+            Paket B
+            <span class="pkg-sub">SMP/MTs • 40 mnt</span>
+          </button>
+          <button class="pkg-select-btn pkg-btn" data-pkg="C">
+            Paket C
+            <span class="pkg-sub">SMA/MA • 45 mnt</span>
+          </button>
+        </div>
+        <p id="currentPkgInfo" style="color:var(--text-muted);font-size:0.72rem;margin-top:8px;">
+          Paket A (SD/MI) | Fase C | 35 mnt/JP | Menganalisis (C4)
+        </p>
+      </div>
+    </header>
+
+    <!-- ========== TAB NAVIGATION ========== -->
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="profil">
+        <span class="icon">🏫</span>
+        <span class="tab-label">Profil PKBM</span>
+      </button>
+      <button class="tab-btn" data-tab="komponen1">
+        <span class="icon">📋</span>
+        <span class="tab-label">Komponen 1</span>
+      </button>
+      <button class="tab-btn locked" title="Coming Soon">
+        <span class="icon">👑</span>
+        <span class="tab-label">Komponen 2</span>
+        <span class="lock-icon">🔒</span>
+      </button>
+      <button class="tab-btn locked" title="Coming Soon">
+        <span class="icon">🌱</span>
+        <span class="tab-label">Komponen 3</span>
+        <span class="lock-icon">🔒</span>
+      </button>
+      <button class="tab-btn locked" title="Coming Soon">
+        <span class="icon">🎯</span>
+        <span class="tab-label">Komponen 4</span>
+        <span class="lock-icon">🔒</span>
+      </button>
+      <button class="tab-btn" data-tab="paket">
+        <span class="icon">📦</span>
+        <span class="tab-label">Pengaturan</span>
+      </button>
+      <button class="tab-btn" data-tab="generate">
+        <span class="icon">🚀</span>
+        <span class="tab-label">Generate</span>
+      </button>
+    </nav>
+
+    <!-- ========== TAB: PROFIL ========== -->
+    <div class="tab-content active" id="tab-profil">
+      <div class="section-header">
+        <h2>🏫 Profil & Konfigurasi PKBM</h2>
+      </div>
+      <div id="profileFormContainer"></div>
+      <div id="tutorListContainer" style="margin-top:16px;"></div>
+    </div>
+
+    <!-- ========== TAB: KOMPONEN 1 ========== -->
+    <div class="tab-content" id="tab-komponen1">
+      <div class="section-header">
+        <h2>📋 Komponen 1 — Kinerja Pendidik dalam Mengelola Proses Pembelajaran</h2>
+      </div>
+
+      <!-- Sub-tab navigation -->
+      <div class="subtab-nav">
+        <button class="subtab-btn active" data-subtab="butir1" onclick="App.switchSubtab('butir1')">
+          Butir 1
+        </button>
+        <button class="subtab-btn" data-subtab="butir2" onclick="App.switchSubtab('butir2')">
+          Butir 2
+        </button>
+        <button class="subtab-btn" data-subtab="butir3" onclick="App.switchSubtab('butir3')">
+          Butir 3
+        </button>
+        <button class="subtab-btn" data-subtab="butir4" onclick="App.switchSubtab('butir4')">
+          Butir 4
+        </button>
+      </div>
+
+      <!-- Sub-tab contents -->
+      <div class="subtab-content active" id="subtab-butir1">
+        <div id="butir1Content"></div>
+      </div>
+      <div class="subtab-content" id="subtab-butir2">
+        <div id="butir2Content"></div>
+      </div>
+      <div class="subtab-content" id="subtab-butir3">
+        <div id="butir3Content"></div>
+      </div>
+      <div class="subtab-content" id="subtab-butir4">
+        <div id="butir4Content"></div>
+      </div>
+    </div>
+
+    <!-- ========== TAB: PENGATURAN PAKET ========== -->
+    <div class="tab-content" id="tab-paket">
+      <div class="section-header">
+        <h2>📦 Pengaturan Paket & Mata Pelajaran</h2>
+      </div>
+      <div id="packageConfigContainer"></div>
+    </div>
+
+    <!-- ========== TAB: GENERATE ========== -->
+    <div class="tab-content" id="tab-generate">
+      <div class="section-header">
+        <h2>🚀 Generate & Ekspor Dokumen</h2>
+      </div>
+      <div id="generatePanelContent"></div>
+    </div>
+  </div>
+
+  <!-- ========== CDN LIBRARIES ========== -->
+  <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+  <!-- ========== APPLICATION SCRIPTS ========== -->
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/profile.js"></script>
+  <script src="js/generator.js"></script>
+  <script src="js/templates/butir1.js"></script>
+  <script src="js/templates/butir2.js"></script>
+  <script src="js/templates/butir3.js"></script>
+  <script src="js/templates/butir4.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

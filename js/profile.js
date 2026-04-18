@@ -1,0 +1,514 @@
+/**
+ * profile.js — Profil PKBM Management
+ * CRUD LocalStorage untuk data lembaga, tutor, dan peserta didik
+ */
+
+const ProfileManager = {
+  STORAGE_KEY: 'profile',
+
+  defaultProfile: {
+    lembaga: {
+      nama: 'PKBM Miftahul Khoir',
+      npsn: '',
+      alamat: '',
+      kelurahan: '',
+      kecamatan: '',
+      kabupaten: '',
+      provinsi: '',
+      telepon: '',
+      email: '',
+      website: '',
+      kepala: {
+        nama: '',
+        nip: '',
+        pangkat: ''
+      },
+      visi: '',
+      misi: '',
+      tujuan: ''
+    },
+    tutors: [],
+    pesertaDidik: {
+      A: { jumlah: 0, rombel: 1, kelas: [] },
+      B: { jumlah: 0, rombel: 1, kelas: [] },
+      C: { jumlah: 0, rombel: 1, kelas: [] }
+    },
+    selectedPackages: ['A', 'B', 'C'],
+    selectedSubjects: { A: [], B: [], C: [] }
+  },
+
+  // Current profile in memory
+  _profile: null,
+
+  init() {
+    this._profile = this.load();
+    this.renderProfileForm();
+    this.renderTutorList();
+    this.renderPackageConfig();
+  },
+
+  load() {
+    const saved = Utils.loadData(this.STORAGE_KEY);
+    if (saved) {
+      return { ...Utils.deepClone(this.defaultProfile), ...saved };
+    }
+    return Utils.deepClone(this.defaultProfile);
+  },
+
+  save() {
+    Utils.saveData(this.STORAGE_KEY, this._profile);
+    Utils.showToast('Profil berhasil disimpan!', 'success');
+  },
+
+  getProfile() {
+    return this._profile;
+  },
+
+  getLembaga() {
+    return this._profile.lembaga;
+  },
+
+  getTutors() {
+    return this._profile.tutors;
+  },
+
+  getSelectedPackages() {
+    return this._profile.selectedPackages;
+  },
+
+  // =========================================
+  // RENDER: Profile Form
+  // =========================================
+  renderProfileForm() {
+    const container = document.getElementById('profileFormContainer');
+    if (!container) return;
+
+    const l = this._profile.lembaga;
+    container.innerHTML = `
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="card-title">
+            <div class="icon">🏫</div>
+            <div>
+              <h3>Data Lembaga</h3>
+              <p>Informasi dasar PKBM</p>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="ProfileManager.saveFromForm()">
+            💾 Simpan
+          </button>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nama PKBM *</label>
+            <input type="text" class="form-input" id="pf-nama" value="${l.nama}" placeholder="Nama lengkap PKBM">
+          </div>
+          <div class="form-group">
+            <label class="form-label">NPSN</label>
+            <input type="text" class="form-input" id="pf-npsn" value="${l.npsn}" placeholder="Nomor Pokok Satuan Pendidikan">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Alamat Lengkap</label>
+          <input type="text" class="form-input" id="pf-alamat" value="${l.alamat}" placeholder="Jl. ...">
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label class="form-label">Kelurahan/Desa</label>
+            <input type="text" class="form-input" id="pf-kelurahan" value="${l.kelurahan}" placeholder="Kelurahan">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Kecamatan</label>
+            <input type="text" class="form-input" id="pf-kecamatan" value="${l.kecamatan}" placeholder="Kecamatan">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Kabupaten/Kota</label>
+            <input type="text" class="form-input" id="pf-kabupaten" value="${l.kabupaten}" placeholder="Kabupaten/Kota">
+          </div>
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label class="form-label">Provinsi</label>
+            <input type="text" class="form-input" id="pf-provinsi" value="${l.provinsi}" placeholder="Provinsi">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Telepon</label>
+            <input type="text" class="form-input" id="pf-telepon" value="${l.telepon}" placeholder="08xx-xxxx-xxxx">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" id="pf-email" value="${l.email}" placeholder="email@pkbm.sch.id">
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="card-title">
+            <div class="icon">👤</div>
+            <div>
+              <h3>Kepala PKBM</h3>
+              <p>Penanggung jawab lembaga</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-row-3">
+          <div class="form-group">
+            <label class="form-label">Nama Kepala PKBM *</label>
+            <input type="text" class="form-input" id="pf-kepala-nama" value="${l.kepala.nama}" placeholder="Nama lengkap">
+          </div>
+          <div class="form-group">
+            <label class="form-label">NIP/NIK</label>
+            <input type="text" class="form-input" id="pf-kepala-nip" value="${l.kepala.nip}" placeholder="NIP atau NIK">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pangkat/Golongan</label>
+            <input type="text" class="form-input" id="pf-kepala-pangkat" value="${l.kepala.pangkat}" placeholder="Opsional">
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="card-title">
+            <div class="icon">🎯</div>
+            <div>
+              <h3>Visi, Misi, dan Tujuan</h3>
+              <p>Identitas filosofis PKBM</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Visi</label>
+          <textarea class="form-textarea" id="pf-visi" rows="2" placeholder="Visi PKBM...">${l.visi}</textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Misi</label>
+          <textarea class="form-textarea" id="pf-misi" rows="3" placeholder="Misi PKBM (pisahkan dengan enter per poin)...">${l.misi}</textarea>
+          <div class="form-hint">Pisahkan setiap poin misi dengan baris baru (Enter)</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tujuan</label>
+          <textarea class="form-textarea" id="pf-tujuan" rows="3" placeholder="Tujuan PKBM...">${l.tujuan}</textarea>
+        </div>
+      </div>
+    `;
+  },
+
+  saveFromForm() {
+    const l = this._profile.lembaga;
+    l.nama = document.getElementById('pf-nama')?.value || l.nama;
+    l.npsn = document.getElementById('pf-npsn')?.value || '';
+    l.alamat = document.getElementById('pf-alamat')?.value || '';
+    l.kelurahan = document.getElementById('pf-kelurahan')?.value || '';
+    l.kecamatan = document.getElementById('pf-kecamatan')?.value || '';
+    l.kabupaten = document.getElementById('pf-kabupaten')?.value || '';
+    l.provinsi = document.getElementById('pf-provinsi')?.value || '';
+    l.telepon = document.getElementById('pf-telepon')?.value || '';
+    l.email = document.getElementById('pf-email')?.value || '';
+    l.kepala.nama = document.getElementById('pf-kepala-nama')?.value || '';
+    l.kepala.nip = document.getElementById('pf-kepala-nip')?.value || '';
+    l.kepala.pangkat = document.getElementById('pf-kepala-pangkat')?.value || '';
+    l.visi = document.getElementById('pf-visi')?.value || '';
+    l.misi = document.getElementById('pf-misi')?.value || '';
+    l.tujuan = document.getElementById('pf-tujuan')?.value || '';
+    this.save();
+  },
+
+  // =========================================
+  // RENDER: Tutor Management
+  // =========================================
+  renderTutorList() {
+    const container = document.getElementById('tutorListContainer');
+    if (!container) return;
+
+    const tutors = this._profile.tutors;
+    let html = `
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="card-title">
+            <div class="icon">👨‍🏫</div>
+            <div>
+              <h3>Data Tutor/Pendidik</h3>
+              <p>${tutors.length} tutor terdaftar</p>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="ProfileManager.showAddTutorModal()">
+            ➕ Tambah Tutor
+          </button>
+        </div>
+        <div class="tutor-list" id="tutorListItems">
+    `;
+
+    if (tutors.length === 0) {
+      html += `
+        <div class="empty-state">
+          <div class="empty-icon">👨‍🏫</div>
+          <p>Belum ada tutor terdaftar. Klik "Tambah Tutor" untuk memulai.</p>
+        </div>
+      `;
+    } else {
+      tutors.forEach((t, idx) => {
+        html += `
+          <div class="tutor-item">
+            <div class="tutor-avatar">${Utils.getInitials(t.nama)}</div>
+            <div class="tutor-info">
+              <div class="name">${t.nama}</div>
+              <div class="mapel">${t.mapel} — ${t.paket.map(p => 'Paket ' + p).join(', ')}</div>
+            </div>
+            <div class="tutor-actions">
+              <button class="btn btn-secondary btn-sm" onclick="ProfileManager.editTutor(${idx})" title="Edit">✏️</button>
+              <button class="btn btn-danger btn-sm" onclick="ProfileManager.deleteTutor(${idx})" title="Hapus">🗑️</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    html += '</div></div>';
+    container.innerHTML = html;
+  },
+
+  showAddTutorModal() {
+    this._showTutorModal();
+  },
+
+  editTutor(index) {
+    const tutor = this._profile.tutors[index];
+    this._showTutorModal(tutor, index);
+  },
+
+  _showTutorModal(tutor = null, editIndex = -1) {
+    const isEdit = editIndex >= 0;
+    const t = tutor || { nama: '', nip: '', mapel: '', kualifikasi: '', paket: ['A', 'B', 'C'] };
+
+    let overlay = document.getElementById('tutorModal');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'tutorModal';
+      overlay.className = 'modal-overlay';
+      document.body.appendChild(overlay);
+    }
+
+    overlay.innerHTML = `
+      <div class="modal">
+        <div class="modal-header">
+          <h3>${isEdit ? 'Edit' : 'Tambah'} Tutor</h3>
+          <button class="modal-close" onclick="ProfileManager.closeTutorModal()">✕</button>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nama Lengkap *</label>
+            <input type="text" class="form-input" id="tutor-nama" value="${t.nama}" placeholder="Nama tutor">
+          </div>
+          <div class="form-group">
+            <label class="form-label">NIP/NIK</label>
+            <input type="text" class="form-input" id="tutor-nip" value="${t.nip}" placeholder="NIP atau NIK">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Mata Pelajaran *</label>
+            <input type="text" class="form-input" id="tutor-mapel" value="${t.mapel}" placeholder="Mata pelajaran yang diampu">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Kualifikasi</label>
+            <input type="text" class="form-input" id="tutor-kualifikasi" value="${t.kualifikasi}" placeholder="S1 Pendidikan, dll">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Program yang Diampu</label>
+          <div style="display:flex;gap:12px;margin-top:6px;">
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:0.85rem;color:var(--text-secondary)">
+              <input type="checkbox" id="tutor-paket-a" ${t.paket.includes('A') ? 'checked' : ''}> Paket A
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:0.85rem;color:var(--text-secondary)">
+              <input type="checkbox" id="tutor-paket-b" ${t.paket.includes('B') ? 'checked' : ''}> Paket B
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:0.85rem;color:var(--text-secondary)">
+              <input type="checkbox" id="tutor-paket-c" ${t.paket.includes('C') ? 'checked' : ''}> Paket C
+            </label>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px;">
+          <button class="btn btn-secondary" onclick="ProfileManager.closeTutorModal()">Batal</button>
+          <button class="btn btn-primary" onclick="ProfileManager.saveTutor(${editIndex})">
+            ${isEdit ? '💾 Simpan Perubahan' : '➕ Tambah Tutor'}
+          </button>
+        </div>
+      </div>
+    `;
+
+    setTimeout(() => overlay.classList.add('active'), 10);
+  },
+
+  saveTutor(editIndex) {
+    const nama = document.getElementById('tutor-nama')?.value?.trim();
+    const mapel = document.getElementById('tutor-mapel')?.value?.trim();
+    if (!nama || !mapel) {
+      Utils.showToast('Nama dan mata pelajaran wajib diisi!', 'error');
+      return;
+    }
+
+    const paket = [];
+    if (document.getElementById('tutor-paket-a')?.checked) paket.push('A');
+    if (document.getElementById('tutor-paket-b')?.checked) paket.push('B');
+    if (document.getElementById('tutor-paket-c')?.checked) paket.push('C');
+
+    const tutor = {
+      id: editIndex >= 0 ? this._profile.tutors[editIndex].id : Utils.generateId(),
+      nama,
+      nip: document.getElementById('tutor-nip')?.value?.trim() || '',
+      mapel,
+      kualifikasi: document.getElementById('tutor-kualifikasi')?.value?.trim() || '',
+      paket: paket.length > 0 ? paket : ['A', 'B', 'C']
+    };
+
+    if (editIndex >= 0) {
+      this._profile.tutors[editIndex] = tutor;
+    } else {
+      this._profile.tutors.push(tutor);
+    }
+
+    this.save();
+    this.closeTutorModal();
+    this.renderTutorList();
+  },
+
+  deleteTutor(index) {
+    if (!confirm('Yakin ingin menghapus tutor ini?')) return;
+    this._profile.tutors.splice(index, 1);
+    this.save();
+    this.renderTutorList();
+  },
+
+  closeTutorModal() {
+    const overlay = document.getElementById('tutorModal');
+    if (overlay) {
+      overlay.classList.remove('active');
+      setTimeout(() => overlay.remove(), 300);
+    }
+  },
+
+  // =========================================
+  // RENDER: Package Configuration
+  // =========================================
+  renderPackageConfig() {
+    const container = document.getElementById('packageConfigContainer');
+    if (!container) return;
+
+    const selected = this._profile.selectedPackages;
+    let html = `
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="card-title">
+            <div class="icon">📦</div>
+            <div>
+              <h3>Pengaturan Paket Program</h3>
+              <p>Pilih program yang akan di-generate dokumennya</p>
+            </div>
+          </div>
+        </div>
+        <div class="package-toggle" id="packageToggle">
+    `;
+
+    ['A', 'B', 'C'].forEach(p => {
+      const pkg = CONFIG.packages[p];
+      const isActive = selected.includes(p);
+      html += `
+        <button class="pkg-btn ${isActive ? 'active' : ''}" onclick="ProfileManager.togglePackage('${p}')">
+          Paket ${p}
+          <span class="pkg-sub">Setara ${pkg.setara} | ${pkg.jpMenit} mnt/JP</span>
+        </button>
+      `;
+    });
+
+    html += '</div></div>';
+
+    // Subject selection per package
+    selected.forEach(p => {
+      const pkg = CONFIG.packages[p];
+      const subjects = CONFIG.subjects[p];
+      html += `
+        <div class="glass-card">
+          <div class="card-header">
+            <div class="card-title">
+              <div class="icon">📚</div>
+              <div>
+                <h3>Mata Pelajaran — Paket ${p}</h3>
+                <p>Setara ${pkg.setara} | Fase ${pkg.faseAktif} | ${pkg.levelHOTS}</p>
+              </div>
+            </div>
+          </div>
+          <h4 style="margin-bottom:8px;color:var(--text-secondary);font-size:0.8rem;">KELOMPOK UMUM</h4>
+          <div class="checkbox-group">
+      `;
+
+      subjects.umum.forEach((s, i) => {
+        const checked = !this._profile.selectedSubjects[p]?.length || this._profile.selectedSubjects[p].includes(s);
+        html += `
+          <div class="checkbox-item ${checked ? 'checked' : ''}">
+            <input type="checkbox" id="subj-${p}-${i}" data-paket="${p}" data-subject="${s}" ${checked ? 'checked' : ''} onchange="ProfileManager.toggleSubject(this)">
+            <span class="doc-label">${s}</span>
+          </div>
+        `;
+      });
+
+      html += '</div>';
+
+      // Pemberdayaan
+      html += `
+        <h4 style="margin:16px 0 8px;color:var(--text-secondary);font-size:0.8rem;">KELOMPOK PEMBERDAYAAN & KETERAMPILAN</h4>
+        <div class="checkbox-group">
+      `;
+
+      subjects.pemberdayaan.forEach((s, i) => {
+        html += `
+          <div class="checkbox-item checked">
+            <input type="checkbox" checked data-paket="${p}" data-subject="${s}" onchange="ProfileManager.toggleSubject(this)">
+            <span class="doc-label">${s}</span>
+            <span class="doc-badge">Pemberdayaan</span>
+          </div>
+        `;
+      });
+
+      html += '</div></div>';
+    });
+
+    container.innerHTML = html;
+  },
+
+  togglePackage(paket) {
+    const idx = this._profile.selectedPackages.indexOf(paket);
+    if (idx >= 0) {
+      if (this._profile.selectedPackages.length <= 1) {
+        Utils.showToast('Minimal satu paket harus dipilih!', 'warning');
+        return;
+      }
+      this._profile.selectedPackages.splice(idx, 1);
+    } else {
+      this._profile.selectedPackages.push(paket);
+      this._profile.selectedPackages.sort();
+    }
+    this.save();
+    this.renderPackageConfig();
+  },
+
+  toggleSubject(checkbox) {
+    const paket = checkbox.dataset.paket;
+    const subject = checkbox.dataset.subject;
+    if (!this._profile.selectedSubjects[paket]) {
+      this._profile.selectedSubjects[paket] = [...CONFIG.subjects[paket].umum];
+    }
+    const list = this._profile.selectedSubjects[paket];
+    const idx = list.indexOf(subject);
+    if (checkbox.checked && idx < 0) list.push(subject);
+    if (!checkbox.checked && idx >= 0) list.splice(idx, 1);
+    checkbox.closest('.checkbox-item')?.classList.toggle('checked', checkbox.checked);
+    this.save();
+  }
+};
