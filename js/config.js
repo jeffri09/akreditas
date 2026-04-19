@@ -61,8 +61,16 @@ const CONFIG = {
       keterampilan: 'Fungsional (literasi & numerasi rumah tangga)',
       remedialFokus: 'Diagnostik dasar kemampuan baca-tulis-hitung',
       kesepakatan: 'Visual (gambar & simbol sederhana)',
-      usia: '7-12 tahun atau lebih',
-      mapelWajib: ['Bahasa Indonesia', 'Matematika', 'Pendidikan Agama Islam dan Budi Pekerti', 'Pendidikan Pancasila', 'Ilmu Pengetahuan Alam dan Sosial (IPAS)']
+      usia: '6-12 tahun (santri non-mukim)',
+      mapelWajib: ['Bahasa Indonesia', 'Matematika', 'Pendidikan Agama Islam dan Budi Pekerti', 'Pendidikan Pancasila', 'Ilmu Pengetahuan Alam dan Sosial (IPAS)'],
+      defaultAiParams: {
+        modelBelajar: 'Discovery / Inquiry Learning',
+        formatSoal: 'Pilihan Ganda A, B, C, D dengan Kunci',
+        temaP5: 'Kearifan Lokal Daerah'
+      },
+      defaultKonteks: 'Peserta didik adalah santri pondok pesantren bermanhaj salaf usia 6-12 tahun. Mereka TIDAK tinggal di asrama (santri non-mukim/kalong), datang ke pondok untuk belajar lalu pulang ke rumah. Kegiatan meliputi mengaji Iqro/Al-Quran, belajar adab islami, dan hafalan surat pendek. Gunakan bahasa sederhana, contoh dari kehidupan sehari-hari santri (mengaji ba\'da Maghrib, sholat berjamaah, membantu orang tua, bermain di halaman pondok). Kearifan lokal: OKU Timur, Sumatera Selatan (pangan lokal seperti pempek, tekwan, kopi Semende; pertanian karet, sawit, padi). Jangan gunakan contoh gadget, mall, atau hiburan modern. Jangan rujuk budaya daerah lain (Jawa, Sunda, Bali, dll).',
+      sapaan: 'Ananda',
+      konteksPrompt: 'Pendidikan Kesetaraan di Pondok Pesantren Salaf, OKU Timur, Sumsel. Santri usia 6-12 tahun (non-mukim), pembelajaran SKK dipadukan jadwal mengaji.'
     },
     B: {
       nama: 'Paket B',
@@ -75,8 +83,16 @@ const CONFIG = {
       keterampilan: 'Okupasional & wirausaha dasar',
       remedialFokus: 'Penguatan konsep & keterampilan dasar',
       kesepakatan: 'Normatif (kesepakatan tertulis bersama)',
-      usia: '13-15 tahun atau lebih',
-      mapelWajib: ['Bahasa Indonesia', 'Matematika', 'Pendidikan Agama Islam dan Budi Pekerti', 'Pendidikan Pancasila', 'Ilmu Pengetahuan Alam']
+      usia: '12-15 tahun (santri mukim)',
+      mapelWajib: ['Bahasa Indonesia', 'Matematika', 'Pendidikan Agama Islam dan Budi Pekerti', 'Pendidikan Pancasila', 'Ilmu Pengetahuan Alam'],
+      defaultAiParams: {
+        modelBelajar: 'Problem Based Learning (PBL)',
+        formatSoal: 'Soal Isian Singkat & Studi Kasus',
+        temaP5: 'Gaya Hidup Berkelanjutan'
+      },
+      defaultKonteks: 'Peserta didik adalah santri pondok pesantren bermanhaj salaf usia 12-15 tahun. Mereka tinggal di asrama pondok, mengaji kitab kuning dasar (Jurumiyah, Safinah, Taqrib), menghafal Al-Quran, dan mendalami fiqih ibadah. Gunakan contoh dari kehidupan pesantren (kajian kitab, musyawarah santri, piket kebersihan asrama, olahraga santri, ro\'an/kerja bakti). Kearifan lokal: OKU Timur, Sumatera Selatan (songket Palembang, tradisi sedekah rame, sungai Komering, pertanian lokal). Soal dan kegiatan boleh dikaitkan dengan teks Arab/kitab. Hindari konteks entertainment modern dan budaya daerah lain.',
+      sapaan: 'santri',
+      konteksPrompt: 'Pendidikan Kesetaraan di Pondok Pesantren Salaf, OKU Timur, Sumsel. Santri usia 12-15 tahun (mukim di asrama), pembelajaran SKK diintegrasikan jadwal pondok.'
     },
     C: {
       nama: 'Paket C',
@@ -89,8 +105,16 @@ const CONFIG = {
       keterampilan: 'Vokasional, proposal usaha, kesiapan dunia kerja',
       remedialFokus: 'Persiapan kompetensi kelulusan & vokasi',
       kesepakatan: 'Profesional (kontrak belajar fleksibel)',
-      usia: '16-18 tahun atau lebih',
-      mapelWajib: ['Bahasa Indonesia', 'Matematika', 'Bahasa Inggris', 'Pendidikan Agama Islam dan Budi Pekerti', 'Pendidikan Pancasila', 'Geografi']
+      usia: '15-18 tahun (santri mukim)',
+      mapelWajib: ['Bahasa Indonesia', 'Matematika', 'Bahasa Inggris', 'Pendidikan Agama Islam dan Budi Pekerti', 'Pendidikan Pancasila', 'Geografi'],
+      defaultAiParams: {
+        modelBelajar: 'Project Based Learning (PjBL)',
+        formatSoal: 'Soal Analitis Uraian Panjang (Esai)',
+        temaP5: 'Kewirausahaan / Keterampilan Mandiri'
+      },
+      defaultKonteks: 'Peserta didik adalah santri pondok pesantren bermanhaj salaf usia 15-18 tahun. Mereka tinggal di asrama, mendalami kitab kuning tingkat lanjut (Alfiyah, Fathul Qorib, Fathul Mu\'in), sebagian sudah membantu mengajar santri yunior (badal). Gunakan contoh dari kehidupan pesantren (mengajar diniyah, mengelola koperasi pondok, organisasi santri/OSPA, persiapan dakwah di masyarakat). Kearifan lokal: OKU Timur, Sumatera Selatan (potensi ekonomi karet-sawit, wirausaha olahan pangan lokal, koperasi pesantren). Konteks kewirausahaan fokus pada usaha halal berbasis pesantren. Hindari budaya daerah lain.',
+      sapaan: 'santri',
+      konteksPrompt: 'Pendidikan Kesetaraan di Pondok Pesantren Salaf, OKU Timur, Sumsel. Santri usia 15-18 tahun (mukim di asrama), pembelajaran SKK diintegrasikan jadwal pondok.'
     }
   },
 

@@ -98,12 +98,22 @@ const AIClient = {
    * Menghasilkan Paket Data per Mata Pelajaran untuk digunakan oleh docx.js Templates
    */
   async generateMapelPayload(paket, mapel, fase) {
-    const modelBelajar = localStorage.getItem('ai_model_belajar') || 'Problem Based Learning (PBL)';
-    const formatSoal = localStorage.getItem('ai_format_soal') || 'Soal Analitis Uraian Panjang (Esai)';
-    const temaP5 = localStorage.getItem('ai_tema_p5') || 'Kewirausahaan / Keterampilan Mandiri';
-    const konteks = localStorage.getItem('ai_konteks') || '';
+    const pkg = CONFIG.packages[paket] || {};
+    const defaults = pkg.defaultAiParams || {};
+    const modelBelajar = localStorage.getItem('ai_model_belajar') || defaults.modelBelajar || 'Problem Based Learning (PBL)';
+    const formatSoal = localStorage.getItem('ai_format_soal') || defaults.formatSoal || 'Soal Analitis Uraian Panjang (Esai)';
+    const temaP5 = localStorage.getItem('ai_tema_p5') || defaults.temaP5 || 'Kewirausahaan / Keterampilan Mandiri';
+    const konteksUser = localStorage.getItem('ai_konteks') || '';
+    const konteksDefault = pkg.defaultKonteks || '';
+    const sapaan = pkg.sapaan || 'peserta didik';
+    const konteksIdentitas = pkg.konteksPrompt || 'Pendidikan Kesetaraan (pembelajaran fleksibel berbasis SKK)';
     
-    let konteksPrompt = konteks ? `\nKONTEKS KHUSUS DARI TUTOR:\n"${konteks}"\n(Sesuaikan seluruh konten dengan konteks ini)\n` : "";
+    // Gabungkan konteks: default pesantren + custom user (jika ada)
+    let konteksGabungan = konteksDefault;
+    if (konteksUser) {
+      konteksGabungan += `\nINSTRUKSI TAMBAHAN DARI TUTOR: "${konteksUser}"`;
+    }
+    let konteksPrompt = konteksGabungan ? `\nKONTEKS PESERTA DIDIK & LINGKUNGAN:\n"${konteksGabungan}"\n(Sesuaikan seluruh konten dengan konteks ini)\n` : "";
 
     const prompt = `Anda adalah ahli kurikulum pendidikan kesetaraan (PKBM) yang berpengalaman dalam akreditasi BAN-PDM.
 Buatkan skenario pembelajaran yang SIAP PAKAI untuk dokumen akreditasi dengan detail berikut:
@@ -112,7 +122,7 @@ IDENTITAS:
 - Mata Pelajaran: "${mapel}"
 - Jenjang: Paket ${paket} (Fase ${fase})
 - Regulasi Acuan: Kurikulum Merdeka sesuai Kepmendikbudristek No. 262/M/2022 dan Panduan BSKAP
-- Konteks: Pendidikan Kesetaraan (peserta didik umumnya pekerja/orang dewasa, pembelajaran fleksibel berbasis SKK)
+- Konteks: ${konteksIdentitas}
 
 PARAMETER KUSTOMISASI:
 - Model Pembelajaran: ${modelBelajar}
@@ -120,14 +130,16 @@ PARAMETER KUSTOMISASI:
 - Tema Projek Penguatan Karakter: ${temaP5}
 ${konteksPrompt}
 ATURAN PENULISAN:
-1. Gunakan bahasa Indonesia yang profesional namun hangat — sesuai karakteristik pendidikan kesetaraan (andragogi/orang dewasa)
-2. JANGAN gunakan kata "kalian" — gunakan "Bapak/Ibu peserta didik" atau "peserta didik"
+1. Gunakan bahasa Indonesia yang profesional namun hangat — sesuai pendidikan di pondok pesantren
+2. Gunakan sapaan "${sapaan}" — JANGAN gunakan "kalian" atau "Bapak/Ibu peserta didik"
 3. JANGAN gunakan frase kaku ala AI seperti "Berdasarkan hasil analisis", "Adapun langkah-langkah berikut", "Dalam rangka", "Menyikapi hal tersebut"
-4. Gunakan gaya bahasa guru PKBM yang berpengalaman: natural, ramah, profesional
+4. Gunakan gaya bahasa guru PKBM/ustadz yang berpengalaman: natural, ramah, profesional
 5. Variasikan pembukaan setiap paragraf — jangan selalu dimulai dengan "Peserta didik akan..."
-6. Kegiatan harus kontekstual dan relevan dengan kehidupan nyata peserta didik dewasa
-7. Soal harus sesuai level kognitif HOTS yang sesuai fase (${fase})
-8. Semua konten harus bisa dipertanggungjawabkan saat visitasi akreditasi BAN-PDM
+6. Contoh dan studi kasus harus relevan dengan kehidupan pesantren dan daerah OKU Timur, Sumatera Selatan
+7. JANGAN merujuk budaya daerah lain (Jawa, Sunda, Bali, dll) kecuali konteks Bhinneka Tunggal Ika
+8. Jika menyebut kearifan lokal, gunakan: tradisi Melayu-Sumatera, Sungai Komering, karet/sawit, pempek/tekwan/pindang
+9. Soal harus sesuai level kognitif HOTS yang sesuai fase (${fase})
+10. Semua konten harus bisa dipertanggungjawabkan saat visitasi akreditasi BAN-PDM
 
 OUTPUT WAJIB dalam format JSON murni (tanpa markdown, tanpa backtick), struktur:
 {

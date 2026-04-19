@@ -395,24 +395,34 @@ const App = {
           <p style="font-size:0.75rem;color:var(--text-muted);margin:0;">Dokumen akan dicetak berdasarkan Paket jenjang yang sedang Anda pilih di navigasi atas.</p>
         </div>
 
-        <h4 style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:8px;">PILIH MATA PELAJARAN (Khusus dokumen 📚 Per-Mapel)</h4>
+        <h4 style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:8px;">PILIH MATA PELAJARAN (Khusus dokumen 📚 Per-Mapel)
+          <span style="float:right;display:flex;gap:6px;">
+            <button class="btn btn-sm" style="font-size:0.7rem;padding:2px 8px;" onclick="App.toggleAllBatch('mapel', true)">✅ Semua</button>
+            <button class="btn btn-sm btn-outline" style="font-size:0.7rem;padding:2px 8px;" onclick="App.toggleAllBatch('mapel', false)">❌ Hapus</button>
+          </span>
+        </h4>
         <div class="batch-options">
           ${CONFIG.packages[this.currentPackage || 'A'].mapelWajib.map(m => {
             const pic = CONFIG.mapelPics[this.currentPackage || 'A']?.[m] || '';
             const picHtml = pic ? `<div style="font-size:0.75rem;color:var(--accent-primary);margin-top:4px;font-weight:600;"><span class="badge" style="background:var(--accent-primary);color:#fff;padding:2px 6px;border-radius:4px;font-size:0.7rem;">👤 PIC Mapel: ${pic}</span></div>` : '';
             return `
-            <div class="batch-option selected" onclick="this.classList.toggle('selected')" data-batch-mapel="${m}">
+            <div class="batch-option" onclick="this.classList.toggle('selected'); this.querySelector('input').checked = this.classList.contains('selected')" data-batch-mapel="${m}">
               <span class="opt-icon">📘</span>
               <div class="opt-info">
                 <div class="opt-title">${m}</div>
                 ${picHtml}
               </div>
-              <input type="checkbox" checked style="accent-color:var(--accent-primary)">
+              <input type="checkbox" style="accent-color:var(--accent-primary)" onclick="event.stopPropagation(); this.closest('.batch-option').classList.toggle('selected', this.checked)">
             </div>
           `}).join('')}
         </div>
 
-        <h4 style="color:var(--text-secondary);font-size:0.8rem;margin:16px 0 8px;">PILIH BUTIR INSTITUSIONAL (Manajemen & Dokumen Umum)</h4>
+        <h4 style="color:var(--text-secondary);font-size:0.8rem;margin:16px 0 8px;">PILIH BUTIR INSTITUSIONAL (Manajemen & Dokumen Umum)
+          <span style="float:right;display:flex;gap:6px;">
+            <button class="btn btn-sm" style="font-size:0.7rem;padding:2px 8px;" onclick="App.toggleAllBatch('butir', true)">✅ Semua</button>
+            <button class="btn btn-sm btn-outline" style="font-size:0.7rem;padding:2px 8px;" onclick="App.toggleAllBatch('butir', false)">❌ Hapus</button>
+          </span>
+        </h4>
         <div class="batch-options">
           ${CONFIG.butirs.map(b => {
              const pic = CONFIG.instPics[this.currentPackage || 'A']?.[b.id];
@@ -420,14 +430,14 @@ const App = {
                 ? '<div style="font-size:0.75rem;color:var(--accent-primary);margin-top:4px;font-weight:600;">👤 PIC: Sesuai Pilihan Mapel di Atas</div>' 
                 : `<div style="font-size:0.75rem;color:#E67E22;margin-top:4px;font-weight:600;"><span class="badge" style="background:#E67E22;color:#fff;padding:2px 6px;border-radius:4px;font-size:0.7rem;">👤 Tim Institusi: ${pic || 'Belum ditentukan'}</span></div>`;
              return `
-            <div class="batch-option selected" onclick="this.classList.toggle('selected')" data-batch-butir="${b.id}">
+            <div class="batch-option" onclick="this.classList.toggle('selected'); this.querySelector('input').checked = this.classList.contains('selected')" data-batch-butir="${b.id}">
               <span class="opt-icon">📋</span>
               <div class="opt-info">
                 <div class="opt-title">Butir ${b.id}</div>
                 <div class="opt-desc">${b.judul.substring(0, 40)}...</div>
                 ${picHtml}
               </div>
-              <input type="checkbox" checked style="accent-color:var(--accent-primary)">
+              <input type="checkbox" style="accent-color:var(--accent-primary)" onclick="event.stopPropagation(); this.closest('.batch-option').classList.toggle('selected', this.checked)">
             </div>
           `}).join('')}
         </div>
@@ -469,43 +479,53 @@ const App = {
         </div>
 
         <!-- CUSTOM AI PARAMETERS -->
-        <h4 style="font-size:0.9rem;margin-bottom:8px;margin-top:16px;border-bottom:1px solid #ddd;padding-bottom:4px;">⚙️ Parameter Output AI (Opsional)</h4>
+        <h4 style="font-size:0.9rem;margin-bottom:8px;margin-top:16px;border-bottom:1px solid #ddd;padding-bottom:4px;">⚙️ Parameter Output AI — Default: Paket ${this.currentPackage || 'A'}
+          <button class="btn btn-sm btn-outline" style="font-size:0.7rem;padding:2px 8px;float:right;" onclick="App.resetAiDefaults()">↻ Reset Default Paket</button>
+        </h4>
         
+        ${(() => {
+          const pkg = CONFIG.packages[this.currentPackage || 'A'];
+          const d = pkg.defaultAiParams || {};
+          const curModel = localStorage.getItem('ai_model_belajar') || d.modelBelajar || '';
+          const curSoal = localStorage.getItem('ai_format_soal') || d.formatSoal || '';
+          const curP5 = localStorage.getItem('ai_tema_p5') || d.temaP5 || '';
+          const isS = (val, cur) => val === cur ? 'selected' : '';
+          return `
         <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
           <div class="form-group" style="flex:1;min-width:180px;">
             <label style="font-size:0.8rem;">Model Pembelajaran (RPP)</label>
             <select id="aiModelBelajar" class="form-input" style="font-size:0.85rem;padding:6px;" onchange="localStorage.setItem('ai_model_belajar', this.value)">
-              <option value="Problem Based Learning (PBL)" ${localStorage.getItem('ai_model_belajar') === 'Problem Based Learning (PBL)' ? 'selected' : ''}>Problem Based Learning (PBL)</option>
-              <option value="Project Based Learning (PjBL)" ${localStorage.getItem('ai_model_belajar') === 'Project Based Learning (PjBL)' ? 'selected' : ''}>Project Based Learning (PjBL)</option>
-              <option value="Pendekatan Andragogi (Orang Dewasa)" ${localStorage.getItem('ai_model_belajar') === 'Pendekatan Andragogi (Orang Dewasa)' ? 'selected' : ''}>Andragogi (Khas Dewasa Pendidikan Kesetaraan)</option>
-              <option value="Discovery / Inquiry Learning" ${localStorage.getItem('ai_model_belajar') === 'Discovery / Inquiry Learning' ? 'selected' : ''}>Discovery / Inquiry Learning</option>
+              <option value="Problem Based Learning (PBL)" ${isS('Problem Based Learning (PBL)', curModel)}>Problem Based Learning (PBL)</option>
+              <option value="Project Based Learning (PjBL)" ${isS('Project Based Learning (PjBL)', curModel)}>Project Based Learning (PjBL)</option>
+              <option value="Discovery / Inquiry Learning" ${isS('Discovery / Inquiry Learning', curModel)}>Discovery / Inquiry Learning</option>
             </select>
           </div>
           <div class="form-group" style="flex:1;min-width:180px;">
             <label style="font-size:0.8rem;">Format Soal Formatif/Sumatif</label>
             <select id="aiFormatSoal" class="form-input" style="font-size:0.85rem;padding:6px;" onchange="localStorage.setItem('ai_format_soal', this.value)">
-              <option value="Soal Analitis Uraian Panjang (Esai)" ${localStorage.getItem('ai_format_soal') === 'Soal Analitis Uraian Panjang (Esai)' ? 'selected' : ''}>Esai / Uraian Panjang (HOTS)</option>
-              <option value="Pilihan Ganda A, B, C, D dengan Kunci" ${localStorage.getItem('ai_format_soal') === 'Pilihan Ganda A, B, C, D dengan Kunci' ? 'selected' : ''}>Pilihan Ganda dengan Kunci</option>
-              <option value="Soal Isian Singkat & Studi Kasus" ${localStorage.getItem('ai_format_soal') === 'Soal Isian Singkat & Studi Kasus' ? 'selected' : ''}>Studi Kasus Ringkas</option>
+              <option value="Soal Analitis Uraian Panjang (Esai)" ${isS('Soal Analitis Uraian Panjang (Esai)', curSoal)}>Esai / Uraian Panjang (HOTS)</option>
+              <option value="Pilihan Ganda A, B, C, D dengan Kunci" ${isS('Pilihan Ganda A, B, C, D dengan Kunci', curSoal)}>Pilihan Ganda dengan Kunci</option>
+              <option value="Soal Isian Singkat & Studi Kasus" ${isS('Soal Isian Singkat & Studi Kasus', curSoal)}>Studi Kasus Ringkas</option>
             </select>
           </div>
         </div>
-
         <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
           <div class="form-group" style="flex:1;min-width:180px;">
             <label style="font-size:0.8rem;">Tema Projek Karakter P5</label>
             <select id="aiTemaP5" class="form-input" style="font-size:0.85rem;padding:6px;" onchange="localStorage.setItem('ai_tema_p5', this.value)">
-              <option value="Kewirausahaan / Keterampilan Mandiri" ${localStorage.getItem('ai_tema_p5') === 'Kewirausahaan / Keterampilan Mandiri' ? 'selected' : ''}>Kewirausahaan / Keterampilan PKBM</option>
-              <option value="Gaya Hidup Berkelanjutan" ${localStorage.getItem('ai_tema_p5') === 'Gaya Hidup Berkelanjutan' ? 'selected' : ''}>Gaya Hidup Berkelanjutan / Lingkungan</option>
-              <option value="Kearifan Lokal Daerah" ${localStorage.getItem('ai_tema_p5') === 'Kearifan Lokal Daerah' ? 'selected' : ''}>Kearifan Lokal Budaya Daerah</option>
-              <option value="Bhinneka Tunggal Ika / Suara Demokrasi" ${localStorage.getItem('ai_tema_p5') === 'Bhinneka Tunggal Ika / Suara Demokrasi' ? 'selected' : ''}>Bhinneka Tunggal Ika</option>
+              <option value="Kewirausahaan / Keterampilan Mandiri" ${isS('Kewirausahaan / Keterampilan Mandiri', curP5)}>Kewirausahaan / Keterampilan Mandiri</option>
+              <option value="Gaya Hidup Berkelanjutan" ${isS('Gaya Hidup Berkelanjutan', curP5)}>Gaya Hidup Berkelanjutan / Lingkungan</option>
+              <option value="Kearifan Lokal Daerah" ${isS('Kearifan Lokal Daerah', curP5)}>Kearifan Lokal OKU Timur</option>
+              <option value="Bhinneka Tunggal Ika / Suara Demokrasi" ${isS('Bhinneka Tunggal Ika / Suara Demokrasi', curP5)}>Bhinneka Tunggal Ika</option>
             </select>
           </div>
-        </div>
+        </div>`;
+        })()}
 
         <div class="form-group" style="margin-bottom:12px;">
-          <label style="font-size:0.8rem;">Instruksi Khusus / Konteks (Opsional Bebas)</label>
-          <textarea id="aiKonteks" class="form-input" rows="2" style="font-size:0.85rem;padding:6px;" placeholder="Cth: Siswa mayoritas pekerja paruh waktu. Beri soal logika akuntansi warung." onchange="localStorage.setItem('ai_konteks', this.value)" oninput="localStorage.setItem('ai_konteks', this.value)">${localStorage.getItem('ai_konteks') || ''}</textarea>
+          <label style="font-size:0.8rem;">Instruksi Tambahan (Opsional — konteks pesantren sudah otomatis)</label>
+          <textarea id="aiKonteks" class="form-input" rows="2" style="font-size:0.85rem;padding:6px;" placeholder="Cth: Fokus soal menghitung zakat fitrah. Atau: Tema proyek = budidaya lele di pondok." onchange="localStorage.setItem('ai_konteks', this.value)" oninput="localStorage.setItem('ai_konteks', this.value)">${localStorage.getItem('ai_konteks') || ''}</textarea>
+          <small style="color:var(--text-muted);font-size:0.72rem;">💡 Konteks santri pesantren salaf OKU Timur sudah otomatis ditambahkan ke prompt AI.</small>
         </div>
         
         <div style="display:flex;gap:8px;margin-top:8px;">
@@ -514,6 +534,29 @@ const App = {
         </div>
       </div>
     `;
+  },
+
+  // =========================================
+  // BATCH HELPERS
+  // =========================================
+  toggleAllBatch(type, select) {
+    const attr = type === 'mapel' ? 'data-batch-mapel' : 'data-batch-butir';
+    document.querySelectorAll(`.batch-option[${attr}]`).forEach(el => {
+      el.classList.toggle('selected', select);
+      const cb = el.querySelector('input[type="checkbox"]');
+      if (cb) cb.checked = select;
+    });
+  },
+
+  resetAiDefaults() {
+    const pkg = CONFIG.packages[this.currentPackage || 'A'];
+    const d = pkg?.defaultAiParams || {};
+    localStorage.removeItem('ai_model_belajar');
+    localStorage.removeItem('ai_format_soal');
+    localStorage.removeItem('ai_tema_p5');
+    localStorage.removeItem('ai_konteks');
+    this.renderGeneratePanel();
+    Utils.showToast(`Parameter AI di-reset ke default Paket ${this.currentPackage}`, 'success');
   },
 
   // =========================================

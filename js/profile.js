@@ -23,9 +23,9 @@ const ProfileManager = {
         nip: '',
         pangkat: ''
       },
-      visi: '',
-      misi: '',
-      tujuan: ''
+      visi: 'Terwujudnya generasi santri yang berilmu, beriman, berakhlak mulia, dan mandiri melalui pendidikan kesetaraan berbasis pesantren salaf',
+      misi: '1. Menyelenggarakan pendidikan kesetaraan Paket A, B, dan C yang terintegrasi dengan kurikulum pesantren salaf\n2. Membekali santri dengan ilmu agama dan ilmu umum secara seimbang sesuai manhaj salaf\n3. Menanamkan adab dan akhlak mulia dalam setiap kegiatan pembelajaran\n4. Mengembangkan keterampilan hidup santri sebagai bekal kemandirian\n5. Membangun lingkungan belajar yang aman, nyaman, dan Islami',
+      tujuan: 'Memberikan layanan pendidikan formal kesetaraan bagi santri pondok pesantren agar memperoleh ijazah yang setara dengan pendidikan formal, tanpa mengurangi porsi pendidikan diniyah pesantren. Menghasilkan lulusan yang memiliki kompetensi akademik, kedalaman ilmu agama, dan keterampilan hidup yang memadai.'
     },
     tutors: [
       { id: 't1', nama: 'Naela', mapel: 'Matematika & IPAS', paket: ['A'], nip: '', kualifikasi: '' },
