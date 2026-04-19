@@ -33,6 +33,11 @@ const DocGenerator = {
       if (pic) resolvedTutorName = pic;
     }
     
+    
+    // Resolve manual override per butir
+    const butirNumForTutor = docId.split('-')[0].replace('B', '');
+    const manualTutor = App?.selectedTutors?.[butirNumForTutor] || null;
+
     const context = {
       profile,
       lembaga: profile.lembaga,
@@ -44,7 +49,7 @@ const DocGenerator = {
       tanggalLengkap: Utils.formatTanggalLengkap(new Date()),
       regulasiCP: Utils.getReferensiCP(paket),
       fase: Utils.getFase(paket),
-      tutor: App?.selectedTutor || resolvedTutorName || profile.lembaga?.kepala?.nama || '', // Manual override via UI takes precedence
+      tutor: manualTutor || resolvedTutorName || profile.lembaga?.kepala?.nama || '',
       aiData: aiData
     };
 
@@ -64,7 +69,7 @@ const DocGenerator = {
         properties: {
           page: {
             margin: { top: 1134, right: 1134, bottom: 1134, left: 1134 },
-            size: { width: 12240, height: 18720 }  // F4 / Folio (8.5" × 13")
+            size: { width: 12191, height: 18711 }  // F4 Indonesia: 21.5 cm × 33 cm
           }
         },
         headers: { default: this._createHeader(context) },
@@ -131,7 +136,8 @@ const DocGenerator = {
             let aiData = null;
             if (useAi) {
                try {
-                 const aiCacheKey = `ai_${paket}_${mpl}`;
+                 const aiParamHash = DocGenerator._getAiParamHash();
+                 const aiCacheKey = `ai_${paket}_${mpl}_${aiParamHash}`;
                  if (!window[aiCacheKey]) {
                    window[aiCacheKey] = await AIClient.generateMapelPayload(paket, mpl, Utils.getFase(paket));
                  }
@@ -162,18 +168,8 @@ const DocGenerator = {
         // Generate one file (per jenjang)
         try {
           let aiData = null;
-          if (useAi) {
-             try {
-               const aiCacheKey = `ai_${paket}_umum`;
-               if (!window[aiCacheKey]) {
-                 window[aiCacheKey] = await AIClient.generateMapelPayload(paket, "Pendidikan Kesetaraan Umum", Utils.getFase(paket));
-               }
-               aiData = window[aiCacheKey];
-             } catch (aiErr) {
-               console.warn(`[AI Fallback] Gagal mengambil data AI untuk Umum:`, aiErr);
-               aiData = null;
-             }
-          }
+          // Dokumen institusional (perMapel: false) tidak menggunakan aiData.
+          // Skip AI call untuk menghemat kuota API.
 
           const doc = await this.generateDocument(docId, paket, null, aiData);
           const blob = await docx.Packer.toBlob(doc);
@@ -364,7 +360,7 @@ const DocGenerator = {
     },
 
     heading(text, level = 1) {
-      const sizes = { 1: 28, 2: 26, 3: 26 };  // level 3 = 13pt (bold) to differentiate from 12pt body
+      const sizes = { 1: 28, 2: 26, 3: 24 };  // level 3 = 12pt bold, dibedakan dari body (12pt normal)
       return new docx.Paragraph({
         spacing: { before: 240, after: 120 },
         children: [
@@ -495,11 +491,11 @@ const DocGenerator = {
 
     table(headers, rows) {
       const headerCells = headers.map(h => new docx.TableCell({
-        shading: { fill: '1F4E79' },
+        shading: { fill: 'D6E4F0' },
         children: [new docx.Paragraph({
           alignment: docx.AlignmentType.CENTER,
           spacing: { line: 276 },  // single spacing in tables for compactness
-          children: [new docx.TextRun({ text: h, bold: true, size: 24, font: 'Times New Roman', color: 'FFFFFF' })]
+          children: [new docx.TextRun({ text: h, bold: true, size: 24, font: 'Times New Roman', color: '000000' })]
         })],
         verticalAlign: docx.VerticalAlign.CENTER
       }));
@@ -532,5 +528,25 @@ const DocGenerator = {
         ]
       });
     }
+  },
+
+  // =========================================
+  // HELPER: AI Parameter Hash (for cache invalidation)
+  // =========================================
+  _getAiParamHash() {
+    const params = [
+      localStorage.getItem('ai_model_belajar') || '',
+      localStorage.getItem('ai_format_soal') || '',
+      localStorage.getItem('ai_tema_p5') || '',
+      localStorage.getItem('ai_konteks') || ''
+    ].join('|');
+    // Simple hash
+    let hash = 0;
+    for (let i = 0; i < params.length; i++) {
+      const chr = params.charCodeAt(i);
+      hash = ((hash << 5) - hash) + chr;
+      hash |= 0;
+    }
+    return Math.abs(hash).toString(36);
   }
 };

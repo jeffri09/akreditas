@@ -52,7 +52,7 @@ const AIClient = {
           parts: [{ text: prompt }]
         }],
         generationConfig: {
-          temperature: 0.7,
+          temperature: 0.4,
         }
       };
 
@@ -79,7 +79,15 @@ const AIClient = {
           throw new Error('Respon Gemini kosong atau struktur API berubah.');
       }
 
-      return expectJson ? JSON.parse(responseText) : responseText;
+      if (expectJson) {
+        try {
+          return JSON.parse(responseText);
+        } catch (parseErr) {
+          console.error('[AI JSON Parse Error]', parseErr, '\nRaw response:', responseText.substring(0, 500));
+          throw new Error('Respon AI bukan format JSON yang valid. Silakan coba generate ulang. Jika masalah berlanjut, nonaktifkan mode AI.');
+        }
+      }
+      return responseText;
     } catch (e) {
       console.error("[AI Error]", e);
       throw e;
@@ -112,10 +120,14 @@ PARAMETER KUSTOMISASI:
 - Tema Projek Penguatan Karakter: ${temaP5}
 ${konteksPrompt}
 ATURAN PENULISAN:
-1. Gunakan bahasa Indonesia yang profesional namun tidak kaku — sesuai karakteristik pendidikan kesetaraan (andragogi)
-2. Kegiatan harus kontekstual dan relevan dengan kehidupan nyata peserta didik dewasa
-3. Soal harus sesuai level kognitif HOTS yang sesuai fase (${fase})
-4. Semua konten harus bisa dipertanggungjawabkan saat visitasi akreditasi BAN-PDM
+1. Gunakan bahasa Indonesia yang profesional namun hangat — sesuai karakteristik pendidikan kesetaraan (andragogi/orang dewasa)
+2. JANGAN gunakan kata "kalian" — gunakan "Bapak/Ibu peserta didik" atau "peserta didik"
+3. JANGAN gunakan frase kaku ala AI seperti "Berdasarkan hasil analisis", "Adapun langkah-langkah berikut", "Dalam rangka", "Menyikapi hal tersebut"
+4. Gunakan gaya bahasa guru PKBM yang berpengalaman: natural, ramah, profesional
+5. Variasikan pembukaan setiap paragraf — jangan selalu dimulai dengan "Peserta didik akan..."
+6. Kegiatan harus kontekstual dan relevan dengan kehidupan nyata peserta didik dewasa
+7. Soal harus sesuai level kognitif HOTS yang sesuai fase (${fase})
+8. Semua konten harus bisa dipertanggungjawabkan saat visitasi akreditasi BAN-PDM
 
 OUTPUT WAJIB dalam format JSON murni (tanpa markdown, tanpa backtick), struktur:
 {

@@ -7,7 +7,7 @@ const App = {
   currentTab: 'profil',
   currentSubtab: 'butir1',
   currentPackage: 'A',
-  selectedTutor: null,
+  selectedTutors: {},  // per-butir tutor selection { butirId: tutorName }
   generatedDocs: {},  // Track generated docs { docId_paket_mapel: timestamp }
 
   init() {
@@ -151,12 +151,12 @@ const App = {
       const tutors = ProfileManager.getTutors().filter(t => t.paket.includes(this.currentPackage));
       html += `
         <div style="display:flex;gap:12px;margin-bottom:16px;align-items:center;flex-wrap:wrap;">
-          <label style="font-size:0.8rem;color:var(--text-secondary);white-space:nowrap;">👨‍🏫 Tutor:</label>
-          <select class="form-input" id="tutorSelect-butir${butir.id}" style="max-width:280px;font-size:0.82rem;padding:6px 10px;" onchange="App.selectedTutor = this.value || null">
-            <option value="">— Otomatis / Kosong —</option>
-            ${tutors.map(t => `<option value="${t.nama}" ${this.selectedTutor === t.nama ? 'selected' : ''}>${t.nama} (${t.mapel})</option>`).join('')}
+          <label style="font-size:0.8rem;color:var(--text-secondary);white-space:nowrap;">👨‍🏫 Tutor Butir ${butir.id}:</label>
+          <select class="form-input" id="tutorSelect-butir${butir.id}" style="max-width:280px;font-size:0.82rem;padding:6px 10px;" onchange="App.selectedTutors[${butir.id}] = this.value || null">
+            <option value="">— Otomatis (PIC Mapel) —</option>
+            ${tutors.map(t => `<option value="${Utils.escapeHtml(t.nama)}" ${this.selectedTutors[butir.id] === t.nama ? 'selected' : ''}>${Utils.escapeHtml(t.nama)} (${Utils.escapeHtml(t.mapel)})</option>`).join('')}
           </select>
-          <span style="font-size:0.7rem;color:var(--text-muted);">Nama tutor otomatis terisi di dokumen</span>
+          <span style="font-size:0.7rem;color:var(--text-muted);">Override nama tutor khusus butir ${butir.id}</span>
         </div>
       `;
 
@@ -370,7 +370,7 @@ const App = {
         </div>
         <div class="stat-card">
           <div class="stat-value" style="color:${genCount > 0 ? '#27AE60' : 'inherit'}">${genCount}/${totalDocs}</div>
-          <div class="stat-label">Sudah Di-generate</div>
+          <div class="stat-label">Template Selesai (Paket ${this.currentPackage})</div>
         </div>
       </div>
 
@@ -541,6 +541,23 @@ const App = {
       return;
     }
 
+    // Validasi profil PKBM
+    const profile = ProfileManager.getProfile();
+    if (!profile.lembaga.nama || profile.lembaga.nama.trim() === '') {
+      Utils.showToast('⚠️ Nama PKBM belum diisi! Silakan isi di tab Profil PKBM.', 'error');
+      return;
+    }
+
+    // Validasi API key jika AI aktif
+    const useAi = localStorage.getItem('use_ai') === 'true';
+    if (useAi) {
+      const apiKey = localStorage.getItem('gemini_api_key');
+      if (!apiKey || apiKey.trim() === '') {
+        Utils.showToast('⚠️ API Key Gemini belum diisi! Silakan isi di bagian Pengaturan AI atau nonaktifkan mode AI.', 'error');
+        return;
+      }
+    }
+
     // Collect all doc IDs from selected butirs
     const docIds = [];
     selectedButirs.forEach(butirId => {
@@ -560,8 +577,9 @@ const App = {
     Utils.showToast(`Memproses ${totalFilesAll} file (${docIds.length} template × ${selectedMapels.length} mapel)...`, 'info');
 
     const progressEl = document.getElementById('batchProgress');
+    if (progressEl) progressEl.style.width = '0%'; // Reset progress bar
 
-    const useAi = localStorage.getItem('use_ai') === 'true';
+    // useAi sudah dideklarasikan di validasi atas
 
     try {
       await DocGenerator.generateBatchZip(docIds, p, selectedMapels, (done, total) => {

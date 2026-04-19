@@ -28,20 +28,20 @@ const ProfileManager = {
       tujuan: ''
     },
     tutors: [
-      { id: 't1', nama: 'Naela', mapel: 'Matematika & IPAS', paket: ['A'] },
-      { id: 't2', nama: 'Abdul Hadi', mapel: 'Bahasa Indonesia & Pendidikan Pancasila', paket: ['A'] },
-      { id: 't3', nama: 'Anita', mapel: 'PAI & Budi Pekerti', paket: ['A'] },
-      { id: 't4', nama: 'Siska', mapel: 'Matematika', paket: ['B'] },
-      { id: 't5', nama: 'Handry', mapel: 'Bahasa Indonesia', paket: ['B'] },
-      { id: 't6', nama: 'Husen', mapel: 'PAI', paket: ['B'] },
-      { id: 't7', nama: 'Romadi', mapel: 'Ilmu Pengetahuan Alam (IPA)', paket: ['B'] },
-      { id: 't8', nama: 'Salim', mapel: 'Pendidikan Pancasila', paket: ['B'] },
-      { id: 't9', nama: 'Dea', mapel: 'Geografi', paket: ['C'] },
-      { id: 't10', nama: 'Ulfa', mapel: 'Matematika', paket: ['C'] },
-      { id: 't11', nama: 'Riki', mapel: 'Bahasa Indonesia', paket: ['C'] },
-      { id: 't12', nama: 'Nadia', mapel: 'Bahasa Inggris', paket: ['C'] },
-      { id: 't13', nama: 'Dia', mapel: 'Pendidikan Pancasila', paket: ['C'] },
-      { id: 't14', nama: 'Ronald', mapel: 'PAI', paket: ['C'] }
+      { id: 't1', nama: 'Naela', mapel: 'Matematika & IPAS', paket: ['A'], nip: '', kualifikasi: '' },
+      { id: 't2', nama: 'Abdul Hadi', mapel: 'Bahasa Indonesia & Pendidikan Pancasila', paket: ['A'], nip: '', kualifikasi: '' },
+      { id: 't3', nama: 'Anita', mapel: 'PAI & Budi Pekerti', paket: ['A'], nip: '', kualifikasi: '' },
+      { id: 't4', nama: 'Siska', mapel: 'Matematika', paket: ['B'], nip: '', kualifikasi: '' },
+      { id: 't5', nama: 'Handry', mapel: 'Bahasa Indonesia', paket: ['B'], nip: '', kualifikasi: '' },
+      { id: 't6', nama: 'Husen', mapel: 'PAI', paket: ['B'], nip: '', kualifikasi: '' },
+      { id: 't7', nama: 'Romadi', mapel: 'Ilmu Pengetahuan Alam (IPA)', paket: ['B'], nip: '', kualifikasi: '' },
+      { id: 't8', nama: 'Salim', mapel: 'Pendidikan Pancasila', paket: ['B'], nip: '', kualifikasi: '' },
+      { id: 't9', nama: 'Dea', mapel: 'Geografi', paket: ['C'], nip: '', kualifikasi: '' },
+      { id: 't10', nama: 'Ulfa', mapel: 'Matematika', paket: ['C'], nip: '', kualifikasi: '' },
+      { id: 't11', nama: 'Riki', mapel: 'Bahasa Indonesia', paket: ['C'], nip: '', kualifikasi: '' },
+      { id: 't12', nama: 'Nadia', mapel: 'Bahasa Inggris', paket: ['C'], nip: '', kualifikasi: '' },
+      { id: 't13', nama: 'Dia', mapel: 'Pendidikan Pancasila', paket: ['C'], nip: '', kualifikasi: '' },
+      { id: 't14', nama: 'Ronald', mapel: 'PAI', paket: ['C'], nip: '', kualifikasi: '' }
     ],
     pesertaDidik: {
       A: { jumlah: 0, rombel: 1, kelas: [] },
@@ -113,6 +113,7 @@ const ProfileManager = {
     if (!container) return;
 
     const l = this._profile.lembaga;
+    const e = Utils.escapeHtml; // shorthand for safe HTML interpolation
     container.innerHTML = `
       <div class="glass-card">
         <div class="card-header">
@@ -131,46 +132,46 @@ const ProfileManager = {
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Nama PKBM *</label>
-            <input type="text" class="form-input" id="pf-nama" value="${l.nama}" placeholder="Nama lengkap PKBM">
+            <input type="text" class="form-input" id="pf-nama" value="${e(l.nama)}" placeholder="Nama lengkap PKBM">
           </div>
           <div class="form-group">
             <label class="form-label">NPSN</label>
-            <input type="text" class="form-input" id="pf-npsn" value="${l.npsn}" placeholder="Nomor Pokok Satuan Pendidikan">
+            <input type="text" class="form-input" id="pf-npsn" value="${e(l.npsn)}" placeholder="Nomor Pokok Satuan Pendidikan">
           </div>
         </div>
 
         <div class="form-group">
           <label class="form-label">Alamat Lengkap</label>
-          <input type="text" class="form-input" id="pf-alamat" value="${l.alamat}" placeholder="Jl. ...">
+          <input type="text" class="form-input" id="pf-alamat" value="${e(l.alamat)}" placeholder="Jl. ...">
         </div>
 
         <div class="form-row-3">
           <div class="form-group">
             <label class="form-label">Kelurahan/Desa</label>
-            <input type="text" class="form-input" id="pf-kelurahan" value="${l.kelurahan}" placeholder="Kelurahan">
+            <input type="text" class="form-input" id="pf-kelurahan" value="${e(l.kelurahan)}" placeholder="Kelurahan">
           </div>
           <div class="form-group">
             <label class="form-label">Kecamatan</label>
-            <input type="text" class="form-input" id="pf-kecamatan" value="${l.kecamatan}" placeholder="Kecamatan">
+            <input type="text" class="form-input" id="pf-kecamatan" value="${e(l.kecamatan)}" placeholder="Kecamatan">
           </div>
           <div class="form-group">
             <label class="form-label">Kabupaten/Kota</label>
-            <input type="text" class="form-input" id="pf-kabupaten" value="${l.kabupaten}" placeholder="Kabupaten/Kota">
+            <input type="text" class="form-input" id="pf-kabupaten" value="${e(l.kabupaten)}" placeholder="Kabupaten/Kota">
           </div>
         </div>
 
         <div class="form-row-3">
           <div class="form-group">
             <label class="form-label">Provinsi</label>
-            <input type="text" class="form-input" id="pf-provinsi" value="${l.provinsi}" placeholder="Provinsi">
+            <input type="text" class="form-input" id="pf-provinsi" value="${e(l.provinsi)}" placeholder="Provinsi">
           </div>
           <div class="form-group">
             <label class="form-label">Telepon</label>
-            <input type="text" class="form-input" id="pf-telepon" value="${l.telepon}" placeholder="08xx-xxxx-xxxx">
+            <input type="text" class="form-input" id="pf-telepon" value="${e(l.telepon)}" placeholder="08xx-xxxx-xxxx">
           </div>
           <div class="form-group">
             <label class="form-label">Email</label>
-            <input type="email" class="form-input" id="pf-email" value="${l.email}" placeholder="email@pkbm.sch.id">
+            <input type="email" class="form-input" id="pf-email" value="${e(l.email)}" placeholder="email@pkbm.sch.id">
           </div>
         </div>
       </div>
@@ -188,15 +189,15 @@ const ProfileManager = {
         <div class="form-row-3">
           <div class="form-group">
             <label class="form-label">Nama Kepala PKBM *</label>
-            <input type="text" class="form-input" id="pf-kepala-nama" value="${l.kepala.nama}" placeholder="Nama lengkap">
+            <input type="text" class="form-input" id="pf-kepala-nama" value="${e(l.kepala.nama)}" placeholder="Nama lengkap">
           </div>
           <div class="form-group">
             <label class="form-label">NIP/NIK</label>
-            <input type="text" class="form-input" id="pf-kepala-nip" value="${l.kepala.nip}" placeholder="NIP atau NIK">
+            <input type="text" class="form-input" id="pf-kepala-nip" value="${e(l.kepala.nip)}" placeholder="NIP atau NIK">
           </div>
           <div class="form-group">
             <label class="form-label">Pangkat/Golongan</label>
-            <input type="text" class="form-input" id="pf-kepala-pangkat" value="${l.kepala.pangkat}" placeholder="Opsional">
+            <input type="text" class="form-input" id="pf-kepala-pangkat" value="${e(l.kepala.pangkat)}" placeholder="Opsional">
           </div>
         </div>
       </div>
@@ -213,16 +214,16 @@ const ProfileManager = {
         </div>
         <div class="form-group">
           <label class="form-label">Visi</label>
-          <textarea class="form-textarea" id="pf-visi" rows="2" placeholder="Visi PKBM...">${l.visi}</textarea>
+          <textarea class="form-textarea" id="pf-visi" rows="2" placeholder="Visi PKBM...">${e(l.visi)}</textarea>
         </div>
         <div class="form-group">
           <label class="form-label">Misi</label>
-          <textarea class="form-textarea" id="pf-misi" rows="3" placeholder="Misi PKBM (pisahkan dengan enter per poin)...">${l.misi}</textarea>
+          <textarea class="form-textarea" id="pf-misi" rows="3" placeholder="Misi PKBM (pisahkan dengan enter per poin)...">${e(l.misi)}</textarea>
           <div class="form-hint">Pisahkan setiap poin misi dengan baris baru (Enter)</div>
         </div>
         <div class="form-group">
           <label class="form-label">Tujuan</label>
-          <textarea class="form-textarea" id="pf-tujuan" rows="3" placeholder="Tujuan PKBM...">${l.tujuan}</textarea>
+          <textarea class="form-textarea" id="pf-tujuan" rows="3" placeholder="Tujuan PKBM...">${e(l.tujuan)}</textarea>
         </div>
       </div>
     `;
@@ -230,21 +231,22 @@ const ProfileManager = {
 
   saveFromForm() {
     const l = this._profile.lembaga;
-    l.nama = document.getElementById('pf-nama')?.value || l.nama;
-    l.npsn = document.getElementById('pf-npsn')?.value || '';
-    l.alamat = document.getElementById('pf-alamat')?.value || '';
-    l.kelurahan = document.getElementById('pf-kelurahan')?.value || '';
-    l.kecamatan = document.getElementById('pf-kecamatan')?.value || '';
-    l.kabupaten = document.getElementById('pf-kabupaten')?.value || '';
-    l.provinsi = document.getElementById('pf-provinsi')?.value || '';
-    l.telepon = document.getElementById('pf-telepon')?.value || '';
-    l.email = document.getElementById('pf-email')?.value || '';
-    l.kepala.nama = document.getElementById('pf-kepala-nama')?.value || '';
-    l.kepala.nip = document.getElementById('pf-kepala-nip')?.value || '';
-    l.kepala.pangkat = document.getElementById('pf-kepala-pangkat')?.value || '';
-    l.visi = document.getElementById('pf-visi')?.value || '';
-    l.misi = document.getElementById('pf-misi')?.value || '';
-    l.tujuan = document.getElementById('pf-tujuan')?.value || '';
+    const v = (id, fallback = '') => (document.getElementById(id)?.value || fallback).trim();
+    l.nama = v('pf-nama', l.nama);
+    l.npsn = v('pf-npsn');
+    l.alamat = v('pf-alamat');
+    l.kelurahan = v('pf-kelurahan');
+    l.kecamatan = v('pf-kecamatan');
+    l.kabupaten = v('pf-kabupaten');
+    l.provinsi = v('pf-provinsi');
+    l.telepon = v('pf-telepon');
+    l.email = v('pf-email');
+    l.kepala.nama = v('pf-kepala-nama');
+    l.kepala.nip = v('pf-kepala-nip');
+    l.kepala.pangkat = v('pf-kepala-pangkat');
+    l.visi = v('pf-visi');
+    l.misi = v('pf-misi');
+    l.tujuan = v('pf-tujuan');
     this.save();
   },
 
