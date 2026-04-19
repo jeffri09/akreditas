@@ -95,32 +95,45 @@ const AIClient = {
     const temaP5 = localStorage.getItem('ai_tema_p5') || 'Kewirausahaan / Keterampilan Mandiri';
     const konteks = localStorage.getItem('ai_konteks') || '';
     
-    let konteksPrompt = konteks ? `\nKONTEKS KHUSUS DARI TUTOR:\n"${konteks}"\n(Wajib sesuaikan seluruh konten materi dengan konteks ini)\n` : "";
+    let konteksPrompt = konteks ? `\nKONTEKS KHUSUS DARI TUTOR:\n"${konteks}"\n(Sesuaikan seluruh konten dengan konteks ini)\n` : "";
 
-    const prompt = `Anda adalah asisten Guru PKBM (Pendidikan Kesetaraan) professional.
-Buatkan skenario materi ajar untuk mata pelajaran "${mapel}" pada jenjang ${paket} (Fase ${fase}).
-Gunakan bahasa yang instruksional, interaktif, dan tidak kaku (pendekatan orang dewasa).
+    const prompt = `Anda adalah ahli kurikulum pendidikan kesetaraan (PKBM) yang berpengalaman dalam akreditasi BAN-PDM.
+Buatkan skenario pembelajaran yang SIAP PAKAI untuk dokumen akreditasi dengan detail berikut:
 
-ATURAN KUSTOMISASI DARI TUTOR:
-- Model Pembelajaran RPP: ${modelBelajar}
-- Format Soal Formatif/Sumatif: ${formatSoal}
-- Tema Projek Karakter P5: ${temaP5}
+IDENTITAS:
+- Mata Pelajaran: "${mapel}"
+- Jenjang: Paket ${paket} (Fase ${fase})
+- Regulasi Acuan: Kurikulum Merdeka sesuai Kepmendikbudristek No. 262/M/2022 dan Panduan BSKAP
+- Konteks: Pendidikan Kesetaraan (peserta didik umumnya pekerja/orang dewasa, pembelajaran fleksibel berbasis SKK)
+
+PARAMETER KUSTOMISASI:
+- Model Pembelajaran: ${modelBelajar}
+- Format Soal: ${formatSoal}
+- Tema Projek Penguatan Karakter: ${temaP5}
 ${konteksPrompt}
+ATURAN PENULISAN:
+1. Gunakan bahasa Indonesia yang profesional namun tidak kaku — sesuai karakteristik pendidikan kesetaraan (andragogi)
+2. Kegiatan harus kontekstual dan relevan dengan kehidupan nyata peserta didik dewasa
+3. Soal harus sesuai level kognitif HOTS yang sesuai fase (${fase})
+4. Semua konten harus bisa dipertanggungjawabkan saat visitasi akreditasi BAN-PDM
 
-Keluarkan hasil WAJIB DALAM BENTUK JSON murni tanpa markdown, dengan struktur berikut:
+OUTPUT WAJIB dalam format JSON murni (tanpa markdown, tanpa backtick), struktur:
 {
-  "kegiatanPendahuluan": "Paragraf deskripsi kegiatan awal (menyapa, berdoa, memotivasi).",
-  "kegiatanInti": ["Point 1: Berikan sintaks kegiatan inti sesuai model pembelajaran ${modelBelajar}...", "Point 2..."],
-  "kegiatanPenutup": "Paragraf kesimpulan dan refleksi.",
+  "kegiatanPendahuluan": "Deskripsi kegiatan awal: salam, doa, apersepsi kontekstual, penyampaian tujuan pembelajaran. Minimal 3 kalimat.",
+  "kegiatanInti": ["Tahap 1: Sintaks ${modelBelajar} - deskripsi kegiatan...", "Tahap 2: ...", "Tahap 3: ...", "Tahap 4: ...", "Tahap 5: Diferensiasi (remedial/pengayaan)"],
+  "kegiatanPenutup": "Refleksi, kesimpulan, informasi tindak lanjut, doa penutup. Minimal 2 kalimat.",
   "soalFormatif": [
-    {"soal": "Pertanyaan Formatif 1...", "jawaban": "Jawaban 1..."}
+    {"soal": "Pertanyaan formatif 1 (Level C3-C4)...", "jawaban": "Jawaban/rubrik singkat..."},
+    {"soal": "Pertanyaan formatif 2...", "jawaban": "..."},
+    {"soal": "Pertanyaan formatif 3...", "jawaban": "..."}
   ],
   "soalSumatif": [
-    {"soal": "Pertanyaan Sumatif 1 (Sesuai format: ${formatSoal})...", "kunciJawaban": "Jawaban/Penjelasan rinci..."}
+    {"soal": "Soal sumatif 1 sesuai format ${formatSoal} (Level C4-C6)...", "kunciJawaban": "Kunci jawaban/penjelasan lengkap..."},
+    {"soal": "Soal sumatif 2...", "kunciJawaban": "..."}
   ],
   "ideProyekKarakter": {
-    "judul": "Judul Proyek Karakter (Berkaitan erat dengan tema: ${temaP5})",
-    "deskripsi": "Deskripsi aktivitas wirausaha/sosial dari proyek ini."
+    "judul": "Judul proyek karakter yang berkaitan dengan: ${temaP5}",
+    "deskripsi": "Deskripsi lengkap proyek (tujuan, kegiatan, produk akhir, dimensi Profil Pelajar Pancasila yang dikembangkan)"
   }
 }`;
 

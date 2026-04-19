@@ -298,8 +298,55 @@ const Butir4Templates = {
   // =================================================
   'B4-4.3-01': function(ctx) {
     const h = DocGenerator.h;
-    // Reuse the HOTS LKPD from Butir 3
-    return Butir3Templates['B3-3.5-02'](ctx);
+
+    const soalKarakter = {
+      A: [
+        'Ceritakan pengalamanmu saat menolong teman yang kesulitan. Apa yang kamu rasakan?',
+        'Jika ada teman yang berbeda pendapat denganmu, apa yang sebaiknya kamu lakukan? Mengapa?',
+        'Gambarkan satu kebiasaan baik yang ingin kamu miliki. Bagaimana caranya?'
+      ],
+      B: [
+        'Analisis sebuah berita tentang masalah sosial di komunitasmu. Siapa yang terdampak? Apa solusi yang bisa kamu usulkan?',
+        'Evaluasi: Apakah peraturan di lingkungan sekitarmu sudah adil untuk semua orang? Berikan alasan dan bukti!',
+        'Bandingkan dua sikap berbeda dalam menghadapi konflik. Mana yang lebih efektif dan mengapa?'
+      ],
+      C: [
+        'Rancang sebuah program kegiatan sosial untuk memberdayakan masyarakat sekitar PKBM. Jelaskan langkah-langkahnya!',
+        'Kritisi sebuah kebijakan publik yang berdampak pada pendidikan. Apa alternatif yang bisa kamu tawarkan?',
+        'Susun argumen: Mengapa keterampilan berpikir kritis penting untuk membangun karakter bangsa?'
+      ]
+    };
+
+    const soal = soalKarakter[ctx.paket];
+
+    return [
+      h.title('LKPD Penalaran Kritis untuk Penguatan Karakter'),
+      h.heading(`Level: ${ctx.pkg.levelHOTS} — Dimensi Karakter & Kewargaan`, 2),
+      h.referensiRegulasi(ctx),
+      h.para(`${ctx.pkg.nama} | ${ctx.mapel} | Fase ${ctx.fase}`, { align: docx.AlignmentType.CENTER }),
+      h.empty(),
+      h.heading('Identitas'),
+      h.para('Nama: ___________________________ Kelas: _____ Tanggal: _____', { indent: false }),
+      h.empty(),
+      h.heading('Petunjuk'),
+      h.para('Jawablah pertanyaan-pertanyaan berikut dengan berpikir kritis. Tidak ada jawaban yang salah — yang penting adalah proses berpikirmu dan nilai-nilai karakter yang kamu tunjukkan.', { italic: true }),
+      h.empty(),
+      h.heading('Soal Penalaran Kritis Berbasis Karakter'),
+      ...soal.map((s, i) => [
+        h.numbered(s, i+1),
+        h.para('Jawaban:', { bold: true }),
+        h.para('_______________________________________________________________________', { indent: false }),
+        h.para('_______________________________________________________________________', { indent: false }),
+        h.empty()
+      ]).flat(),
+      h.empty(),
+      h.heading('Refleksi Karakter'),
+      h.table(['Pertanyaan', 'Jawaban'], [
+        ['Nilai karakter apa yang kamu gunakan saat menjawab soal?', ''],
+        ['Bagaimana cara berpikirmu bisa membantu kehidupan sehari-hari?', ''],
+        ['Apa komitmenmu untuk menjadi pribadi yang lebih baik?', '']
+      ])
+    ];
   },
 
   // =================================================
@@ -348,8 +395,53 @@ const Butir4Templates = {
   // =================================================
   'B4-4.3-03': function(ctx) {
     const h = DocGenerator.h;
-    // Reuse PBL template from Butir 3
-    return Butir3Templates['B3-3.5-03'](ctx);
+
+    const proyekKarakter = {
+      A: { tema: 'Pahlawan Kebersihan Sekolah', produk: 'Poster bergambar & aksi nyata membersihkan lingkungan', dimensi: 'Kemandirian, Kolaborasi' },
+      B: { tema: 'Kampanye Anti-Bullying di Lingkungan Belajar', produk: 'Video pendek / drama singkat / poster digital', dimensi: 'Kewargaan, Kesadaran Sosial, Komunikasi' },
+      C: { tema: 'Wirausaha Sosial untuk Pemberdayaan Komunitas', produk: 'Proposal bisnis sosial & presentasi pitch', dimensi: 'Kreativitas, Kemandirian, Penalaran Kritis' }
+    };
+
+    const pk = proyekKarakter[ctx.paket];
+
+    return [
+      h.title('Proyek Penguatan Karakter Berbasis Masalah'),
+      h.heading(`Tema: ${pk.tema}`, 2),
+      h.referensiRegulasi(ctx),
+      h.empty(),
+      h.heading('A. Identitas Proyek'),
+      h.table(['Komponen', 'Keterangan'], [
+        ['Satuan Pendidikan', ctx.lembaga.nama],
+        ['Program', ctx.pkg.nama],
+        ['Mata Pelajaran Terkait', ctx.mapel],
+        ['Tema Proyek', pk.tema],
+        ['Produk Akhir', pk.produk],
+        ['Dimensi Karakter', pk.dimensi],
+        ['Durasi', '3-4 minggu'],
+        ['Fase', ctx.fase]
+      ]),
+      h.empty(),
+      h.heading('B. Pertanyaan Pemandu'),
+      h.para(`"Bagaimana kita bisa menggunakan pengetahuan dan keterampilan kita untuk ${pk.tema.toLowerCase()}?"`, { bold: true, align: docx.AlignmentType.CENTER }),
+      h.empty(),
+      h.heading('C. Tahapan Proyek Karakter'),
+      h.table(['Minggu', 'Tahap', 'Kegiatan', 'Dimensi Karakter', 'Output'], [
+        ['1', 'Pengenalan & Empati', 'Mengidentifikasi masalah, mendengarkan perspektif berbeda', 'Kesadaran Sosial', 'Peta masalah'],
+        ['2', 'Perencanaan & Kolaborasi', 'Merancang solusi secara berkelompok, membagi peran', 'Kolaborasi, Komunikasi', 'Rencana aksi'],
+        ['3', 'Aksi & Refleksi', 'Melaksanakan rencana, mendokumentasikan proses', 'Kemandirian, Kreativitas', 'Dokumentasi proses'],
+        ['4', 'Presentasi & Evaluasi', 'Mempresentasikan hasil, evaluasi dampak karakter', 'Penalaran Kritis', pk.produk]
+      ]),
+      h.empty(),
+      h.heading('D. Rubrik Penilaian Karakter'),
+      h.table(['Dimensi Karakter', '4 (Konsisten)', '3 (Sering)', '2 (Kadang)', '1 (Jarang)'], [
+        ['Empati & Kepedulian', 'Selalu menunjukkan', 'Sering terlihat', 'Kadang terlihat', 'Jarang terlihat'],
+        ['Kerja Sama', 'Inisiatif tinggi', 'Aktif berkontribusi', 'Kontribusi cukup', 'Pasif'],
+        ['Tanggung Jawab', 'Sangat bertanggung jawab', 'Cukup bertanggung jawab', 'Perlu diingatkan', 'Kurang'],
+        ['Refleksi Diri', 'Refleksi mendalam', 'Refleksi cukup baik', 'Refleksi dangkal', 'Tidak ada refleksi']
+      ]),
+      h.empty(),
+      ...h.signatureTutor(ctx)
+    ];
   },
 
   // =================================================

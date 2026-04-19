@@ -93,6 +93,7 @@ const App = {
     }
     // Re-render komponen1 to update mapel selector & badges
     this.renderKomponen1();
+    this.renderGeneratePanel();
     this.updateStats();
   },
 
@@ -397,31 +398,7 @@ const App = {
         <h4 style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:8px;">PILIH MATA PELAJARAN (Khusus dokumen 📚 Per-Mapel)</h4>
         <div class="batch-options">
           ${CONFIG.packages[this.currentPackage || 'A'].mapelWajib.map(m => {
-            const MAPEL_PICS = {
-              'A': {
-                'Bahasa Indonesia': 'Abdul Hadi',
-                'Matematika': 'Naela',
-                'Pendidikan Agama Islam dan Budi Pekerti': 'Anita',
-                'Pendidikan Pancasila': 'Abdul Hadi',
-                'Ilmu Pengetahuan Alam dan Sosial (IPAS)': 'Naela'
-              },
-              'B': {
-                'Bahasa Indonesia': 'Handry',
-                'Matematika': 'Siska',
-                'Pendidikan Agama Islam dan Budi Pekerti': 'Husen',
-                'Pendidikan Pancasila': 'Salim',
-                'Ilmu Pengetahuan Alam': 'Romadi'
-              },
-              'C': {
-                'Bahasa Indonesia': 'Riki',
-                'Matematika': 'Ulfa',
-                'Bahasa Inggris': 'Nadia',
-                'Pendidikan Agama Islam dan Budi Pekerti': 'Ronald',
-                'Pendidikan Pancasila': 'Dia',
-                'Geografi': 'Dea'
-              }
-            };
-            const pic = MAPEL_PICS[this.currentPackage || 'A']?.[m] || '';
+            const pic = CONFIG.mapelPics[this.currentPackage || 'A']?.[m] || '';
             const picHtml = pic ? `<div style="font-size:0.75rem;color:var(--accent-primary);margin-top:4px;font-weight:600;"><span class="badge" style="background:var(--accent-primary);color:#fff;padding:2px 6px;border-radius:4px;font-size:0.7rem;">👤 PIC Mapel: ${pic}</span></div>` : '';
             return `
             <div class="batch-option selected" onclick="this.classList.toggle('selected')" data-batch-mapel="${m}">
@@ -438,15 +415,10 @@ const App = {
         <h4 style="color:var(--text-secondary);font-size:0.8rem;margin:16px 0 8px;">PILIH BUTIR INSTITUSIONAL (Manajemen & Dokumen Umum)</h4>
         <div class="batch-options">
           ${CONFIG.butirs.map(b => {
-             const INST_PICS = {
-               'A': { '1': 'Asandri (Kesiswaan)', '2': 'Nafis (Kedisiplinan)', '4': 'Rika (Visi & Ekskul)' },
-               'B': { '1': 'Lilik & Gati (BK)', '2': 'Zalfa & Adi (Tata Tertib)', '4': 'Apriyanto & Eva (Visi & P5)' },
-               'C': { '1': 'Jufri (Kesiswaan)', '2': 'Leo (Tata Tertib)', '4': 'Imam & Laila (Karakter & P5)' }
-             };
-             const pic = INST_PICS[this.currentPackage || 'A']?.[b.id];
+             const pic = CONFIG.instPics[this.currentPackage || 'A']?.[b.id];
              const picHtml = b.id == 3 
                 ? '<div style="font-size:0.75rem;color:var(--accent-primary);margin-top:4px;font-weight:600;">👤 PIC: Sesuai Pilihan Mapel di Atas</div>' 
-                : `<div style="font-size:0.75rem;color:#E67E22;margin-top:4px;font-weight:600;"><span class="badge" style="background:#E67E22;color:#fff;padding:2px 6px;border-radius:4px;font-size:0.7rem;">👤 Tim Institusi: ${pic}</span></div>`;
+                : `<div style="font-size:0.75rem;color:#E67E22;margin-top:4px;font-weight:600;"><span class="badge" style="background:#E67E22;color:#fff;padding:2px 6px;border-radius:4px;font-size:0.7rem;">👤 Tim Institusi: ${pic || 'Belum ditentukan'}</span></div>`;
              return `
             <div class="batch-option selected" onclick="this.classList.toggle('selected')" data-batch-butir="${b.id}">
               <span class="opt-icon">📋</span>
@@ -465,7 +437,7 @@ const App = {
         </div>
 
         <div class="checkbox-item checked" style="margin-top:16px; margin-bottom:12px; justify-content: center; background: rgba(46,134,193,0.1); padding: 12px; border-radius: 8px;">
-           <input type="checkbox" id="useAiToggleGenerate" style="accent-color:var(--accent-primary);transform:scale(1.2);margin-right:8px;" ${localStorage.getItem('use_ai') === 'true' ? 'checked' : ''} onchange="localStorage.setItem('use_ai', this.checked); document.getElementById('useAiToggle').checked = this.checked;">
+           <input type="checkbox" id="useAiToggleGenerate" style="accent-color:var(--accent-primary);transform:scale(1.2);margin-right:8px;" ${localStorage.getItem('use_ai') === 'true' ? 'checked' : ''} onchange="localStorage.setItem('use_ai', this.checked); var syncEl = document.getElementById('useAiToggle'); if (syncEl) syncEl.checked = this.checked;">
            <label for="useAiToggleGenerate" style="font-weight:bold;color:var(--primary);cursor:pointer;font-size:0.95rem;">✨ Gunakan Gemini AI (Auto-Pilot)</label>
         </div>
 
@@ -598,12 +570,11 @@ const App = {
       }, useAi);
       // Mark all as generated for this package
       docIds.forEach(id => this._markGenerated(id, p));
+      if (progressEl) progressEl.style.width = '100%';
     } catch (err) {
       Utils.showToast(`Error (Paket ${p}): ${err.message}`, 'error');
     }
 
-    if (progressEl) progressEl.style.width = '100%';
-    Utils.showToast('Batch generate selesai! 🎉', 'success');
     this.renderKomponen1();
     this.renderGeneratePanel();
   },

@@ -20,18 +20,17 @@ const DocGenerator = {
     const pkg = CONFIG.packages[paket];
     
     // Resolve Tutor Dynamically to enforce Document Correlation
-    let resolvedTutorName = ProfileManager.getProfile().kepala.nama; 
+    let resolvedTutorName = profile.lembaga?.kepala?.nama || 'Kepala PKBM'; 
     const docInfo = CONFIG.getDocInfo(docId);
     if (docInfo && mapel) { // It's a mapel specific document
       const pic = CONFIG.mapelPics[paket]?.[mapel];
       if (pic) {
-         // Optionally append (Tutor Mapel XYZ)
-         resolvedTutorName = `${pic}\nTutor ${mapel.substring(0, 15)}...`;
+         resolvedTutorName = pic;
       }
     } else { // It's an institutional document, use the Butir PIC
       const butir = docId.split('-')[0].replace('B', '');
       const pic = CONFIG.instPics[paket]?.[butir];
-      if (pic) resolvedTutorName = `${pic}\nTim Penyusun Butir ${butir}`;
+      if (pic) resolvedTutorName = pic;
     }
     
     const context = {
@@ -45,7 +44,7 @@ const DocGenerator = {
       tanggalLengkap: Utils.formatTanggalLengkap(new Date()),
       regulasiCP: Utils.getReferensiCP(paket),
       fase: Utils.getFase(paket),
-      tutor: App?.selectedTutor || resolvedTutorName || profile.kepala, // Manual override via UI takes precedence
+      tutor: App?.selectedTutor || resolvedTutorName || profile.lembaga?.kepala?.nama || '', // Manual override via UI takes precedence
       aiData: aiData
     };
 
@@ -64,8 +63,8 @@ const DocGenerator = {
       sections: [{
         properties: {
           page: {
-            margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
-            size: { width: 12240, height: 15840 }
+            margin: { top: 1134, right: 1134, bottom: 1134, left: 1134 },
+            size: { width: 12240, height: 18720 }  // F4 / Folio (8.5" × 13")
           }
         },
         headers: { default: this._createHeader(context) },
@@ -107,6 +106,7 @@ const DocGenerator = {
     }
     
     let completed = 0;
+    let successCount = 0;
 
     // Calculate total: perMapel docs × mapelWajib, others × 1
     let total = 0;
@@ -150,6 +150,7 @@ const DocGenerator = {
               .replace(/Pendidikan /g, '').substring(0, 30);
             zip.folder(folderButir).folder(mapelShort).file(fileName, blob);
             completed++;
+            successCount++;
             if (progressCallback) progressCallback(completed, total);
           } catch (err) {
             console.error(`Error generating ${docId} (${mpl}):`, err);
@@ -179,6 +180,7 @@ const DocGenerator = {
           const fileName = this._getFileName(docId, paket, null);
           zip.folder(folderButir).file(fileName, blob);
           completed++;
+          successCount++;
           if (progressCallback) progressCallback(completed, total);
         } catch (err) {
           console.error(`Error generating ${docId}:`, err);
@@ -188,10 +190,14 @@ const DocGenerator = {
       }
     }
 
+    if (successCount === 0) {
+      Utils.showToast('Gagal generate semua dokumen. ZIP tidak dibuat. Periksa Console (F12) untuk detail error.', 'error');
+      return;
+    }
     const zipBlob = await zip.generateAsync({ type: 'blob' });
     const zipName = `Akreditasi_PKBM_Paket${paket}_Komponen1_${new Date().toISOString().slice(0, 10)}.zip`;
     saveAs(zipBlob, zipName);
-    Utils.showToast(`${completed} dokumen berhasil di-export sebagai ZIP!`, 'success');
+    Utils.showToast(`${successCount} dokumen berhasil di-export sebagai ZIP!`, 'success');
   },
 
   // =========================================
@@ -242,7 +248,7 @@ const DocGenerator = {
             size: this.FONT_SIZE
           },
           paragraph: {
-            spacing: { after: 120 }
+            spacing: { after: 120, line: 360 }  // 1.5 line spacing
           }
         }
       }
@@ -283,7 +289,7 @@ const DocGenerator = {
           spacing: { after: 0 },
           children: [
             new docx.TextRun({
-              text: [ctx.lembaga.alamat, ctx.lembaga.kelurahan, ctx.lembaga.kecamatan, ctx.lembaga.kabupaten].filter(Boolean).join(', ') || 'Alamat PKBM',
+              text: [ctx.lembaga.alamat, ctx.lembaga.kelurahan, ctx.lembaga.kecamatan, ctx.lembaga.kabupaten, ctx.lembaga.provinsi].filter(Boolean).join(', ') || 'Alamat PKBM',
               size: 18,
               font: this.FONT
             })
@@ -321,9 +327,17 @@ const DocGenerator = {
       children: [
         new docx.Paragraph({
           alignment: docx.AlignmentType.CENTER,
+          spacing: { after: 0 },
           children: [
             new docx.TextRun({
-              text: `${ctx.lembaga.nama} — Dokumen Akreditasi BAN-PDM — T.A. ${ctx.tahunAjaran}`,
+              text: `${ctx.lembaga.nama} — Dokumen Akreditasi BAN-PDM — T.A. ${ctx.tahunAjaran}  |  Hal. `,
+              size: 16,
+              font: this.FONT,
+              italics: true,
+              color: '888888'
+            }),
+            new docx.TextRun({
+              children: [docx.PageNumber.CURRENT],
               size: 16,
               font: this.FONT,
               italics: true,
@@ -344,13 +358,13 @@ const DocGenerator = {
         alignment: docx.AlignmentType.CENTER,
         spacing: { before: 200, after: 200 },
         children: [
-          new docx.TextRun({ text: text.toUpperCase(), bold: true, size: 32, font: 'Times New Roman', underline: {} })
+          new docx.TextRun({ text: text.toUpperCase(), bold: true, size: 32, font: 'Times New Roman', underline: { type: docx.UnderlineType.SINGLE, color: "000000" } })
         ]
       });
     },
 
     heading(text, level = 1) {
-      const sizes = { 1: 28, 2: 26, 3: 24 };
+      const sizes = { 1: 28, 2: 26, 3: 26 };  // level 3 = 13pt (bold) to differentiate from 12pt body
       return new docx.Paragraph({
         spacing: { before: 240, after: 120 },
         children: [
@@ -362,7 +376,7 @@ const DocGenerator = {
     para(text, options = {}) {
       return new docx.Paragraph({
         alignment: options.align || docx.AlignmentType.JUSTIFIED,
-        spacing: { after: options.spacing || 120 },
+        spacing: { after: options.spacing || 120, line: 360 },
         indent: options.indent ? { firstLine: 720 } : undefined,
         children: [
           new docx.TextRun({
@@ -429,7 +443,7 @@ const DocGenerator = {
           children: [
             new docx.TextRun({
               text: ctx.lembaga.kepala.nama || '________________________',
-              size: 24, font: 'Times New Roman', bold: true, underline: {}
+              size: 24, font: 'Times New Roman', bold: true, underline: { type: docx.UnderlineType.SINGLE, color: "000000" }
             })
           ]
         }),
@@ -447,6 +461,7 @@ const DocGenerator = {
 
     signatureTutor(ctx, tutorName) {
       const location = ctx.lembaga.kabupaten || '________';
+      const nama = tutorName || ctx.tutor || '________________________';
       return [
         new docx.Paragraph({ children: [] }),
         new docx.Paragraph({
@@ -470,8 +485,8 @@ const DocGenerator = {
           alignment: docx.AlignmentType.LEFT,
           children: [
             new docx.TextRun({
-              text: tutorName || '________________________',
-              size: 24, font: 'Times New Roman', bold: true, underline: {}
+              text: nama,
+              size: 24, font: 'Times New Roman', bold: true, underline: { type: docx.UnderlineType.SINGLE, color: "000000" }
             })
           ]
         })
@@ -480,10 +495,11 @@ const DocGenerator = {
 
     table(headers, rows) {
       const headerCells = headers.map(h => new docx.TableCell({
-        shading: { fill: '2D5F2D' },
+        shading: { fill: '1F4E79' },
         children: [new docx.Paragraph({
           alignment: docx.AlignmentType.CENTER,
-          children: [new docx.TextRun({ text: h, bold: true, size: 22, font: 'Times New Roman', color: 'FFFFFF' })]
+          spacing: { line: 276 },  // single spacing in tables for compactness
+          children: [new docx.TextRun({ text: h, bold: true, size: 24, font: 'Times New Roman', color: 'FFFFFF' })]
         })],
         verticalAlign: docx.VerticalAlign.CENTER
       }));
@@ -491,7 +507,8 @@ const DocGenerator = {
       const dataRows = rows.map(row => new docx.TableRow({
         children: row.map(cell => new docx.TableCell({
           children: [new docx.Paragraph({
-            children: [new docx.TextRun({ text: String(cell), size: 22, font: 'Times New Roman' })]
+            spacing: { line: 276 },  // single spacing in tables
+            children: [new docx.TextRun({ text: String(cell), size: 24, font: 'Times New Roman' })]
           })],
           verticalAlign: docx.VerticalAlign.CENTER
         }))
@@ -508,10 +525,10 @@ const DocGenerator = {
 
     referensiRegulasi(ctx) {
       return new docx.Paragraph({
-        spacing: { before: 120, after: 120 },
+        spacing: { before: 120, after: 120, line: 276 },
         children: [
-          new docx.TextRun({ text: 'Referensi: ', bold: true, size: 20, font: 'Times New Roman', italics: true }),
-          new docx.TextRun({ text: `${ctx.regulasiCP} | ${CONFIG.regulasi.kurikulum.panduan}`, size: 20, font: 'Times New Roman', italics: true, color: '666666' })
+          new docx.TextRun({ text: 'Referensi: ', bold: true, size: 22, font: 'Times New Roman', italics: true }),
+          new docx.TextRun({ text: `${ctx.regulasiCP} | ${CONFIG.regulasi.kurikulum.panduan}`, size: 22, font: 'Times New Roman', italics: true, color: '444444' })
         ]
       });
     }

@@ -788,7 +788,7 @@ h4 { font-size: 0.95rem; font-weight: 600; }
   padding: 28px;
 }
 
-.batch-panel .batch-options {
+.batch-options {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 12px;

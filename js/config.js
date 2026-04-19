@@ -98,7 +98,7 @@ const CONFIG = {
   // PIC (PENANGGUNG JAWAB) MAPPING
   // =========================================
   mapelPics: {
-    'A': { 'Bahasa Indonesia': 'Abdul Hadi (S.Pd)', 'Matematika': 'Naela', 'Pendidikan Agama Islam dan Budi Pekerti': 'Anita', 'Pendidikan Pancasila': 'Abdul Hadi', 'Ilmu Pengetahuan Alam dan Sosial (IPAS)': 'Naela' },
+    'A': { 'Bahasa Indonesia': 'Abdul Hadi', 'Matematika': 'Naela', 'Pendidikan Agama Islam dan Budi Pekerti': 'Anita', 'Pendidikan Pancasila': 'Abdul Hadi', 'Ilmu Pengetahuan Alam dan Sosial (IPAS)': 'Naela' },
     'B': { 'Bahasa Indonesia': 'Handry', 'Matematika': 'Siska', 'Pendidikan Agama Islam dan Budi Pekerti': 'Husen', 'Pendidikan Pancasila': 'Salim', 'Ilmu Pengetahuan Alam': 'Romadi', 'IPA': 'Romadi', 'PAI': 'Husen' },
     'C': { 'Bahasa Indonesia': 'Riki', 'Matematika': 'Ulfa', 'Bahasa Inggris': 'Nadia', 'Pendidikan Agama Islam dan Budi Pekerti': 'Ronald', 'Pendidikan Pancasila': 'Dia', 'Geografi': 'Dea', 'PAI': 'Ronald' }
   },

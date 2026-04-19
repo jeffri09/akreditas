@@ -674,14 +674,99 @@ const Butir3Templates = {
 
   'B3-3.4-03': function(ctx) {
     const h = DocGenerator.h;
-    // Reusing Butir 1 remedial template with different context
-    return Butir1Templates['B1-1.3-01'](ctx);
+
+    const tindakLanjut = {
+      A: { strategi: 'Pembelajaran Ulang Terbimbing', deskripsi: 'Tutor mengulang materi dengan pendekatan multisensori (visual, auditori, kinestetik) untuk peserta didik yang belum mencapai tujuan pembelajaran.' },
+      B: { strategi: 'Tutorial Sebaya & Pendalaman Konsep', deskripsi: 'Peserta didik yang sudah tuntas membantu rekannya melalui tutorial sebaya, sementara tutor memberikan soal pendalaman konsep.' },
+      C: { strategi: 'Bimbingan Intensif & Portofolio Perbaikan', deskripsi: 'Peserta didik menyusun portofolio perbaikan dengan bimbingan intensif tutor, menunjukkan penguasaan kompetensi secara bertahap.' }
+    };
+
+    const tl = tindakLanjut[ctx.paket];
+
+    return [
+      h.title('Tindak Lanjut Hasil Asesmen Pembelajaran'),
+      h.heading('Program Remedial & Pengayaan Berbasis Capaian', 2),
+      h.referensiRegulasi(ctx),
+      h.empty(),
+      h.heading('A. Informasi Umum'),
+      h.table(['Komponen', 'Keterangan'], [
+        ['Satuan Pendidikan', ctx.lembaga.nama],
+        ['Program', `${ctx.pkg.nama} (Setara ${ctx.pkg.setara})`],
+        ['Mata Pelajaran', ctx.mapel],
+        ['Kelas / Fase', `_____ / Fase ${ctx.fase}`],
+        ['Strategi Tindak Lanjut', tl.strategi],
+        ['Tahun Ajaran', ctx.tahunAjaran]
+      ]),
+      h.empty(),
+      h.heading('B. Landasan'),
+      h.para('Tindak lanjut ini disusun berdasarkan analisis hasil asesmen formatif dan sumatif sebagai bagian dari siklus pembelajaran efektif. Setiap peserta didik berhak mendapatkan layanan remedial atau pengayaan sesuai capaiannya.', { indent: true }),
+      h.para(`Strategi yang digunakan: ${tl.deskripsi}`, { italic: true }),
+      h.empty(),
+      h.heading('C. Data Peserta Didik — Remedial'),
+      h.table(
+        ['No', 'Nama', 'Tujuan Pembelajaran yang Belum Tercapai', 'Bentuk Remedial', 'Jadwal', 'Hasil Pasca-Remedial'],
+        Array.from({length: 5}, (_, i) => [String(i+1), '', '', tl.strategi, '', ''])
+      ),
+      h.empty(),
+      h.heading('D. Data Peserta Didik — Pengayaan'),
+      h.table(
+        ['No', 'Nama', 'Kompetensi yang Sudah Dikuasai', 'Bentuk Pengayaan', 'Produk/Output'],
+        Array.from({length: 3}, (_, i) => [String(i+1), '', '', '', ''])
+      ),
+      h.empty(),
+      h.heading('E. Refleksi Efektivitas Tindak Lanjut'),
+      h.para('Apakah remedial berhasil meningkatkan capaian? ________________________________', { indent: false }),
+      h.para('Strategi apa yang paling efektif? _____________________________________________', { indent: false }),
+      h.para('Rekomendasi untuk siklus berikutnya: __________________________________________', { indent: false }),
+      h.empty(),
+      ...h.signatureTutor(ctx)
+    ];
   },
 
   'B3-3.4-04': function(ctx) {
     const h = DocGenerator.h;
-    // Reusing Butir 1 buku penghubung template
-    return Butir1Templates['B1-1.3-04'](ctx);
+
+    return [
+      h.title('Laporan Komunikasi Hasil Belajar kepada Orang Tua/Wali'),
+      h.heading('Transparansi Proses & Capaian Pembelajaran', 2),
+      h.referensiRegulasi(ctx),
+      h.para(`${ctx.lembaga.nama} | ${ctx.pkg.nama} | T.A. ${ctx.tahunAjaran}`, { align: docx.AlignmentType.CENTER }),
+      h.empty(),
+      h.heading('Identitas'),
+      h.para('Nama Peserta Didik : ___________________________', { indent: false }),
+      h.para('Kelas / Fase       : _____ / Fase ' + ctx.fase, { indent: false }),
+      h.para('Mata Pelajaran     : ' + ctx.mapel, { indent: false }),
+      h.para('Tutor              : ___________________________', { indent: false }),
+      h.para('Orang Tua/Wali     : ___________________________', { indent: false }),
+      h.empty(),
+      h.heading('A. Ringkasan Capaian Pembelajaran'),
+      h.table(['Aspek', 'Deskripsi Capaian', 'Predikat'], [
+        ['Penguasaan Tujuan Pembelajaran', '', 'A / B / C / D'],
+        ['Partisipasi & Keaktifan', '', 'Sangat Baik / Baik / Cukup'],
+        ['Perkembangan Karakter', '', 'Berkembang / Cakap / Mahir'],
+        ['Kehadiran', '_____ dari _____ pertemuan (_____%)', '']
+      ]),
+      h.empty(),
+      h.heading('B. Catatan Proses Pembelajaran'),
+      h.para('Kekuatan peserta didik:', { bold: true }),
+      h.para('_______________________________________________________________________', { indent: false }),
+      h.para('Area yang perlu ditingkatkan:', { bold: true }),
+      h.para('_______________________________________________________________________', { indent: false }),
+      h.para('Rekomendasi tutor untuk orang tua:', { bold: true }),
+      h.para('_______________________________________________________________________', { indent: false }),
+      h.empty(),
+      h.heading('C. Tanggapan Orang Tua/Wali'),
+      h.para('_______________________________________________________________________', { indent: false }),
+      h.para('_______________________________________________________________________', { indent: false }),
+      h.empty(),
+      h.heading('D. Kesepakatan Tindak Lanjut'),
+      h.para('_______________________________________________________________________', { indent: false }),
+      h.empty(),
+      h.table(['Tutor', 'Orang Tua/Wali', 'Kepala PKBM'], [
+        ['', '', ''], ['', '', ''],
+        ['(_______________)', '(_______________)', `(${ctx.lembaga.kepala.nama || '_______________'})`]
+      ])
+    ];
   },
 
   // =================================================
